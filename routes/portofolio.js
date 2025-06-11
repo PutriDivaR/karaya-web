@@ -65,5 +65,40 @@ db.query(sql, [
 
 });
 
+router.get('/portofolio/:id/suka', (req, res) => {
+  const portofolioId = req.params.id;
+
+  const getPortofolio = 'SELECT * FROM portofolio WHERE id_portofolio = ?';
+  const getLikers = `
+    SELECT u.nama_pengguna, u.email, u.foto_profil, s.tanggal_suka
+    FROM suka s
+    JOIN pengguna u ON s.id_pengguna = u.id_pengguna
+    WHERE s.id_portofolio = ?
+    ORDER BY s.tanggal_suka DESC
+  `;
+
+  db.query(getPortofolio, [portofolioId], (err1, portofolioResult) => {
+    if (err1 || portofolioResult.length === 0) {
+      return res.status(404).send('Portofolio tidak ditemukan.');
+    }
+
+    const portofolio = portofolioResult[0];
+
+    db.query(getLikers, [portofolioId], (err2, likers) => {
+      if (err2) {
+        return res.status(500).send('Gagal mengambil data penyuka.');
+      }
+
+      res.render('pages/portofolio_suka', {
+        title: 'Disukai oleh',
+        portofolioId,
+        portofolio,
+        likers
+      });
+    });
+  });
+});
+
+
 
 module.exports = router;
