@@ -12,18 +12,30 @@ router.get('/profile', (req, res) => {
     return res.redirect('/login');
   }
 
-  const query = 'SELECT * FROM portofolio WHERE id_pengguna = ?';
+  const getUserPortofolios = 'SELECT * FROM portofolio WHERE id_pengguna = ?';
+  const getLikedPortofolios = `
+    SELECT p.* FROM portofolio p
+    JOIN suka s ON p.id_portofolio = s.id_portofolio
+    WHERE s.id_pengguna = ?
+  `;
 
-  db.query(query, [userId], (err, results) => {
-    if (err) {
-      console.error('Gagal mengambil data portofolio user:', err);
-      return res.status(500).send('Gagal mengambil data portofolio user');
+  db.query(getUserPortofolios, [userId], (err1, userPortofolios) => {
+    if (err1) {
+      console.error('Gagal mengambil data portofolio user:', err1);
+      return res.status(500).send('Gagal mengambil portofolio user');
     }
-console.log('Hasil query portofolio:', results);
 
-    res.render('pages/profile', {
-      title: 'User Portofolio',
-      userPortofolios: results
+    db.query(getLikedPortofolios, [userId], (err2, likedPortofolios) => {
+      if (err2) {
+        console.error('Gagal mengambil data suka:', err2);
+        return res.status(500).send('Gagal mengambil data suka');
+      }
+
+      res.render('pages/profile', {
+        title: 'User Portofolio',
+        userPortofolios: userPortofolios,
+        likedPortofolios: likedPortofolios // ✅ penting agar tab “Suka” bisa baca
+      });
     });
   });
 });
@@ -108,6 +120,7 @@ router.post('/like/:id', (req, res) => {
     }
   });
 });
+
 
 
 module.exports = router;

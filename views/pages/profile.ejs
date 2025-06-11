@@ -62,8 +62,20 @@
         <% } %>
       </div>
 
-      <div class="tab-content hidden" id="suka">Ini adalah konten untuk tab Suka.</div>
+     <div class="tab-content hidden" id="suka">
+  <% if (!likedPortofolios || likedPortofolios.length === 0) { %>
+    <p>Kamu belum menyukai portofolio mana pun.</p>
+  <% } else { %>
+    <div class="portfolio-list">
+      <% likedPortofolios.forEach(p => { %>
+        <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
+          <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
+          <h3><%= p.judul %></h3>
+        </a>
+      <% }) %>
     </div>
+  <% } %>
+</div>
   </div>
 
   <script>
