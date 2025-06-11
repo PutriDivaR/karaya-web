@@ -21,13 +21,16 @@
     <p>Belum ada portofolio yang diunggah.</p>
   <% } else { %>
     <% portofolios.forEach(p => { %>
-      <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
-        <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
-        <h3><%= p.judul %></h3>
-      </a>
+      <% if (p.is_draft === 0) { %> <!-- Menampilkan hanya yang sudah dipublikasikan -->
+        <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
+          <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
+          <h3><%= p.judul %></h3>
+        </a>
+      <% } %>
     <% }) %>
   <% } %>
 </div>
+
 
   </div>
 </div>

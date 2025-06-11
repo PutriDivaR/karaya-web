@@ -46,18 +46,36 @@
 
       <!-- Konten Tab -->
       <div class="tab-content active" id="arsip">Ini adalah konten untuk tab Arsip.</div>
-      <div class="tab-content hidden" id="draft">Ini adalah konten untuk tab Draft.</div>
 
+      <!-- Tab Draft -->
+      <div class="portfolio-list hidden" id="draft">
+        <% if (!userPortofolios || userPortofolios.length === 0) { %>
+          <p>Belum ada draft portofolio.</p>
+        <% } else { %>
+          <% userPortofolios.forEach(p => { %>
+            <% if (p.is_draft === 1) { %> <!-- Menampilkan yang masih draft -->
+              <a href="/upload_portofolio?id_portofolio=<%= p.id_portofolio %>" class="portfolio-item">
+                <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
+                <h3><%= p.judul %></h3>
+                <p>Ini adalah draft, klik untuk melanjutkan pengeditan.</p>
+              </a>
+            <% } %>
+          <% }) %>
+        <% } %>
+      </div>
+
+      <!-- Tab Portofolio -->
       <div class="portfolio-list hidden" id="portofolio">
-        <!-- Konten portofolio akan muncul di sini -->
         <% if (!userPortofolios || userPortofolios.length === 0) { %>
           <p>Belum ada portofolio yang diunggah.</p>
         <% } else { %>
           <% userPortofolios.forEach(p => { %>
+            <% if (p.is_draft === 0) { %>
             <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
               <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
               <h3><%= p.judul %></h3>
             </a>
+            <% } %>
           <% }) %>
         <% } %>
       </div>
@@ -70,6 +88,7 @@
     const buttons = document.querySelectorAll(".tab-btn");
     const contents = document.querySelectorAll(".tab-content");
     const portfolioList = document.getElementById('portofolio'); // Menyimpan referensi ke portfolio list
+    const draftList = document.getElementById('draft'); // Menyimpan referensi ke draft list
 
     // Fungsi untuk menampilkan tab yang dipilih dan menyembunyikan yang lain
     function showTab(tabId) {
@@ -80,19 +99,26 @@
       });
 
       // Menyembunyikan portfolio list jika bukan tab portofolio yang dipilih
-      if (tabId !== 'portofolio') {
-        portfolioList.classList.add("hidden");
-      } else {
+      if (tabId === 'portofolio') {
         portfolioList.classList.remove("hidden");
+      } else {
+        portfolioList.classList.add("hidden");
       }
-      
+
+      // Menyembunyikan draft list jika bukan tab draft yang dipilih
+      if (tabId === 'draft') {
+        draftList.classList.remove("hidden");
+      } else {
+        draftList.classList.add("hidden");
+      }
+
       // Menambahkan kelas aktif ke konten yang dipilih
       document.getElementById(tabId).classList.remove("hidden");
       document.getElementById(tabId).classList.add("active");
 
       // Menghapus kelas aktif dari semua tombol
       buttons.forEach(b => b.classList.remove("active"));
-      
+
       // Menambahkan kelas aktif ke tombol yang dipilih
       document.querySelector(`[data-tab="${tabId}"]`).classList.add("active");
     }
