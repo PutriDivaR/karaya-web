@@ -69,12 +69,45 @@ router.get('/portofolio/:id', (req, res) => {
 // routes/portofolio.js
 
 router.post('/like/:id', (req, res) => {
-  const id = req.params.id;
-  db.query('UPDATE portofolio SET jumlah_suka = jumlah_suka + 1 WHERE id_portofolio = ?', [id], (err, result) => {
-    if (err) {
-    res.status(500).send('Gagal menambahkan like');
+  const portofolioId = req.params.id;
+  const userId = req.session.userId; // Ambil ID pengguna dari session
+
+  if (!userId) {
+    return res.status(401).json({ message: 'User belum login' });
   }
+
+  // 1. Cek apakah user sudah pernah like
+  const cekLike = 'SELECT * FROM suka WHERE id_pengguna = ? AND id_portofolio = ?';
+  db.query(cekLike, [userId, portofolioId], (err, result) => {
+    if (err) return res.status(500).send('Gagal memeriksa data suka');
+
+    if (result.length > 0) {
+      // 2. Sudah like → Hapus like & kurangi jumlah_suka
+      const hapusLike = 'DELETE FROM suka WHERE id_pengguna = ? AND id_portofolio = ?';
+      db.query(hapusLike, [userId, portofolioId], (err2) => {
+        if (err2) return res.status(500).send('Gagal unlike');
+
+        const kurangiLike = 'UPDATE portofolio SET jumlah_suka = jumlah_suka - 1 WHERE id_portofolio = ?';
+        db.query(kurangiLike, [portofolioId], (err3) => {
+          if (err3) return res.status(500).send('Gagal mengurangi jumlah like');
+          return res.json({ liked: false });
+        });
+      });
+    } else {
+      // 3. Belum like → Tambah like & tambah jumlah_suka
+      const tambahLike = 'INSERT INTO suka (id_pengguna, id_portofolio, tanggal_suka) VALUES (?, ?, NOW())';
+      db.query(tambahLike, [userId, portofolioId], (err4) => {
+        if (err4) return res.status(500).send('Gagal menyimpan data like');
+
+        const tambahJumlah = 'UPDATE portofolio SET jumlah_suka = jumlah_suka + 1 WHERE id_portofolio = ?';
+        db.query(tambahJumlah, [portofolioId], (err5) => {
+          if (err5) return res.status(500).send('Gagal menambahkan jumlah like');
+          return res.json({ liked: true });
+        });
+      });
+    }
+  });
 });
-});
+
 
 module.exports = router;
