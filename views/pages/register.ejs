@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Karya</title>
+  <link href="https://fonts.googleapis.com/css2?family=Just+Me+Again+Down+Here&display=swap" rel="stylesheet"> <!-- Tambahkan font -->
+  <link rel="stylesheet" href="register.css">
+</head>
+<body>
+  <div class="container">
+    <div>
+      <h1>Welcome to <span class="karaya">KARAYA</span></h1>
+      <h2>Daftar</h2>
+<form method="POST" action="/register">
+  <div class="input-box">
+    <label for="username">Username</label>
+    <input type="text" name="username" placeholder="Username" value="<%= old?.username || '' %>" required>
+    <% if (errors?.username) { %>
+      <p class="error-msg"><%= errors.username %></p>
+    <% } %>
+  </div>
+
+  <div class="input-box">
+    <label for="email">Email</label>
+    <input type="email" name="email" placeholder="Email Unand" value="<%= old?.email || '' %>" required>
+    <% if (errors?.email) { %>
+      <p class="error-msg"><%= errors.email %></p>
+    <% } %>
+  </div>
+
+  <div class="input-box">
+    <label for="password">Password</label>
+    <input type="password" name="password" placeholder="Password" required>
+    <% if (errors?.password) { %>
+      <p class="error-msg"><%= errors.password %></p>
+    <% } %>
+  </div>
+
+  <% if (errors?.global) { %>
+    <p class="error-msg"><%= errors.global %></p>
+  <% } %>
+
+  <button type="submit">Daftar</button>
+</form>
+
+      <div class="login-link">
+        <p>Sudah memiliki akun? <a href="/login">Masuk</a></p>
+      </div>
+    </div>
+    <div class="image-box">
+      <img src="/login.jpg" alt="Background" />
+    </div>
+  </div>
+</body>
+</html>

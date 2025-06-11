@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KARAYA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Just+Me+Again+Down+Here&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="login.css">
+</head>
+<body>
+  <div class="container">
+    <div class="login-form">
+      <h1>Welcome to <span class="karaya">KARAYA</span></h1>
+      <h2>LOGIN</h2>
+<% if (msg) { %>
+  <p class="success-msg"><%= msg %></p>
+<% } %>
+
+      <form method="POST" action="/login">
+        <div class="input-box">
+          <label for="email">Email</label>
+          <input type="email" name="email" placeholder="Email Unand" required>
+          <% if (errors && errors.email) { %>
+            <p class="error-msg"><%= errors.email %></p>
+          <% } %>
+        </div>
+
+        <div class="input-box">
+          <label for="password">Password</label>
+          <div class="password-container">
+            <input type="password" name="password" placeholder="Password" id="password" required>
+          </div>
+          <% if (errors && errors.password) { %>
+            <p class="error-msg"><%= errors.password %></p>
+          <% } %>
+        </div>
+
+        <% if (errors && errors.general) { %>
+          <p class="error-msg"><%= errors.general %></p>
+        <% } %>
+
+        <div class="forgot-password">
+          <a href="#">Lupa Kata Sandi?</a>
+        </div>
+
+        <button type="submit">Masuk</button>
+      </form>
+
+      <div class="register-link">
+        <p>Belum memiliki akun? <a href="/register">Daftar</a></p>
+      </div>
+    </div>
+    <div class="image-box">
+      <img src="/login.jpg" alt="Background" />
+    </div>
+  </div>
+</body>
+</html>

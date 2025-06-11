@@ -1,0 +1,35 @@
+<section class="container mt-5">
+</section>
+<%- include('../partials/header') %>
+<link rel="stylesheet" href="home.css">
+<div class="dashboard-container">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<%- include('../partials/sidebar') %>
+
+  <!-- Konten Utama -->
+  <div class="main-content">
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search...">
+    </div>
+
+
+<h2>Portofolio Terbaru</h2>
+<div class="portfolio-list">
+  <% if (!portofolios || portofolios.length === 0) { %>
+    <p>Belum ada portofolio yang diunggah.</p>
+  <% } else { %>
+    <% portofolios.forEach(p => { %>
+      <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
+        <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
+        <h3><%= p.judul %></h3>
+      </a>
+    <% }) %>
+  <% } %>
+</div>
+
+  </div>
+</div>
+
+<%- include('../partials/footer') %>

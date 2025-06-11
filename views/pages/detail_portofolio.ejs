@@ -1,0 +1,208 @@
+<!-- views/pages/detail_portofolio.ejs -->
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+
+<style>
+  body {
+    background-color: #fbeec1;
+    font-family: 'Poppins', sans-serif;
+      flex: 1;
+  padding: 1rem;
+  overflow-y: auto;
+  margin-left: 80px;
+  }
+
+  .container {
+    background-color: #5e412f;
+    border-radius: 20px;
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+    color: white;
+    position: relative;
+  }
+
+  .save-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+  }
+
+  .portfolio-preview {
+    background-color: #fff8e1;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    color: #1a1a1a;
+  }
+
+  .portfolio-preview img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    object-fit: cover;
+  }
+
+  .portfolio-preview h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .portfolio-preview p.description {
+    font-size: 14px;
+    padding: 0 10px;
+    margin-bottom: 10px;
+  }
+
+  .portfolio-meta {
+    font-size: 12px;
+    color: #555;
+  }
+
+  .action-bar {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #5e412f;
+    padding: 10px;
+    border-radius: 10px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+  }
+
+  .like-count {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .like-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+  }
+
+  .like-btn .icon {
+    width: 20px;
+    height: 20px;
+    transition: fill 0.3s ease;
+  }
+
+  .like-btn.liked .icon {
+    fill: #e63946;
+  }
+
+  .like-count span {
+    margin-left: 10px;
+    gap: 10px;
+  }
+
+  .action-buttons button {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  .comment-section {
+    display: flex;
+    flex: 1;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .comment-section input[type="text"] {
+    border: none;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 12px;
+    flex: 1;
+  }
+
+  .comment-section button {
+    background-color: #fbb034;
+    border: none;
+    color: #000;
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px;
+  }
+  .main-content {
+  flex: 1;
+  background-color: #896E4A;
+  padding: 1rem;
+  overflow-y: auto;
+  margin-left: 80px;
+}
+</style>
+
+<div class="container">
+  
+  <button class="save-button" title="Simpan">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"></path>
+    </svg>
+  </button>
+
+  <div class="portfolio-preview">
+    <h2><%= portofolio.judul %></h2>
+    <img src="/uploads/<%= portofolio.gambar %>" alt="<%= portofolio.judul %>">
+    <p class="description"><%= portofolio.deskripsi %></p>
+    <div class="portfolio-meta">
+      <p>Oleh: <%= portofolio.nama_pengguna %></p>
+      <p>Tanggal Dibuat: <%= portofolio.tanggal_dibuat.toLocaleDateString() %></p>
+    </div>
+  </div>
+
+  <div class="action-bar">
+    <div class="action-buttons">
+      <form action="/like/<%= portofolio.id_portofolio %>" method="POST">
+<button class="like-btn" data-id="<%= portofolio.id_portofolio %>">
+  <svg width="20" height="20" fill="<%= portofolio.userLiked ? 'red' : 'none' %>" stroke="white" stroke-width="2" viewBox="0 0 24 24">
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
+      2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09 
+      C13.09 3.81 14.76 3 16.5 3 
+      19.58 3 22 5.42 22 8.5 
+      c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+  </svg>
+  <span class="like-count"><%= portofolio.jumlah_suka %></span>
+</button>
+
+      </form>
+      <button>🔗 Share</button>
+    </div>
+    <div class="comment-section">
+      <input type="text" placeholder="Tambahkan Komentar ...." />
+      <button>Kirim</button>
+      <button>Lihat Komentar</button>
+    </div>
+  </div>
+</div>
+
+
+
+<%- include('../partials/footer') %>

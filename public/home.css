@@ -1,0 +1,106 @@
+*
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+}
+
+
+
+.main-profile {
+  margin-left: 80px; 
+  padding: 2rem;
+  flex: 1;
+}
+
+
+.main-content {
+  flex: 1;
+  background-color: #896E4A;
+  padding: 1rem;
+  overflow-y: auto;
+  margin-left: 80px;
+}
+
+.search-bar {
+  background: #F7ECD9;
+  border-radius: 20px;
+  padding: 10px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+
+
+.search-bar input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  padding: 5px 10px;
+}
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 15px;
+}
+
+.card {
+  background-color: #896E4A;
+  padding: 10px;
+  border-radius: 15px;
+  height: 160px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.thumbnail {
+  background-color: #D2B48C;
+  height: 100px;
+  border-radius: 10px;
+}
+
+
+/* BAGIAN Portofolio */
+.portfolio-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.portfolio-item {
+  border: 1px solid #ddd;
+  padding: 15px;
+  width: 260px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.portfolio-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.portfolio-item h3 {
+  font-size: 1.2rem;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.portfolio-item p {
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 6px;
+}

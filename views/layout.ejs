@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title || "Karaya" %></title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+
+  <main>
+    <%- body %>
+  </main>
+
+  <%- include('partials/footer') %>
+  <script src="/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

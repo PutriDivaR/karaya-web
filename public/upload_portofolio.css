@@ -1,0 +1,113 @@
+/* Basic reset */ 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Heading */
+h2 {
+  font-size: 30px;
+  font-family: 'Arial', sans-serif;
+  color: white;
+  margin-bottom: 10px;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #896E4A;
+  color: #ffffff;
+  min-height: 100vh;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Container for form */
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px;
+  color: #896E4A;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+/* Wrapper around file and inputs */
+.form-row {
+  display: flex;
+  gap: 50px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Column for image preview */
+.image-column {
+  width: 400px;
+  height: 315px;
+  position: relative;
+}
+
+.image-preview {
+  width: 100%;
+  height: 100%;
+  background-color: #f3eea3;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 15px;
+  border: 1px solid #ccc;
+  position: relative;
+}
+
+.file-input {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 8px 15px;
+  background-color: rgba(245, 247, 143, 0.8);
+  border: none;
+  border-radius: 10px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+/* Column for inputs */
+.input-column {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 300px;
+}
+
+.input-column label {
+  font-size: 1em;
+  color: #896E4A;
+}
+
+.form-input {
+  padding: 10px;
+  font-size: 1em;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  color: #896E4A;
+  background-color: white;
+}
+
+.upload-button {
+  background-color: #f8b12f;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.upload-button:hover {
+  background-color: #ff9933;
+}

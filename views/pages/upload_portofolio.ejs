@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buat Portofolio</title>
+    <link rel="stylesheet" href="upload_portofolio.css">
+</head>
+<body>
+    <div class="dashboard-container">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+<%- include('../partials/sidebar') %>
+
+</div>
+ <div>
+  <h2>Buat Portofolio</h2><hr>
+  <div class="content">
+    <form class="form" method="POST" action="/upload_portofolio" enctype="multipart/form-data">
+
+      <div class="form-row">
+        <!-- Kolom File -->
+        <div class="form-column image-column">
+          <div class="image-preview" id="imagePreview">
+            <input type="file" name="gambar" id="imageUpload" accept="image/*" class="file-input">
+          </div>
+        </div>
+
+        <!-- Kolom Input -->
+        <div class="form-column input-column">
+          <label>Judul</label>
+          <input type="text" name="judul" class="form-input" placeholder="Judul" required>
+
+          <label>Deskripsi</label>
+          <input type="text" name="deskripsi" class="form-input" placeholder="Deskripsi" required>
+
+          <label>Kategori</label>
+          <select name="id_kategori" class="form-input">
+            <option value="">-- Pilih Kategori --</option>
+            <option value="1">Kategori 1</option>
+            <option value="2">Kategori 2</option>
+            <option value="3">Kategori 3</option>
+          </select>
+
+          <button type="submit" class="upload-button">Upload</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+    </div>
+
+    <script>
+        // Preview image after selecting a file
+        const fileInput = document.getElementById('imageUpload');
+        const imagePreview = document.getElementById('imagePreview');
+
+        fileInput.addEventListener('change', function () {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onloadend = function () {
+                imagePreview.style.backgroundImage = `url(${reader.result})`;
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.style.backgroundImage = '';
+            }
+        });
+    </script>
+</body>
+</html>
