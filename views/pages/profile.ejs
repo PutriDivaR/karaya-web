@@ -6,7 +6,6 @@
   <title>KARAYA</title>
   <link rel="stylesheet" href="/profile.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
- 
 </head>
 <body>
   <%- include('../partials/header') %>
@@ -39,55 +38,74 @@
 
       <!-- Tabs -->
       <div class="tabs">
-        <button class="tab-btn" data-tab="arsip">Arsip</button>
-        <button class="tab-btn active" data-tab="draft">Draft</button>
-        <button class="tab-btn active" data-tab="portofolio">Portofolio</button>
+        <button class="tab-btn active" data-tab="arsip">Arsip</button>
+        <button class="tab-btn" data-tab="draft">Draft</button>
+        <button class="tab-btn" data-tab="portofolio">Portofolio</button>
         <button class="tab-btn" data-tab="suka">Suka</button>
       </div>
 
       <!-- Konten Tab -->
-      <div class="tab-content hidden" id="arsip">Konten Arsip di sini</div>
-      <div class="tab-content" id="draft">Konten Draft di sini</div>
+      <div class="tab-content active" id="arsip">Ini adalah konten untuk tab Arsip.</div>
+      <div class="tab-content hidden" id="draft">Ini adalah konten untuk tab Draft.</div>
 
+      <div class="portfolio-list hidden" id="portofolio">
+        <!-- Konten portofolio akan muncul di sini -->
+        <% if (!userPortofolios || userPortofolios.length === 0) { %>
+          <p>Belum ada portofolio yang diunggah.</p>
+        <% } else { %>
+          <% userPortofolios.forEach(p => { %>
+            <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
+              <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
+              <h3><%= p.judul %></h3>
+            </a>
+          <% }) %>
+        <% } %>
+      </div>
 
-
-<div class="portfolio-list" id="portofolio">
-
-  <% if (!userPortofolios || userPortofolios.length === 0) { %>
-    <p>Belum ada portofolio yang diunggah.</p>
-  <% } else { %>
-    <% userPortofolios.forEach(p => { %>
-        <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item"></a>
-        <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
-        <h3><%= p.judul %></h3>
-      </a>
-    <% }) %>
-  <% } %>
-</div>
-      <div class="tab-content hidden" id="suka">Konten Suka di sini</div>
+      <div class="tab-content hidden" id="suka">Ini adalah konten untuk tab Suka.</div>
     </div>
   </div>
 
   <script>
     const buttons = document.querySelectorAll(".tab-btn");
     const contents = document.querySelectorAll(".tab-content");
+    const portfolioList = document.getElementById('portofolio'); // Menyimpan referensi ke portfolio list
 
+    // Fungsi untuk menampilkan tab yang dipilih dan menyembunyikan yang lain
     function showTab(tabId) {
-      contents.forEach(c => c.classList.add("hidden"));
-      buttons.forEach(b => b.classList.remove("active"));
+      // Menyembunyikan semua konten
+      contents.forEach(c => {
+        c.classList.add("hidden"); // Menyembunyikan semua tab
+        c.classList.remove("active");
+      });
+
+      // Menyembunyikan portfolio list jika bukan tab portofolio yang dipilih
+      if (tabId !== 'portofolio') {
+        portfolioList.classList.add("hidden");
+      } else {
+        portfolioList.classList.remove("hidden");
+      }
+      
+      // Menambahkan kelas aktif ke konten yang dipilih
       document.getElementById(tabId).classList.remove("hidden");
+      document.getElementById(tabId).classList.add("active");
+
+      // Menghapus kelas aktif dari semua tombol
+      buttons.forEach(b => b.classList.remove("active"));
+      
+      // Menambahkan kelas aktif ke tombol yang dipilih
       document.querySelector(`[data-tab="${tabId}"]`).classList.add("active");
     }
 
     buttons.forEach(button => {
       button.addEventListener("click", () => {
         const target = button.getAttribute("data-tab");
-        showTab(target);
+        showTab(target); // Menampilkan konten tab yang dipilih
       });
     });
 
-    // tampilkan default aktif: portofolio
-    showTab('portofolio');
+    // Tampilkan tab default (Arsip) saat pertama kali dimuat
+    showTab('arsip');
   </script>
 </body>
 </html>
