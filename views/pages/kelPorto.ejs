@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Pusat Bantuan</title>
+  <title>Kelola Portofolio</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     body {
@@ -15,16 +15,6 @@
 
     .dashboard-container {
       display: flex;
-    }
-
-    .sidebar {
-      width: 100px;
-      background-color: #f5deb3;
-      height: 140vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 20px;
     }
 
     .main {
@@ -54,7 +44,6 @@
       margin-bottom: 10px;
     }
 
-
     .link {
       display: block;
       margin: 30px 0;
@@ -70,42 +59,46 @@
   </style>
 </head>
 <body>
-  <div class="dashboard-container">
-    <div class="sidebar">
-      <div class="logo">
-      </div>
-    </div>
 
+  <!-- Header -->
+  <%- include('../partials/header') %>
+
+  <!-- Sidebar + Konten -->
+  <div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- Main Content -->
     <div class="main">
       <h1>❓ Bagaimana cara mengelola Portofolio?</h1>
       <div class="card">
-        <h3>1. Bagaimana cara mengunggah Phortofolio ? </h3>
+        <h3>1. Bagaimana cara mengunggah Portofolio?</h3>
         <ul> 
-            <li>Di halaman utama/beranda, klik tombol “+” yaitu bagian <strong><a href="#">Buat Portofolio</a></strong></li>
-            <li>Ikuti langkah seperti upload biasa (judul, file, kategori dan gambar).</li>
-            <li>Tekan tombol “Upload” atau “Draft” jika belum ingin dipublikasikan.</li>
+          <li>Di halaman utama/beranda, klik tombol “+” yaitu bagian <strong><a href="#">Buat Portofolio</a></strong></li>
+          <li>Ikuti langkah seperti upload biasa (judul, file, kategori dan gambar).</li>
+          <li>Tekan tombol “Upload” atau “Draft” jika belum ingin dipublikasikan.</li>
         </ul>
 
         <h3>2. Bagaimana cara melihat hasil unggahan portofolio?</h3>
         <ul>
-            <li>Lihat hasil unggahan dengan menekan ikon profil atau buka <strong><a href="profile">Halaman Profil</a></strong></li>
-            <li>Bagian yang diunggah akan tampil pada bagian portofolio</li>
-            <li>Bagian draft akan masuk ke bagian draft</li>
+          <li>Lihat hasil unggahan dengan menekan ikon profil atau buka <strong><a href="/profile">Halaman Profil</a></strong></li>
+          <li>Bagian yang diunggah akan tampil pada bagian portofolio</li>
+          <li>Bagian draft akan masuk ke bagian draft</li>
         </ul>
 
-      <h3>3. Bagaimana mengedit atau menghapus portofolio yang sudah diunggah?</h3>
+        <h3>3. Bagaimana mengedit atau menghapus portofolio yang sudah diunggah?</h3>
         <ul>
-            <li>Buka <strong><a href="/profile">Halaman Profil</a></strong></li>
-            <li>Arahkan kursor ke portofolio yang ingin diedit/dihapus</li>
-            <li>Klik tombol “Edit” untuk ubah info atau “Hapus” jika ingin menghapus</li>
+          <li>Buka <strong><a href="/profile">Halaman Profil</a></strong></li>
+          <li>Arahkan kursor ke portofolio yang ingin diedit/dihapus</li>
+          <li>Klik tombol “Edit” untuk ubah info atau “Hapus” jika ingin menghapus</li>
         </ul>
- 
-      <h3>4. Bagaimana jika gagal mengunggah portofolio?</h3>
+
+        <h3>4. Bagaimana jika gagal mengunggah portofolio?</h3>
         <ul>
-            <li>Periksa koneksi internet</li>
-            <li>Coba refresh halaman atau login ulang</li>
+          <li>Periksa koneksi internet</li>
+          <li>Coba refresh halaman atau login ulang</li>
         </ul>
-        </div>
       </div>
     </div>
   </div>
