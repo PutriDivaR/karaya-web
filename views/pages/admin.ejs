@@ -3,9 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="admin.css">
+    <title>Dashboard Admin</title>
 </head>
 <body>
-    <H1>admin</H1>
+     <h1>Selamat datang, <%= user.name %></h1> <!--nama pengguna admin tampil-->
+    
+    <h2>Admin Dashboard</h2>
+    <ul>
+        <li><a href="/admin/editKategori">Edit Kategori</a></li>
+        <li><a href="/admin/editInfo">Edit Informasi</a></li>
+        <li><a href="/admin/categories">Lihat Semua Kategori</a></li>
+        <li><a href="/admin/information">Lihat Semua Informasi</a></li>
+    </ul>
 </body>
 </html>

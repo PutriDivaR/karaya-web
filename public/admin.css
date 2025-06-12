@@ -1,0 +1,143 @@
+/* Reset dasar untuk membuat tampilan lebih konsisten */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Pengaturan untuk seluruh halaman */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f4f4f4;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Tampilan header admin */
+h1 {
+  text-align: center;
+  color: #333;
+  margin: 20px;
+}
+
+/* Tampilan konten utama dashboard admin */
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #2c3e50;
+}
+
+/* Style untuk menu dashboard */
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  background-color: #3498db;
+  color: #fff;
+  padding: 12px;
+  margin: 10px 0;
+  border-radius: 5px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+ul li:hover {
+  background-color: #2980b9;
+}
+
+ul li a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+}
+
+ul li a:hover {
+  color: #ecf0f1;
+}
+
+/* Styling untuk form-edit kategori dan informasi */
+form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+form label {
+  font-size: 16px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+form input,
+form textarea {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+form textarea {
+  height: 150px;
+  resize: vertical;
+}
+
+/* Tombol untuk menyimpan perubahan */
+form button {
+  background-color: #2ecc71;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #27ae60;
+}
+
+/* Styling untuk halaman kategori */
+table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+table th,
+table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+}
+
+table th {
+  background-color: #3498db;
+  color: #fff;
+}
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+table tr:hover {
+  background-color: #ecf0f1;
+}
+
+/* Styling untuk link edit dan hapus */
+a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  color: #2980b9;
+}

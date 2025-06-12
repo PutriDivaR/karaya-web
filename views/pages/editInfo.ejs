@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Informasi</title>
+</head>
+<body>
+  <h2>Edit Informasi</h2>
+  <form action="/admin/editInfo/<%= info ? info.id : '' %>" method="POST">
+    <label for="infoTitle">Judul Informasi:</label>
+    <input type="text" id="infoTitle" name="infoTitle" value="<%= info ? info.title : '' %>" required>
+    
+    <label for="infoContent">Konten Informasi:</label>
+    <textarea id="infoContent" name="infoContent" required><%= info ? info.content : '' %></textarea>
+
+    <button type="submit">Simpan Perubahan</button>
+  </form>
+</body>
+</html>

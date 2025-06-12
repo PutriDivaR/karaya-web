@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Kategori</title>
+</head>
+<body>
+  <h2>Edit Kategori: <%= category.name %></h2>
+  <form action="/admin/editCategory/<%= category.id %>" method="POST">
+    <label for="name">Nama Kategori:</label>
+    <input type="text" id="name" name="name" value="<%= category.name %>" required>
+
+    <label for="description">Deskripsi Kategori:</label>
+    <textarea id="description" name="description" required><%= category.description %></textarea>
+
+    <button type="submit">Simpan Perubahan</button>
+  </form>
+</body>
+</html>
