@@ -1,4 +1,8 @@
 
+.icon-group.hide {
+  display: none;
+}
+
 .sidebar {
   position: fixed;
   left: 0;

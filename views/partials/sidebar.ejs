@@ -11,7 +11,8 @@
     <div class="logo">
       <img src="/images/logo_karaya.jpg" alt="logo_karaya" />
     </div>
-<div class="icon-group">
+    <% if (!isAdmin) { %> <!-- Hanya tampilkan ikon jika bukan admin -->
+<div class="icon-group <%= isAdmin ? 'hide' : '' %>">
   <% if (loggedIn) { %>
     <a href="/profile" class="icon"><i class="fas fa-user"></i></a>
     <a href="/home" class="icon"><i class="fas fa-home"></i></a>
@@ -24,6 +25,7 @@
     <a href="/home" class="icon"><i class="fas fa-home"></i></a>
     <a href="/kategori" class="icon"><i class="fa fa-compass"></i></a>
     <a href="/favorit" class="icon"><i class="fa fa-bookmark"></i></a>
+  <% } %>
   <% } %>
 </div>
 

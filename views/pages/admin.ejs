@@ -7,7 +7,15 @@
     <title>Dashboard Admin</title>
 </head>
 <body>
-     <h1>Selamat datang, <%= user.name %></h1> <!--nama pengguna admin tampil-->
+    <%- include('../partials/sidebar', { user: user, isAdmin: isAdmin, loggedIn: true }) %>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search...">
+    </div>
+
+     <h1>Selamat Datang, Admin Karaya!</h1> <!--nama pengguna admin tampil-->
     
     <h2>Admin Dashboard</h2>
     <ul>

@@ -1,63 +1,100 @@
-/* Reset dasar untuk membuat tampilan lebih konsisten */
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-/* Pengaturan untuk seluruh halaman */
+
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f4f4f4;
+  background-color: #896E4A;
   color: #333;
-  line-height: 1.6;
+  line-height: 1.9;
 }
 
-/* Tampilan header admin */
+
 h1 {
   text-align: center;
-  color: #333;
-  margin: 20px;
+  color: #F7ECD9;
+  margin: 30px;
+  margin-top: 80px;
 }
 
-/* Tampilan konten utama dashboard admin */
+
 h2 {
   font-size: 24px;
   margin-bottom: 20px;
-  color: #2c3e50;
+  color: #F7ECD9;
+  text-align: left; 
+  padding-left: 100px; 
 }
 
-/* Style untuk menu dashboard */
-ul {
-  list-style: none;
-  padding: 0;
+
+.search-bar {
+  background: #F7ECD9;
+  border-radius: 30px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 10px;
+  left: 80px; 
+  width: calc(100% - 80px); 
+  padding-left: 15px;
+  padding-right: 15px;
+  z-index: 10;
+  margin-top: 15px;
 }
+
+.search-bar input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  padding: 5px 10px;
+}
+
+
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  padding-top: 70px; 
+}
+
 
 ul li {
-  background-color: #3498db;
-  color: #fff;
+  background-color: #F7ECD9;
+  color: #2b2828;
   padding: 12px;
-  margin: 10px 0;
-  border-radius: 5px;
+  margin: 10px;
+  border-radius: 80px;
   text-align: center;
   transition: background-color 0.3s ease;
+  display: inline-block; 
 }
 
 ul li:hover {
-  background-color: #2980b9;
+  background-color: #d4b897;
 }
 
 ul li a {
-  color: #fff;
+  color: #363030;
   text-decoration: none;
   display: block;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  text-align: center; 
 }
 
 ul li a:hover {
   color: #ecf0f1;
 }
 
-/* Styling untuk form-edit kategori dan informasi */
+
 form {
   background-color: #fff;
   padding: 20px;
@@ -67,28 +104,7 @@ form {
   max-width: 600px;
 }
 
-form label {
-  font-size: 16px;
-  margin-bottom: 8px;
-  display: block;
-}
 
-form input,
-form textarea {
-  width: 100%;
-  padding: 10px;
-  margin: 10px 0;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  font-size: 14px;
-}
-
-form textarea {
-  height: 150px;
-  resize: vertical;
-}
-
-/* Tombol untuk menyimpan perubahan */
 form button {
   background-color: #2ecc71;
   color: white;
@@ -104,7 +120,7 @@ form button:hover {
   background-color: #27ae60;
 }
 
-/* Styling untuk halaman kategori */
+
 table {
   width: 80%;
   margin: 20px auto;
@@ -131,7 +147,7 @@ table tr:hover {
   background-color: #ecf0f1;
 }
 
-/* Styling untuk link edit dan hapus */
+
 a {
   color: #3498db;
   text-decoration: none;

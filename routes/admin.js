@@ -16,7 +16,9 @@ const checkAdmin = (req, res, next) => {
 router.get('/admin', checkAdmin, (req, res) => {
   res.render('pages/admin', {
     title: 'Dashboard Admin',
-    user: req.session.user
+    user: req.session.user,
+    isAdmin: req.session.user.role === 'admin', 
+    loggedIn: true
   });
 });
 
