@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>Pusat Bantuan</title>
+  <title>Kelola Papan</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     body {
@@ -51,13 +51,24 @@
       font-size: 40px;
       text-align: center;
       color: white;
+      margin-bottom: 30px;
+    }
+
+    h3 {
+      margin-top: 40px;
+    }
+
+    ul {
+      padding-left: 20px;
+    }
+
+    li {
       margin-bottom: 10px;
     }
 
-
     .link {
       display: block;
-      margin: 30px 0;
+      margin: 0px 0;
       font-size: 26px;
       font-weight: bold;
       color: #007bff;
@@ -70,48 +81,54 @@
   </style>
 </head>
 <body>
-  <div class="dashboard-container">
-    <div class="sidebar">
-      <div class="logo">
-      </div>
-    </div>
 
+  <!-- Header -->
+  <%- include('../partials/header') %>
+
+  <!-- Sidebar + Konten -->
+  <div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- Konten Utama -->
     <div class="main">
       <h1>❓ Bagaimana cara Mengelola Papan?</h1>
+
       <div class="card">
-        <h3>1. Bagaimana cara membuat papan? </h3>
+        <h3>1. Bagaimana cara membuat papan?</h3>
         <ul> 
-            <li>Klik icon save yaitu bagian <strong><a href="/favorit">Halaman Papan</a></strong></li>
-            <li>Tekan tombol “tambah papan”.</li>
-            <li>Buat judul papan</li>
-            <li>Tekan tombol “simpan” untuk menyimpan judul</li>
+          <li>Klik icon save yaitu bagian <strong><a href="/favorit">Halaman Papan</a></strong></li>
+          <li>Tekan tombol “tambah papan”.</li>
+          <li>Buat judul papan.</li>
+          <li>Tekan tombol “simpan” untuk menyimpan judul.</li>
         </ul>
 
         <h3>2. Bagaimana cara menambahkan phortofolio ke papan?</h3>
         <ul>
-            <li>Buka salah satu halaman detail phortofolio</li>
-            <li>Tekan icon save pada bagian kanan atas</li>
-            <li>Pilih judul papan yang ingin diisi</li>
+          <li>Buka salah satu halaman detail phortofolio.</li>
+          <li>Tekan icon save pada bagian kanan atas.</li>
+          <li>Pilih judul papan yang ingin diisi.</li>
         </ul>
 
-      <h3>3. Bagaimana Mengedit atau Menghapus papan?</h3>
+        <h3>3. Bagaimana Mengedit atau Menghapus papan?</h3>
         <ul>
-            <li>Buka <strong><a href="/favorit">Halaman Papan</a></strong></li>
-            <li>Arahkan kursor pada papan yang ingin diedit atau dihapus</li>
-            <li>Klik tombol "Edit" untuk ubah judul dan foto atau "Hapus" jika ingin menghapus papan.</li>
+          <li>Buka <strong><a href="/favorit">Halaman Papan</a></strong></li>
+          <li>Arahkan kursor pada papan yang ingin diedit atau dihapus.</li>
+          <li>Klik tombol "Edit" untuk ubah judul dan foto atau "Hapus" jika ingin menghapus papan.</li>
         </ul>
- 
-      <h3>4. Bagaimana cara memindahkan phortofolio ke papan lain?</h3>
+
+        <h3>4. Bagaimana cara memindahkan phortofolio ke papan lain?</h3>
         <ul>
-            <li>Buka <strong><a href="/favorit">Halaman Papan</a></strong></li>
-            <li>Arahkan kursor pada phortofolio yang ingin dipindahkan</li>
-            <li>Tekan tombol “pindah”</li>
-            <li>Pilih judul papan tujuan</li>
-            <li>Tekan tombol ‘simpan’</li>
+          <li>Buka <strong><a href="/favorit">Halaman Papan</a></strong></li>
+          <li>Arahkan kursor pada phortofolio yang ingin dipindahkan.</li>
+          <li>Tekan tombol “pindah”.</li>
+          <li>Pilih judul papan tujuan.</li>
+          <li>Tekan tombol ‘simpan’.</li>
         </ul>
-        </div>
       </div>
     </div>
   </div>
+
 </body>
 </html>
