@@ -113,5 +113,28 @@ router.get('/logout', (req, res) => {
   });
 });
 
+router.get('/bantuan', (req, res) => {
+  res.render('pages/pusatBantuan', {
+    title: 'Pusat Bantuan'
+  });
+});
+
+router.get('/kelPorto', (req, res) => {
+  res.render('pages/kelPorto',{
+    title: 'Kelola Portofolio'
+  });
+});
+
+router.get('/kelPapan', (req, res) => {
+  res.render('pages/kelPapan',{
+    title: 'Kelola Papan'
+  });
+});
+
+router.get('/kelProfil', (req, res) => {
+  res.render('pages/kelProfil',{
+    title: 'Kelola Profil'
+  });
+});
 
 module.exports = router;
