@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Pusat Bantuan</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fff5e1;
+      font-size: 22px;
+    }
+
+    .dashboard-container {
+      display: flex;
+    }
+
+    .sidebar {
+      width: 100px;
+      background-color: #f5deb3;
+      height: 180vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+    }
+
+    .main {
+      flex-grow: 1;
+      background-color: #a47c4f;
+      padding: 100px 40px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .card {
+      background-color: #fdf2dc;
+      padding: 60px;
+      border-radius: 25px;
+      width: 90%;
+      max-width: 900px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+
+    h1 {
+      font-size: 40px;
+      text-align: center;
+      color: white;
+      margin-bottom: 10px;
+    }
+
+
+    .link {
+      display: block;
+      margin: 30px 0;
+      font-size: 26px;
+      font-weight: bold;
+      color: #007bff;
+      text-decoration: none;
+    }
+
+    .link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <div class="sidebar">
+      <div class="logo">
+      </div>
+    </div>
+
+    <div class="main">
+      <h1>❓ Bagaimana cara Mengelola Papan?</h1>
+      <div class="card">
+        <h3>1. Bagaimana cara membuat papan? </h3>
+        <ul> 
+            <li>Klik icon save yaitu bagian <strong><a href="/favorit">Halaman Papan</a></strong></li>
+            <li>Tekan tombol “tambah papan”.</li>
+            <li>Buat judul papan</li>
+            <li>Tekan tombol “simpan” untuk menyimpan judul</li>
+        </ul>
+
+        <h3>2. Bagaimana cara menambahkan phortofolio ke papan?</h3>
+        <ul>
+            <li>Buka salah satu halaman detail phortofolio</li>
+            <li>Tekan icon save pada bagian kanan atas</li>
+            <li>Pilih judul papan yang ingin diisi</li>
+        </ul>
+
+      <h3>3. Bagaimana Mengedit atau Menghapus papan?</h3>
+        <ul>
+            <li>Buka <strong><a href="/favorit">Halaman Papan</a></strong></li>
+            <li>Arahkan kursor pada papan yang ingin diedit atau dihapus</li>
+            <li>Klik tombol "Edit" untuk ubah judul dan foto atau "Hapus" jika ingin menghapus papan.</li>
+        </ul>
+ 
+      <h3>4. Bagaimana cara memindahkan phortofolio ke papan lain?</h3>
+        <ul>
+            <li>Buka <strong><a href="/favorit">Halaman Papan</a></strong></li>
+            <li>Arahkan kursor pada phortofolio yang ingin dipindahkan</li>
+            <li>Tekan tombol “pindah”</li>
+            <li>Pilih judul papan tujuan</li>
+            <li>Tekan tombol ‘simpan’</li>
+        </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
