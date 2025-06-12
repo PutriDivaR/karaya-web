@@ -46,11 +46,12 @@ const checkLogin = (req, res, next) => {
 const authRoutes = require('./routes/auth');
 const mainRoutes = require('./routes/main');
 const portofolioRoutes = require('./routes/portofolio'); 
-
+const adminRoutes = require('./routes/admin');
 
 app.use('/', authRoutes);
 app.use('/', portofolioRoutes);
 app.use('/', mainRoutes);
+app.use('/', adminRoutes);
 
 app.get('/', (req, res) => {
   res.redirect('/home');
