@@ -50,6 +50,8 @@ req.session.user = {
   role: user.peran
 };
 
+req.session.userId = user.id_pengguna;
+
     // Login sukses → redirect
     res.redirect('/home');
   });

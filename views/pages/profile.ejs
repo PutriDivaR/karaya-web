@@ -65,20 +65,32 @@
       </div>
 
       <!-- Tab Portofolio -->
-      <div class="portfolio-list hidden" id="portofolio">
-        <% if (!userPortofolios || userPortofolios.length === 0) { %>
-          <p>Belum ada portofolio yang diunggah.</p>
-        <% } else { %>
-          <% userPortofolios.forEach(p => { %>
-            <% if (p.is_draft === 0) { %>
-            <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
-              <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
-              <h3><%= p.judul %></h3>
-            </a>
-            <% } %>
-          <% }) %>
-        <% } %>
+<!-- Tab Portofolio -->
+<div class="portfolio-list hidden" id="portofolio">
+  <% if (!userPortofolios || userPortofolios.length === 0) { %>
+    <p>Belum ada portofolio yang diunggah.</p>
+  <% } else { %>
+    <% userPortofolios.forEach(p => { %>
+      <% if (p.is_draft === 0) { %>
+      <div class="portfolio-item-container">
+        <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
+          <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
+          <h3><%= p.judul %></h3>
+        </a>
+        
+        <!-- Edit & Hapus buttons -->
+        <div class="portfolio-actions">
+          <a href="/edit_portofolio?id_portofolio=<%= p.id_portofolio %>" class="edit-button">Edit</a>
+          <form action="/delete_portofolio/<%= p.id_portofolio %>" method="POST" class="delete-form">
+            <button type="submit" class="delete-button">Hapus</button>
+          </form>
+        </div>
       </div>
+      <% } %>
+    <% }) %>
+  <% } %>
+</div>
+
 
       <div class="tab-content hidden" id="suka">Ini adalah konten untuk tab Suka.</div>
     </div>
@@ -131,7 +143,7 @@
     });
 
     // Tampilkan tab default (Arsip) saat pertama kali dimuat
-    showTab('arsip');
+    showTab('portofolio');
   </script>
 </body>
 </html>

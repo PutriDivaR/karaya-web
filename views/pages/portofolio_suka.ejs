@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/portofolio_suka.css">
+</head>
+<body>
+  <div class="container-suka">
+    <!-- Kiri: Gambar -->
+    <div class="image-preview">
+      <img src="/uploads/<%= portofolio.gambar %>" alt="Gambar Portofolio">
+    </div>
+
+    <!-- Kanan: Daftar penyuka -->
+    <div class="likers-list">
+      <h2>Disukai Oleh:</h2>
+
+      <% if (likers.length === 0) { %>
+        <p>Belum ada penyuka.</p>
+      <% } else { %>
+        <% likers.forEach(liker => { %>
+          <div class="liker-item">
+            <div class="liker-avatar">
+              <img src="/uploads/<%= liker.foto_profil || 'default.jpg' %>" alt="Avatar">
+            </div>
+            <div class="liker-name"><%= liker.nama_pengguna %></div>
+          </div>
+        <% }) %>
+      <% } %>
+
+      <a href="/portofolio/<%= portofolioId %>" class="back-link">← Kembali ke Portofolio</a>
+    </div>
+  </div>
+</body>
+</html>
