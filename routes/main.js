@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
+const connection = require('../db');
 
 
 // Halaman profil pengguna
@@ -120,6 +121,68 @@ router.post('/like/:id', (req, res) => {
     }
   });
 });
+
+
+
+// Route untuk menampilkan kategori dan portofolio terkait
+router.get('/kategori', (req, res) => {
+  const queryKategori = 'SELECT * FROM kategori';  // Query untuk mengambil kategori
+  const queryPortofolio = 'SELECT * FROM portofolio WHERE id_kategori = ?';  // Query untuk mengambil portofolio berdasarkan kategori
+
+  db.query(queryKategori, (errKategori, kategoriResults) => {
+    if (errKategori) {
+      console.error('Error mengambil kategori:', errKategori);
+      return res.status(500).send('Gagal mengambil kategori');
+    }
+
+    const kategoriWithPortfolios = [];
+
+    // Ambil portofolio untuk setiap kategori
+    kategoriResults.forEach(category => {
+      db.query(queryPortofolio, [category.id_kategori], (errPortofolio, portofolioResults) => {
+        if (errPortofolio) {
+          console.error('Error mengambil portofolio:', errPortofolio);
+        } else {
+          kategoriWithPortfolios.push({
+            category: category,
+            portfolios: portofolioResults
+          });
+
+          // Jika semua kategori sudah diproses, kirimkan data ke template
+          if (kategoriWithPortfolios.length === kategoriResults.length) {
+            console.log('Kategori dengan Portofolio:', kategoriWithPortfolios); 
+            res.render('pages/kategori', {
+              title: 'Daftar Kategori dan Portofolio',
+              kategoriWithPortfolios: kategoriWithPortfolios // Pastikan data ini sudah dikirim ke view
+            });
+          }
+        }
+      });
+    });
+  });
+});
+
+
+router.get('/kategori/:id', (req, res) => {
+  const categoryId = req.params.id;
+  const queryPortofolio = 'SELECT * FROM portofolio WHERE id_kategori = ?'; // Mengambil portofolio berdasarkan kategori
+
+  db.query(queryPortofolio, [categoryId], (err, portofolioResults) => {
+    if (err) {
+      console.error('Error mengambil portofolio:', err);
+      return res.status(500).send('Gagal mengambil portofolio');
+    }
+
+    res.render('pages/portofolio_kategori', {
+      title: 'Portofolio Kategori',
+      portfolios: portofolioResults, // Kirimkan daftar portofolio ke halaman kategori
+      categoryId: categoryId // Kirimkan id kategori untuk mempermudah query atau header
+    });
+  });
+});
+
+
+
 
 
 

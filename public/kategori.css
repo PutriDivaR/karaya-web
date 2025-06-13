@@ -1,0 +1,111 @@
+/* Layout utama */
+.main-content {
+  margin-left: 80px;
+  padding: 20px;
+  background-color: #f7ecd9;
+}
+
+/* Search bar */
+.search-bar {
+  background: #F7ECD9;
+  border-radius: 50px;
+  padding: 10px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  margin-left: 80px;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  padding: 5px 10px;
+}
+
+/* Grid kategori */
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.category-item {
+  background-color: #896E4A;
+  padding: 15px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Gaya untuk Tombol Kategori */
+.category-grid {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center; /* Agar tombol terpusat */
+}
+
+.category-item {
+  text-align: center;
+  width: 200px; /* Ukuran yang konsisten untuk setiap tombol kategori */
+}
+
+.category-btn {
+  background-color: #896E4A; 
+  color: white; 
+  font-size: 18px;
+  padding: 15px; 
+  border-radius: 8px; 
+  border: none; 
+  cursor: pointer; 
+  width: 100%; 
+  box-shadow: none; 
+  transition: background-color 0.3s ease; 
+}
+
+.category-btn:hover {
+  background-color: #c89b74; 
+}
+
+.category-btn:focus {
+  outline: none; 
+}
+
+
+.portfolio-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.portfolio-item {
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 200px;
+  text-align: center;
+}
+
+.portfolio-item a {
+  text-decoration: none;
+  color: #3498db;
+}
+
+.portfolio-item a:hover {
+  color: #2980b9;
+}
+
+.portfolio-item img {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}

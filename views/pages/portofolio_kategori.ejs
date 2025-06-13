@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portofolio Kategori</title>
+  <link rel="stylesheet" href="/kategori.css">
+</head>
+<body>
+  <!-- Sidebar dan search bar tetap ada di sini -->
+  <%- include('../partials/sidebar', { user: user, isAdmin: isAdmin, loggedIn: true }) %>
+
+  <div class="main-content">
+    <h2>Portofolio Kategori: <%= categoryId %></h2> <!-- Menampilkan nama kategori -->
+
+    <div class="portfolio-list">
+      <% portfolios.forEach(function(portfolio) { %>
+        <div class="portfolio-item">
+          <a href="/portofolio/<%= portfolio.id_portofolio %>">
+            <h4><%= portfolio.judul %></h4>
+            <img src="/uploads/<%= portfolio.gambar %>" alt="<%= portfolio.judul %>" width="150" height="150">
+          </a>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</body>
+</html>

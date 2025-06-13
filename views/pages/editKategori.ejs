@@ -4,17 +4,23 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Edit Kategori</title>
+  <link rel="stylesheet" href="admin.css">
 </head>
 <body>
-  <h2>Edit Kategori: <%= category.name %></h2>
-  <form action="/admin/editCategory/<%= category.id %>" method="POST">
-    <label for="name">Nama Kategori:</label>
-    <input type="text" id="name" name="name" value="<%= category.name %>" required>
 
-    <label for="description">Deskripsi Kategori:</label>
-    <textarea id="description" name="description" required><%= category.description %></textarea>
+  <%- include('../partials/sidebar', { user: user, isAdmin: isAdmin, loggedIn: true }) %>
 
-    <button type="submit">Simpan Perubahan</button>
+  <h2>Edit Kategori</h2>
+
+  <form method="POST" action="/admin/editKategori/<%= category.id_kategori %>">
+    <label for="categoryName">Nama Kategori</label>
+    <input type="text" id="categoryName" name="categoryName" value="<%= category.nama %>" required>
+
+    <label for="categoryDescription">Deskripsi</label>
+    <textarea id="categoryDescription" name="categoryDescription" required><%= category.deskripsi %></textarea>
+
+    <button type="submit">Simpan</button>
   </form>
+
 </body>
 </html>

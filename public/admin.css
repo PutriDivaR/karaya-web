@@ -58,10 +58,27 @@ h2 {
 
 .dashboard-container {
   display: flex;
-  height: 100vh;
-  padding-top: 70px; 
+  padding-top: 70px;
+  padding-left: 200px; /* Memberikan ruang antara sidebar dan konten utama */
+  width: calc(100% - 200px); /* Mengatur lebar konten utama agar tidak tertutup oleh sidebar */
 }
 
+.dashboard-container .main-content {
+  width: 100%; /* Agar lebar konten utama memanfaatkan seluruh ruang yang ada */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  width: 200px; /* Menentukan lebar sidebar */
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background-color: #2b2828;
+  padding-top: 30px;
+  box-sizing: border-box;
+}
 
 ul li {
   background-color: #F7ECD9;

@@ -3,6 +3,7 @@ const router = express.Router();
 const multer = require('multer');
 const path = require('path');
 const db = require('../db');
+const connection = require('../db');
 
 // Konfigurasi multer untuk upload file ke folder public/uploads
 const storage = multer.diskStorage({
@@ -19,7 +20,19 @@ const upload = multer({ storage: storage });
 
 // GET halaman upload portofolio
 router.get('/upload_portofolio', (req, res) => {
-  res.render('pages/upload_portofolio', { title: 'Upload' });
+  const queryKategori = 'SELECT * FROM kategori';  
+
+    db.query(queryKategori, (err, kategoriResults) => {
+    if (err) {
+      console.error('Error mengambil kategori:', err);
+      return res.status(500).send('Gagal mengambil kategori');
+    }
+
+  res.render('pages/upload_portofolio', { 
+    title: 'Upload' ,
+    categories: kategoriResults
+});
+});
 });
 
 // POST form upload portofolio
@@ -48,7 +61,7 @@ if (id_kategori && !isNaN(parseInt(id_kategori))) {
     ) VALUES (?, ?, ?, ?, ?, ?, NOW())
   `;
 
-db.query(sql, [
+connection.query(sql, [
   id_pengguna,
   judul,
   deskripsi,

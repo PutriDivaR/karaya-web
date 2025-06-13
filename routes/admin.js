@@ -14,11 +14,35 @@ const checkAdmin = (req, res, next) => {
 };
 
 router.get('/admin', checkAdmin, (req, res) => {
-  res.render('pages/admin', {
-    title: 'Dashboard Admin',
-    user: req.session.user,
-    isAdmin: req.session.user.role === 'admin', 
-    loggedIn: true
+  const user = req.session.user; // Ambil data user dari session
+  const isAdmin = user && user.role === 'admin'; // Tentukan apakah user adalah admin
+
+  const queryKategori = 'SELECT * FROM kategori';
+  const queryInformasi = 'SELECT * FROM informasi';
+
+  connection.query(queryKategori, (errKategori, kategoriResults) => {
+    if (errKategori) {
+      console.error('Error mengambil data kategori:', errKategori);
+      return res.status(500).send('Gagal mengambil kategori');
+    }
+     console.log('Kategori Results:', kategoriResults);
+
+    connection.query(queryInformasi, (errInformasi, informasiResults) => {
+      if (errInformasi) {
+        console.error('Error mengambil data informasi:', errInformasi);
+        return res.status(500).send('Gagal mengambil informasi');
+      }
+       console.log('Informasi Results:', informasiResults);
+
+      res.render('pages/admin', {
+        title: 'Dashboard Admin',
+        user: req.session.user,
+        isAdmin: isAdmin,  // Mengirimkan isAdmin ke template
+        loggedIn: true,
+        categories: kategoriResults,
+        information: informasiResults
+      });
+    });
   });
 });
 
@@ -37,50 +61,47 @@ router.post('/editKategori', (req, res) => {
   });
 });
 
-// Route untuk mengambil data kategori dan menampilkannya di form edit
-router.get('/editKategori/:id', (req, res) => {
+// Route untuk menampilkan form edit kategori
+router.get('/editKategori/:id', checkAdmin, (req, res) => {
   const categoryId = req.params.id;
-  const query = 'SELECT * FROM kategori WHERE id = ?';
+  const query = 'SELECT * FROM kategori WHERE id_kategori = ?';
 
   connection.query(query, [categoryId], (err, result) => {
     if (err) {
-      console.error(err);
-      res.send('Pengambilan Kategori Error');
-    } else {
-      res.render('editKategori', { category: result[0] });
+      console.error('Gagal mengambil kategori:', err);
+      return res.status(500).send('Gagal mengambil kategori');
     }
+    res.render('pages/editKategori', { category: result[0] });
   });
 });
 
-// Route untuk mengupdate kategori
-router.post('/editKategori/:id', (req, res) => {
+// Route untuk menyimpan perubahan kategori
+router.post('/editKategori/:id', checkAdmin, (req, res) => {
   const categoryId = req.params.id;
   const { categoryName, categoryDescription } = req.body;
-  const query = 'UPDATE kategori SET name = ?, description = ? WHERE id = ?';
+  const query = 'UPDATE kategori SET nama = ?, deskripsi = ? WHERE id_kategori = ?';
 
   connection.query(query, [categoryName, categoryDescription, categoryId], (err, result) => {
     if (err) {
-      console.error(err);
-      res.send('Update Kategori Error');
-    } else {
-      // Redirect ke halaman kategori setelah berhasil update
-      res.redirect('/admin/kategori'); 
+      console.error('Gagal mengupdate kategori:', err);
+      return res.status(500).send('Gagal mengupdate kategori');
     }
+    res.redirect('/admin');  // Redirect kembali ke halaman admin setelah sukses
   });
 });
 
+
 // Route untuk menghapus kategori
-router.get('/deleteCategory/:id', (req, res) => {
+router.get('/deleteCategory/:id', checkAdmin, (req, res) => {
   const categoryId = req.params.id;
-  const query = 'DELETE FROM kategori WHERE id = ?';
+  const query = 'DELETE FROM kategori WHERE id_kategori = ?';
 
   connection.query(query, [categoryId], (err, result) => {
     if (err) {
-      console.error(err);
-      res.send('Hapus Kategori Error');
-    } else {
-      res.send('Hapus Kategori Berhasil');
+      console.error('Gagal menghapus kategori:', err);
+      return res.status(500).send('Gagal menghapus kategori');
     }
+    res.redirect('/admin');  // Redirect kembali ke halaman admin setelah sukses
   });
 });
 

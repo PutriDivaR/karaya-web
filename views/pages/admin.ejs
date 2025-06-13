@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="/sidebar.css">
     <title>Dashboard Admin</title>
 </head>
 <body>
@@ -21,8 +22,63 @@
     <ul>
         <li><a href="/admin/editKategori">Edit Kategori</a></li>
         <li><a href="/admin/editInfo">Edit Informasi</a></li>
-        <li><a href="/admin/categories">Lihat Semua Kategori</a></li>
-        <li><a href="/admin/information">Lihat Semua Informasi</a></li>
     </ul>
+
+    <!-- Tampilkan Semua Kategori -->
+    <h3>Semua Kategori</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama Kategori</th>
+                <th>Deskripsi</th>
+                <th>Aksi</th> <!-- Kolom untuk tombol Edit dan Hapus -->
+            </tr>
+        </thead>
+        <tbody>
+            <% categories.forEach(function(category) { %>
+                <tr>
+                    <td><%= category.id %></td>
+                    <td><%= category.name %></td>
+                    <td><%= category.description %></td>
+                    <td>
+                    <!-- Tombol Edit dan Hapus -->
+                    <a href="/admin/editKategori/<%= category.id %>" class="btn btn-edit">Edit</a>
+                    <a href="/admin/deleteCategory/<%= category.id %>" class="btn btn-delete">Hapus</a>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+
+    <!-- Tampilkan Semua Informasi -->
+    <h3>Semua Informasi</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Kategori</th>
+                <th>Judul</th>
+                <th>Isi</th>
+                <th>Aksi</th> 
+            </tr>
+        </thead>
+        <tbody>
+            <% information.forEach(function(info) { %>
+                <tr>
+                    <td><%= info.id %></td>
+                    <td><%= info.kategori %></td>
+                    <td><%= info.title %></td>
+                    <td><%= info.content %></td>
+                    <td>
+                    <!-- Tombol Edit dan Hapus -->
+                    <a href="/admin/editInfo/<%= info.id %>" class="btn btn-edit">Edit</a>
+                    <a href="/admin/deleteInfo/<%= info.id %>" class="btn btn-delete">Hapus</a>
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    
 </body>
 </html>

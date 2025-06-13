@@ -33,13 +33,16 @@
           <label>Deskripsi</label>
           <input type="text" name="deskripsi" class="form-input" placeholder="Deskripsi" required>
 
-          <label>Kategori</label>
-          <select name="id_kategori" class="form-input">
-            <option value="">-- Pilih Kategori --</option>
-            <option value="1">Kategori 1</option>
-            <option value="2">Kategori 2</option>
-            <option value="3">Kategori 3</option>
-          </select>
+         <label>Kategori</label>
+         
+<select name="id_kategori" class="form-input" required>
+  <option value="">-- Pilih Kategori --</option>
+  <% categories.forEach(function(category) { %>  <!-- Loop untuk menampilkan kategori -->
+    <option value="<%= category.id_kategori %>"><%= category.nama %></option>
+  <% }); %>
+</select>
+
+
 
           <button type="submit" class="upload-button">Upload</button>
         </div>

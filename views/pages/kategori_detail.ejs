@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portofolio Kategori</title>
+  <link rel="stylesheet" href="/kategori.css">
+</head>
+<body>
+
+  <%- include('../partials/sidebar', { user: user, isAdmin: isAdmin, loggedIn: true }) %>
+
+  <div class="main-content">
+    <h2>Portofolio di Kategori <%= category.nama %></h2>
+
+    <div class="portfolio-list">
+      <% portfolios.forEach(function(portfolio) { %>
+        <div class="portfolio-item">
+          <a href="/portofolio/<%= portfolio.id_portofolio %>">
+            <h4><%= portfolio.judul %></h4>
+          </a>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+
+</body>
+</html>

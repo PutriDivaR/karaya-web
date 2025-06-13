@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daftar Kategori</title>
+  <link rel="stylesheet" href="/kategori.css">
+</head>
+<body>
+
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <i class="fas fa-search"></i>
+    <input type="text" placeholder="Search...">
+  </div>
+
+  <%- include('../partials/sidebar', { user: user, isAdmin: isAdmin, loggedIn: true }) %>
+
+  <div class="main-content">
+    <h2>Jelajahi Berdasarkan Kategori</h2>
+
+    <div class="category-grid">
+      <% kategoriWithPortfolios.forEach(function(item) { %>
+        <div class="category-item">
+          <a href="/kategori/<%= item.category.id_kategori %>">
+            <button class="category-btn">
+              <%= item.category.nama %> <!-- Menampilkan nama kategori pada tombol -->
+            </button>
+          </a>
+        </div>
+      <% }); %>
+    </div>
+
+  </div>
+
+</body>
+</html>
