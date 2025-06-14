@@ -173,7 +173,7 @@
     <img src="/uploads/<%= portofolio.gambar %>" alt="<%= portofolio.judul %>">
     <p class="description"><%= portofolio.deskripsi %></p>
     <div class="portfolio-meta">
-      <p>Oleh: <%= portofolio.nama_pengguna %></p>
+      <p>Oleh: <a href="/user/<%= portofolio.id_pengguna %>"><%= portofolio.nama_pengguna %></a></p>
       <p>Tanggal Dibuat: <%= portofolio.tanggal_dibuat.toLocaleDateString() %></p>
     </div>
   </div>

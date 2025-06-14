@@ -66,16 +66,7 @@
         color: black;
       }
 
-      .edit-button {
-        
-        background-color: #d4b897;
-        color: black;
-        border: none;
-        padding: 0.4rem 1rem;
-        border-radius: 10px;
-        cursor: pointer;
-        font-weight: bold;
-      }
+
 
       .contact-section {
         background-color: #896E4A;
@@ -173,7 +164,7 @@
   padding: 15px;
   width: 260px;
   box-shadow: 0 0 5px rgba(0,0,0,0.1);
-  border-radius: 8px;
+  border-radius: 15px;
   background-color: #fff;
 }
 
@@ -220,11 +211,15 @@
 
 .portfolio-actions {
   position: absolute;
-  top: 10px;
-  right: 10px;
-  opacity: 0;
+  top: 20px;               /* Menempatkan tombol di atas gambar */
+  left: 10px;             /* Menempatkan tombol di sebelah kanan */
+  opacity: 0;              /* Mulai dengan tombol tersembunyi */
   transition: opacity 0.3s ease;
+  display: flex;           /* Menata tombol secara horizontal */
+  justify-content: left; /* Menempatkan tombol di tengah secara horizontal */
+  gap: 10px;               /* Memberikan jarak antara tombol sedikit */
 }
+
 
 .portfolio-item-container:hover .portfolio-actions {
   opacity: 1;
@@ -232,22 +227,51 @@
 
 .edit-button, .delete-button {
   background-color: rgba(0, 0, 0, 0.5);
+  font-size: large;
   color: white;
   padding: 10px 10px;
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 15px;
   margin-left: 5px;
+  
 }
 
-.delete-button {
-  background-color: red;
+.delete-button:hover, .edit-button:hover, .pin-button:hover {
+  background-color: rgb(255, 166, 0);
 }
 
-.edit-button {
-  background-color: rgb(65, 118, 216);
+.edit-button a {
+  font-size: large;
+  color: white;
 }
 
-.delete-button:hover, .edit-button:hover {
-  background-color: rgba(0, 0, 0, 0.7);
+/* ===== PIN BUTTON (KHUSUS) ===== */
+.pin-button {
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  opacity: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-size: large;
+  color: white;
+  padding: 10px;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  z-index: 6;
+  
+}
+
+
+/* Selalu tampil kalau pinned */
+.pin-button.pinned {
+  background-color: rgb(157, 255, 0);
+  color: red;
+  opacity: 1 !important;
+}
+
+/* Saat hover, tampilkan pin button */
+.portfolio-item-container:hover .pin-button {
+  opacity: 1;
 }
 

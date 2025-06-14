@@ -66,35 +66,65 @@ router.post('/upload_portofolio', upload.single('gambar'), (req, res) => {
 
   // Jika id_portofolio ada, berarti kita sedang mengedit
   if (id_portofolio) {
-    const sql = `
-      UPDATE portofolio 
-      SET judul = ?, deskripsi = ?, id_kategori = ?, gambar = ?, is_draft = ? 
-      WHERE id_portofolio = ? AND id_pengguna = ?
-    `;
-    db.query(sql, [
-      judul, deskripsi, idKategoriValue, gambar, is_draft, id_portofolio, id_pengguna
-    ], (err, result) => {
+    // Update data existing portofolio
+    // Need to first get current gambar filename from DB to preserve if no new image uploaded
+    const selectSql = `SELECT gambar FROM portofolio WHERE id_portofolio = ? AND id_pengguna = ?`;
+    db.query(selectSql, [id_portofolio, id_pengguna], (err, selectResult) => {
       if (err) {
-        console.error('Gagal menyimpan portofolio:', err);
-        return res.status(500).send('Gagal menyimpan portofolio: ' + err.sqlMessage || err.message);
+        console.error('Gagal mengambil data gambar portofolio:', err);
+        return res.status(500).send('Gagal mengambil data gambar portofolio');
       }
-      res.redirect('/profile'); // Kembali ke halaman profil setelah update
+
+      if (selectResult.length === 0) {
+        return res.status(404).send('Portofolio tidak ditemukan');
+      }
+
+      const existingGambar = selectResult[0].gambar;
+      const gambarToSave = gambar ? gambar : existingGambar;
+
+      const updateSql = `
+        UPDATE portofolio
+        SET judul = ?, deskripsi = ?, id_kategori = ?, gambar = ?, is_draft = ?
+        WHERE id_portofolio = ? AND id_pengguna = ?
+      `;
+
+      db.query(updateSql, [
+        judul,
+        deskripsi,
+        idKategoriValue,
+        gambarToSave,
+        is_draft,
+        id_portofolio,
+        id_pengguna
+      ], (err, updateResult) => {
+        if (err) {
+          console.error('Gagal menyimpan portofolio:', err);
+          return res.status(500).send('Gagal menyimpan portofolio: ' + (err.sqlMessage || err.message));
+        }
+        res.redirect('/profile'); 
+      });
     });
   } else {
-    // Simpan sebagai portofolio baru jika tidak ada id_portofolio
-    const sql = `
+    // Insert new portofolio
+    const insertSql = `
       INSERT INTO portofolio (
         id_pengguna, judul, deskripsi, id_kategori, jumlah_suka, gambar, tanggal_dibuat, is_draft
       ) VALUES (?, ?, ?, ?, ?, ?, NOW(), ?)
     `;
-    db.query(sql, [
-      id_pengguna, judul, deskripsi, idKategoriValue, jumlah_suka, gambar, 0 
-    ], (err, result) => {
+    db.query(insertSql, [
+      id_pengguna,
+      judul,
+      deskripsi,
+      idKategoriValue,
+      jumlah_suka,
+      gambar,
+      is_draft
+    ], (err, insertResult) => {
       if (err) {
         console.error('Gagal menyimpan portofolio:', err);
-        return res.status(500).send('Gagal menyimpan portofolio: ' + err.sqlMessage || err.message);
+        return res.status(500).send('Gagal menyimpan portofolio: ' + (err.sqlMessage || err.message));
       }
-      res.redirect('/profile'); // Kembali ke halaman profil setelah simpan
+      res.redirect('/profile');
     });
   }
 });
@@ -176,6 +206,20 @@ router.post('/edit_portofolio', upload.single('gambar'), (req, res) => {
   });
 });
 
+router.post('/toggle_pin_portfolio/:id', (req, res) => {
+  const portfolioId = req.params.id;
+  const isPinned = req.body.isPinned; // true or false
+  const userId = req.session.user?.id;
+  // Update the portfolio to set is_pinned based on the current state
+  const pinQuery = 'UPDATE portofolio SET is_pinned = ? WHERE id_portofolio = ? AND id_pengguna = ?';
+  db.query(pinQuery, [isPinned ? 1 : 0, portfolioId, userId], (err) => {
+    if (err) {
+      console.error('Gagal mengubah status sematan portofolio:', err);
+      return res.status(500).send('Gagal mengubah status sematan portofolio');
+    }
+    res.status(200).send('Status sematan portofolio berhasil diubah.');
+  });
+});
 
 
 module.exports = router;

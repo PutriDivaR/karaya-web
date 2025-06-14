@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= portofolio ? 'Edit' : 'Upload' %> Portofolio</title>
+    <title><%= portofolio ? 'Draft' : 'Upload' %> Portofolio</title>
     <link rel="stylesheet" href="upload_portofolio.css">
 </head>
 <body>
@@ -11,7 +11,7 @@
         <%- include('../partials/sidebar') %>
     </div>
     <div>
-        <h2><%= portofolio ? 'Edit' : 'Upload' %> Portofolio</h2><hr>
+        <h2><%= portofolio ? 'Draft' : 'Upload' %> Portofolio</h2><hr>
         <div class="content">
             <form class="form" method="POST" action="/upload_portofolio" enctype="multipart/form-data">
                 <!-- Hidden input untuk id portofolio jika sedang mengedit -->
@@ -20,13 +20,17 @@
                 <!-- Input untuk gambar dan lainnya -->
                 <div class="form-row">
                     <!-- Kolom File -->
-                    <div class="form-column image-column">
-                        <div class="image-preview" id="imagePreview">
-                            <input type="file" name="gambar" id="imageUpload" accept="image/*" class="file-input">
-                            <!-- Menampilkan gambar yang ada jika portofolio sudah ada -->
-                            <%= portofolio && portofolio.gambar ? `<img src="/uploads/${portofolio.gambar}" alt="Portofolio Image" width="250">` : 'Tidak ada gambar' %>
-                        </div>
-                    </div>
+          <div class="form-column image-column">
+            <label for="imageUpload">Pilih Gambar Portofolio</label>
+            <div class="image-preview" id="imagePreview">
+              <% if (portofolio && portofolio.gambar) { %>
+                <img id="imageDisplay" src="/uploads/<%= portofolio.gambar %>" alt="Portofolio Image" />
+              <% } else { %>
+                <p id="noImageText" style="color:#666;">Tidak ada gambar</p>
+              <% } %>
+            </div>
+            <input class="file-input" type="file" name="gambar" id="imageUpload" accept="image/*" />
+          </div>
 
                     <!-- Kolom Input -->
                     <div class="form-column input-column">
@@ -44,39 +48,51 @@
                             <option value="3" <%= portofolio && portofolio.id_kategori == 3 ? 'selected' : '' %>>Kategori 3</option>
                         </select>
 
-                        <input type="hidden" name="is_draft" id="is_draft" value="<%= portofolio && portofolio.is_draft ? portofolio.is_draft : 0 %>">
 
-                        <button type="submit" class="upload-button" onclick="setDraft(0);">Upload</button>
-                        <button type="submit" class="upload-button" onclick="setDraft(1);">Simpan Draft</button>
+                        <button type="submit" name="is_draft" value="0" class="upload-button">Upload</button>
+                        <button type="submit" name="is_draft" value="1" class="upload-button">Simpan Draft</button>
+
                     </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <script>
-        function setDraft(value) {
-            document.getElementById('is_draft').value = value;
+<script>
+    const fileInput = document.getElementById('imageUpload');
+    const imagePreview = document.getElementById('imagePreview');
+    const imageDisplay = document.getElementById('imageDisplay');
+    const noImageText = document.getElementById('noImageText');
+
+    fileInput.addEventListener('change', function () {
+      const file = fileInput.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          if (imageDisplay) {
+            imageDisplay.src = e.target.result;
+            imageDisplay.style.display = 'block';
+          } else {
+            // If no existing image element, create one
+            const img = document.createElement('img');
+            img.id = 'imageDisplay';
+            img.src = e.target.result;
+            img.alt = 'Preview Gambar';
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '250px';
+            img.style.borderRadius = '5px';
+
+            imagePreview.innerHTML = '';
+            imagePreview.appendChild(img);
+          }
+          if (noImageText) noImageText.style.display = 'none';
         }
-
-        // Preview image after selecting a file
-        const fileInput = document.getElementById('imageUpload');
-        const imagePreview = document.getElementById('imagePreview');
-
-        fileInput.addEventListener('change', function () {
-            const file = fileInput.files[0];
-            const reader = new FileReader();
-
-            reader.onloadend = function () {
-                imagePreview.style.backgroundImage = `url(${reader.result})`;
-            }
-
-            if (file) {
-                reader.readAsDataURL(file);
-            } else {
-                imagePreview.style.backgroundImage = '';
-            }
-        });
-    </script>
+        reader.readAsDataURL(file);
+      } else {
+        if (imageDisplay) imageDisplay.style.display = 'block';
+        if (noImageText) noImageText.style.display = 'block';
+      }
+    });
+  </script>
 </body>
 </html>
