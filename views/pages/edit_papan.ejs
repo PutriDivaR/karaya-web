@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Papan</title>
+    <link rel="stylesheet" href="/tambah_papan.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <%- include('../partials/sidebar') %>
+    </div>
+
+    <div class="main-content">
+        <h2 class="judul-form">Edit Papan</h2>
+        <hr class="garis-pemisah">
+
+        <div class="content">
+            <form class="form" method="POST" action="/edit_papan/<%= papan.id_papan %>" enctype="multipart/form-data">
+                <div class="form-row">
+                    <!-- Kolom Gambar -->
+                    <div class="form-column image-column">
+                        <div class="image-preview" id="imagePreview">
+                            <input type="file" name="gambar" id="imageUpload" accept="image/*" class="file-input">
+                        </div>
+                    </div>
+
+                    <!-- Kolom Input -->
+                    <div class="form-column input-column">
+                        <label for="judul_papan">Judul</label>
+                        <input type="text" name="judul_papan" id="judul_papan" class="form-input" value="<%= papan.nama_papan %>" required>
+
+                        <button type="submit" class="simpan-button">Simpan Perubahan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Preview image setelah memilih file
+        const fileInput = document.getElementById('imageUpload');
+        const imagePreview = document.getElementById('imagePreview');
+
+        fileInput.addEventListener('change', function () {
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+
+            reader.onloadend = function () {
+                imagePreview.style.backgroundImage = `url(${reader.result})`;
+                imagePreview.style.backgroundSize = 'cover';
+                imagePreview.style.backgroundPosition = 'center';
+            }
+
+            if (file) {
+                reader.readAsDataURL(file);
+            } else {
+                imagePreview.style.backgroundImage = '';
+            }
+        });
+    </script>
+</body>
+</html>

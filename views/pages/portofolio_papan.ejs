@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio di Papan <%= papan.nama_papan %></title>
+    <%- include('../partials/sidebar') %>
+    <link rel="stylesheet" href="/portofolio_papan.css">  
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="header">
+                <a href="/favorit" class="add-board">Kembali ke Favorit</a>
+            </div>
+
+            <div class="papan">
+                <h1>Portofolio di Papan: <%= papan.nama_papan %></h1>
+
+                <% if (portofolios && portofolios.length > 0) { %>
+                    <div class="papan-list">
+                        <% portofolios.forEach(function(item) { %>
+                            <div class="papan-item">
+                                <h3><%= item.judul %></h3>
+                                <img src="/uploads/<%= item.gambar %>" alt="Portofolio" class="papan-gambar">
+                                <p class="papan-description"><%= item.deskripsi %></p>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <p>Belum ada portofolio favorit yang ditambahkan dalam papan ini.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

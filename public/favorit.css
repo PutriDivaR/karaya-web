@@ -1,0 +1,162 @@
+/* Reset some basic styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #896E4A; /* Warna latar belakang sesuai gambar */
+}
+
+/* Container utama */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Content section */
+.content {
+    padding: 20px;
+}
+
+/* Header section */
+.header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+/* Search and Add Container */
+.search-and-add {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    width: 100%;
+}
+
+.search-bar {
+    width: 100%;
+    max-width: 1400px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+/* Tombol "Tambah Papan" */
+.add-board {
+    background-color: #ccc;
+    color: #333;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+}
+
+.add-board:hover {
+    background-color: #896E4A;
+}
+
+/* Papan section */
+.papan h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* Menambahkan kotak atau latar belakang gambar yang di-upload */
+.papan-list {
+    display: flex;
+    flex-wrap: wrap; /* Membuat gambar berjajar ke samping */
+    gap: 20px; /* Jarak antar gambar */
+    justify-content: flex-start; /* Menyusun gambar ke kiri */
+}
+
+.papan-item {
+    background-color: #f3eea3; /* Warna latar belakang kotak */
+    padding: 15px;
+    width: 300px; /* Ukuran lebar kotak gambar */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Efek bayangan */
+    border-radius: 10px;
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.papan-item:hover {
+    transform: translateY(-10px); /* Efek saat hover */
+}
+
+.papan-item img {
+    width: 100%;
+    height: 200px; /* Menyesuaikan tinggi gambar */
+    border-radius: 10px;
+    object-fit: cover; /* Menyesuaikan gambar agar tetap proporsional */
+    margin-bottom: 10px;
+}
+
+/* Button action (Edit dan Delete) */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.edit-button, .delete-button {
+    padding: 10px 15px;
+    border-radius: 5px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit-button {
+    background-color: #f8b12f;
+}
+
+.delete-button {
+    background-color: #f44336;
+}
+
+.edit-button:hover {
+    background-color: #ff9933;
+}
+
+.delete-button:hover {
+    background-color: #d32f2f;
+}
+
+/* Category list */
+.category-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.category {
+    background-color: #896E4A;
+    color: #333;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.category:hover {
+    background-color: #f8b12f; /* Warna saat hover */
+}

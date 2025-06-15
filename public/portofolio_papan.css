@@ -1,0 +1,152 @@
+/* Reset some basic styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #896E4A;  /* Warna latar belakang utama */
+    color: #333;  /* Warna teks utama */
+}
+
+/* Container utama */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Content section */
+.content {
+    padding: 20px;
+}
+
+/* Header section */
+.header {
+    display: flex;
+    justify-content: space-between; /* Mengatur header agar ada ruang antara search dan tombol lainnya */
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* Search bar */
+.search-bar {
+    width: 60%;
+    max-width: 600px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background-color: #fff;
+}
+
+/* Tombol Filter */
+.add-board {
+    background-color: #F8B12F;  /* Warna tombol filter */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.add-board:hover {
+    background-color: #F4A300;  /* Warna saat hover */
+}
+
+/* Portofolio Section */
+.papan h1 {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+/* Daftar Portofolio */
+.papan-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));  /* Membuat kolom grid yang responsif */
+    gap: 20px; /* Jarak antar item */
+    padding: 20px;
+}
+
+.papan-item {
+    background-color: #FBEEC1;  /* Latar belakang item portofolio */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Efek bayangan */
+    text-align: center;
+    transition: transform 0.3s ease-in-out;
+}
+
+.papan-item:hover {
+    transform: translateY(-10px);  /* Efek saat hover */
+}
+
+.papan-item img {
+    width: 100%;
+    height: 150px;  /* Menyesuaikan tinggi gambar */
+    border-radius: 10px;
+    object-fit: cover;  /* Menyesuaikan gambar agar tetap proporsional */
+    margin-bottom: 15px;
+}
+
+/* Title and Description of Portfolios */
+.papan-item h3 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #3E3B2F;
+}
+
+.papan-item p {
+    font-size: 14px;
+    color: #6A5D3C;
+    margin-bottom: 15px;
+}
+
+/* Tombol Aksi di Setiap Portofolio */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.action-buttons button {
+    background-color: #896E4A;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.action-buttons button:hover {
+    background-color: #F8B12F;  /* Warna saat hover */
+}
+
+/* Tombol "Kembali ke Favorit" */
+.add-board {
+    background-color: #F8B12F;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.add-board:hover {
+    background-color: #F4A300;  /* Warna saat hover */
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Papan Kategori</title>
+    <%- include('../partials/sidebar') %>
+    <link rel="stylesheet" href="/favorit.css">
+</head> 
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="header">
+                <div class="search-and-add">
+                    <input type="text" placeholder="Search..." class="search-bar">
+                    <a href="/tambah_papan" class="add-board">Tambah Papan</a>
+                </div>
+            </div>
+
+            <div class="papan">
+                <h1>Papan</h1>
+
+                <!-- Menampilkan daftar papan yang telah disimpan -->
+                <% if (papan && papan.length > 0) { %>
+                    <div class="papan-list">
+                        <% papan.forEach(function(item) { %>
+                            <div class="papan-item">
+                                <div class="action-buttons">
+                                    <!-- Button Edit -->
+                                    <a href="/edit_papan/<%= item.id_papan %>" class="edit-button">EDIT</a>
+                                  
+                                    <!-- Button Delete -->
+                                    <form action="/delete_papan/<%= item.id_papan %>" method="POST" style="display:inline;">
+                                        <button type="submit" class="delete-button">DELETE</button>
+                                    </form>
+                                </div>
+                                <h3><%= item.nama_papan %></h3>
+                                <!-- Menampilkan gambar dari folder uploads -->
+                                <img src="/uploads/<%= item.gambar %>" alt="Gambar Papan" class="papan-gambar">
+
+                                <!-- Link untuk melihat portofolio yang ada di papan ini -->
+                                <a href="/portofolio_papan/<%= item.id_papan %>" class="view-portofolio-button">Lihat Portofolio</a>
+                            </div>
+                        <% }) %>
+                    </div>
+                <% } else { %>
+                    <p>Belum ada papan favorit yang ditambahkan.</p>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

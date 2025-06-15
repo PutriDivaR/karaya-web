@@ -60,6 +60,8 @@ app.get('/home',  (req, res) => {
   res.render('pages/home', { title: 'Home', msg: req.query.msg, user: req.session.user });
 });
 
+const papanRouter = require('./routes/papan');
+app.use('/', papanRouter);
 
 
 app.listen(3000, () => {
