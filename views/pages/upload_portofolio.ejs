@@ -41,11 +41,11 @@
                         <input type="text" name="deskripsi" class="form-input" placeholder="Deskripsi" value="<%= portofolio ? portofolio.deskripsi : '' %>" required>
 
                         <label>Kategori</label>
-                        <select name="id_kategori" class="form-input">
-                            <option value="">-- Pilih Kategori --</option>
-                            <option value="1" <%= portofolio && portofolio.id_kategori == 1 ? 'selected' : '' %>>Kategori 1</option>
-                            <option value="2" <%= portofolio && portofolio.id_kategori == 2 ? 'selected' : '' %>>Kategori 2</option>
-                            <option value="3" <%= portofolio && portofolio.id_kategori == 3 ? 'selected' : '' %>>Kategori 3</option>
+                        <select name="id_kategori" class="form-input" required>
+                          <option value="">-- Pilih Kategori --</option>
+                          <% categories.forEach(function(category) { %>  <!-- Loop untuk menampilkan kategori -->
+                            <option value="<%= category.id_kategori %>"><%= category.nama %></option>
+                          <% }); %>
                         </select>
 
 

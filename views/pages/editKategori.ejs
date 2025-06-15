@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Kategori</title>
+  <link rel="stylesheet" href="/editKategori.css">
+</head>
+<body>
+ <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search...">
+    </div>
+  <%- include('../partials/sidebar', { user: user, isAdmin: isAdmin, loggedIn: true }) %>
+
+  <h2>Edit Kategori</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nama Kategori</th>
+        <th>Deskripsi</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% categories.forEach(function(category) { %>
+        <tr>
+          <td><%= category.id_kategori %></td>
+          <td><%= category.nama %></td>
+          <td><%= category.deskripsi %></td>
+          <td>
+            <a href="/admin/editKategori/<%= category.id_kategori %>" class="btn btn-edit">Edit</a>
+            <a href="/admin/deleteCategory/<%= category.id_kategori %>" class="btn btn-delete">Hapus</a>
+          </td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+
+  <a href="/admin/tambahKategori" class="btn btn-add">Tambah Kategori Baru --------</a>
+
+
+</body>
+</html>
