@@ -14,28 +14,50 @@ router.get('/profile', (req, res) => {
   }
 
   // Query untuk mengambil data portofolio dan data pengguna
-  const query = `
+  const getUserPortofolios = 'SELECT * FROM portofolio WHERE id_pengguna = ?';
+  const getLikedPortofolios = `
+    SELECT p.* FROM portofolio p
+    JOIN suka s ON p.id_portofolio = s.id_portofolio
+    WHERE s.id_pengguna = ?
+  `;
+    const query = `
     SELECT p.*, u.nama_pengguna, u.bio 
     FROM portofolio p
     JOIN pengguna u ON p.id_pengguna = u.id_pengguna
     WHERE p.id_pengguna = ?
   `;
 
-  db.query(query, [userId], (err, results) => {
+    db.query(query, [userId], (err, results) => {
     if (err) {
       console.error('Gagal mengambil data portofolio user:', err);
       return res.status(500).send('Gagal mengambil data portofolio user');
     }
 
-    // Ambil data pengguna dari hasil query
-    const user = results.length > 0 ? results[0] : null;
+  db.query(getUserPortofolios, [userId], (err1, userPortofolios) => {
+    if (err1) {
+      console.error('Gagal mengambil data portofolio user:', err1);
+      return res.status(500).send('Gagal mengambil portofolio user');
+    }
 
+    db.query(getLikedPortofolios, [userId], (err2, likedPortofolios) => {
+      if (err2) {
+        console.error('Gagal mengambil data suka:', err2);
+        return res.status(500).send('Gagal mengambil data suka');
+      }
+
+   // Ambil data pengguna dari hasil query
+    const user = results.length > 0 ? results[0] : null;
+    
     res.render('pages/profile', {
       title: 'User  Portofolio',
-      userPortofolios: results,
-      user: user // Pass user data to the template
+            userPortofolios: results,
+      user: user,
+      userPortofolios: userPortofolios,
+        likedPortofolios: likedPortofolios// Pass user data to the template
+      });
     });
   });
+});
 });
 
 
@@ -90,35 +112,53 @@ router.get('/user/:id', (req, res) => {
   
 
   // Query untuk mengambil data pengguna
-  const userQuery = 'SELECT * FROM pengguna WHERE id_pengguna = ?';
-  db.query(userQuery, [userId], (err, userResults) => {
-    if (err) {
-      console.error('Gagal mengambil data pengguna:', err);
-      return res.status(500).send('Gagal mengambil data pengguna');
-    }
 
-    if (userResults.length === 0) {
-      return res.status(404).send('Pengguna tidak ditemukan');
-    }
-
-    const user = userResults[0];
 
     // Query untuk mengambil portofolio pengguna
-    const portfolioQuery = 'SELECT * FROM portofolio WHERE id_pengguna = ?';
-    db.query(portfolioQuery, [userId], (err, portfolioResults) => {
-      if (err) {
-        console.error('Gagal mengambil data portofolio:', err);
-        return res.status(500).send('Gagal mengambil data portofolio');
+  const getUserPortofolios = 'SELECT * FROM portofolio WHERE id_pengguna = ?';
+  const getLikedPortofolios = `
+    SELECT p.* FROM portofolio p
+    JOIN suka s ON p.id_portofolio = s.id_portofolio
+    WHERE s.id_pengguna = ?
+  `;
+    const query = `
+    SELECT p.*, u.nama_pengguna, u.bio 
+    FROM portofolio p
+    JOIN pengguna u ON p.id_pengguna = u.id_pengguna
+    WHERE p.id_pengguna = ?
+  `;
+
+    db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error('Gagal mengambil data portofolio user:', err);
+      return res.status(500).send('Gagal mengambil data portofolio user');
+    }
+
+  db.query(getUserPortofolios, [userId], (err1, userPortofolios) => {
+    if (err1) {
+      console.error('Gagal mengambil data portofolio user:', err1);
+      return res.status(500).send('Gagal mengambil portofolio user');
+    }
+
+    db.query(getLikedPortofolios, [userId], (err2, likedPortofolios) => {
+      if (err2) {
+        console.error('Gagal mengambil data suka:', err2);
+        return res.status(500).send('Gagal mengambil data suka');
       }
 
-      res.render('pages/profile', {
-        title: 'Profil Pengguna',
-        user: user,
-        userPortofolios: portfolioResults, // Pass user portfolios to the template
-        loggedInUserId
+   // Ambil data pengguna dari hasil query
+    const user = results.length > 0 ? results[0] : null;
+    
+    res.render('pages/profile', {
+      title: 'User  Portofolio',
+            userPortofolios: results,
+      user: user,
+      userPortofolios: userPortofolios,
+        likedPortofolios: likedPortofolios// Pass user data to the template
       });
     });
   });
+});
 });
 
 
@@ -126,12 +166,44 @@ router.get('/user/:id', (req, res) => {
 // routes/portofolio.js
 
 router.post('/like/:id', (req, res) => {
-  const id = req.params.id;
-  db.query('UPDATE portofolio SET jumlah_suka = jumlah_suka + 1 WHERE id_portofolio = ?', [id], (err, result) => {
-    if (err) {
-    res.status(500).send('Gagal menambahkan like');
+  const portofolioId = req.params.id;
+  const userId = req.session.userId; // Ambil ID pengguna dari session
+
+  if (!userId) {
+    return res.status(401).json({ message: 'User belum login' });
   }
-});
+
+  // 1. Cek apakah user sudah pernah like
+  const cekLike = 'SELECT * FROM suka WHERE id_pengguna = ? AND id_portofolio = ?';
+  db.query(cekLike, [userId, portofolioId], (err, result) => {
+    if (err) return res.status(500).send('Gagal memeriksa data suka');
+
+    if (result.length > 0) {
+      // 2. Sudah like → Hapus like & kurangi jumlah_suka
+      const hapusLike = 'DELETE FROM suka WHERE id_pengguna = ? AND id_portofolio = ?';
+      db.query(hapusLike, [userId, portofolioId], (err2) => {
+        if (err2) return res.status(500).send('Gagal unlike');
+
+        const kurangiLike = 'UPDATE portofolio SET jumlah_suka = jumlah_suka - 1 WHERE id_portofolio = ?';
+        db.query(kurangiLike, [portofolioId], (err3) => {
+          if (err3) return res.status(500).send('Gagal mengurangi jumlah like');
+          return res.json({ liked: false });
+        });
+      });
+    } else {
+      // 3. Belum like → Tambah like & tambah jumlah_suka
+      const tambahLike = 'INSERT INTO suka (id_pengguna, id_portofolio, tanggal_suka) VALUES (?, ?, NOW())';
+      db.query(tambahLike, [userId, portofolioId], (err4) => {
+        if (err4) return res.status(500).send('Gagal menyimpan data like');
+
+        const tambahJumlah = 'UPDATE portofolio SET jumlah_suka = jumlah_suka + 1 WHERE id_portofolio = ?';
+        db.query(tambahJumlah, [portofolioId], (err5) => {
+          if (err5) return res.status(500).send('Gagal menambahkan jumlah like');
+          return res.json({ liked: true });
+        });
+      });
+    }
+  });
 });
 
 module.exports = router;
