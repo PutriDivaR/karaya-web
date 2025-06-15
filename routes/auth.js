@@ -137,4 +137,58 @@ router.get('/kelProfil', (req, res) => {
   });
 });
 
+router.get('/kalender', (req, res) => {
+  const query = 'SELECT id_portofolio, judul, tanggal_dibuat FROM portofolio ORDER BY tanggal_dibuat DESC';
+
+  db.query(query, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Gagal mengambil data");
+    }
+
+    // Format data untuk dikirim ke EJS
+    const formatted = results.map(item => ({
+      id_portofolio: item.id_portofolio,
+      judul: item.judul,
+      tanggal_dibuat: item.tanggal_dibuat,
+      tanggalFormatted: item.tanggal_dibuat.toISOString().split('T')[0]
+    }));
+
+    res.render('pages/kalender', {
+      title: 'Kalender',
+      uploads: formatted
+    });
+  });
+});
+
+
+// Route untuk halaman home + search
+router.get('/home', (req, res) => {
+  const search = req.query.search || '';
+
+  let sql = 'SELECT * FROM portofolio';
+  const params = [];
+
+  if (search) {
+    sql += ' WHERE judul LIKE ?';
+    params.push(`%${search}%`);
+  }
+
+  sql += ' ORDER BY tanggal_dibuat DESC';
+
+  db.query(sql, params, (err, results) => {
+    if (err) {
+      console.error('Kesalahan saat mengambil data portofolio:', err);
+      return res.status(500).send("Kesalahan server.");
+    }
+
+    res.render('pages/home', {
+      title: 'Beranda',
+      portofolios: results,
+      search // biar inputnya tetap tampil
+    });
+  });
+});
+
+
 module.exports = router;
