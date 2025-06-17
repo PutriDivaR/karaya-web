@@ -13,6 +13,22 @@
   margin-left: 80px;
   }
 
+  .save-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: #5e412f;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 20px;
+    color: white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   .container {
     background-color: #5e412f;
     border-radius: 20px;
@@ -20,18 +36,10 @@
     margin: 40px auto;
     padding: 20px;
     color: white;
-    position: relative;
-  }
 
-  .save-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    font-size: 20px;
-    color: white;
-    cursor: pointer;
+      position: static;
+  overflow: visible;
+  z-index: auto;
   }
 
   .portfolio-preview {
@@ -119,20 +127,6 @@
     gap: 10px;
   }
 
-  .like-btn svg {
-  transition: all 0.2s ease-in-out;
-}
-
-.like-btn.liked svg {
-  transform: scale(1.3);
-  fill: red !important;
-}
-
-.like-btn svg {
-  fill: none;
-}
-
-
   .action-buttons button {
     background: none;
     border: none;
@@ -176,18 +170,181 @@
 
 <div class="container">
   
-  <button class="save-button" title="Simpan">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"></path>
-    </svg>
-  </button>
+  <button onclick="bukaPopupPapan()" class="save-button" title="Simpan">
+  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"></path>
+  </svg>
+</button>
+
+<!-- === Popup Pilih Papan === -->
+<div id="popupPapan" class="popup-papan" style="display:none;">
+  <div class="popup-content">
+    <h3>Pilih Papan</h3>
+
+    <!-- Kontainer daftar papan, diisi lewat JavaScript -->
+    <div id="daftarPapan">
+      <p>Loading...</p>
+    </div>
+
+    <!-- Tombol buat papan -->
+    <!-- Tombol buat papan -->
+<% if (!user) { %>
+<% } else { %>
+  <a href="/tambah_papan" class="item-papan tombol-tambah">
+    <div class="plus">+</div>
+    <span>Buat papan</span>
+  </a>
+<% } %>
+
+
+    <button onclick="tutupPopupPapan()">Tutup</button>
+  </div>
+</div>
+
+<!-- === Data tersembunyi untuk dikirim ke backend === -->
+<input type="hidden" id="idPortofolio" value="<%= portofolio.id_portofolio %>">
+
+<!-- === CSS Popup === -->
+<style>
+.popup-papan {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 1000;
+}
+.popup-content {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  width: 300px;
+  max-height: 80vh;
+  overflow-y: auto;
+  color: #000;
+}
+#daftarPapan {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.item-papan {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: white;
+  color: #333;
+}
+.item-papan:hover {
+  background: #f2f2f2;
+}
+.item-papan span {
+  color: #333;
+  font-weight: 500;
+}
+.gambar-papan {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+.tombol-tambah .plus {
+  width: 40px; height: 40px;
+  background: #ddd;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 24px;
+  border-radius: 6px;
+}
+</style>
+
+<!-- === JavaScript === -->
+<script>
+function bukaPopupPapan() {
+  const container = document.getElementById('daftarPapan');
+  container.innerHTML = '<p>Loading...</p>';
+
+  // Tampilkan pop-up dulu
+  document.getElementById('popupPapan').style.display = 'flex';
+
+  // Ambil data papan dari server
+  fetch('/get-papan', { credentials: 'include' })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Belum login atau akses ditolak.');
+      }
+      return res.json();
+    })
+    .then(data => {
+      container.innerHTML = ''; // Kosongkan kontainer
+
+      // Cek apakah daftar kosong
+      if (data.length === 0) {
+        container.innerHTML = '<p>Tidak ada papan tersedia.</p>';
+      } else {
+        // Tampilkan semua papan
+        data.forEach(p => {
+          const item = document.createElement('div');
+          item.className = 'item-papan';
+          item.onclick = () => simpanKePapan(p.id_papan);
+          item.innerHTML = `
+            <img src="/uploads/${p.gambar || 'default.jpg'}" class="gambar-papan" />
+            <span>${p.nama_papan}</span>
+          `;
+          container.appendChild(item);
+        });
+      }
+    })
+    .catch(err => {
+      console.error('Fetch error:', err);
+      container.innerHTML = `
+        <p>Gagal menyimpan papan. Silakan <a href="/login" style="color: blue;">login</a> terlebih dahulu.</p>
+      `;
+    });
+}
+
+function tutupPopupPapan() {
+  document.getElementById('popupPapan').style.display = 'none';
+}
+
+function simpanKePapan(idPapan) {
+  const idPortofolio = document.getElementById('idPortofolio').value;
+
+  fetch('/simpan-ke-papan', {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id_papan: idPapan, id_portofolio: idPortofolio })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('✅ Berhasil disimpan ke papan!');
+      tutupPopupPapan();
+    } else {
+      alert('❌ Portofolio sudah pernah disimpan.');
+    }
+  })
+  .catch(err => {
+    console.error('POST error:', err);
+    alert('Terjadi kesalahan saat menyimpan.');
+  });
+}
+</script>
+<script src="/js/detail_portofolio.js"></script>
+
+
+
+
 
   <div class="portfolio-preview">
     <h2><%= portofolio.judul %></h2>
     <img src="/uploads/<%= portofolio.gambar %>" alt="<%= portofolio.judul %>">
     <p class="description"><%= portofolio.deskripsi %></p>
     <div class="portfolio-meta">
-      <p>Oleh: <%= portofolio.nama_pengguna %></p>
+      <p>Oleh: <a href="/user/<%= portofolio.id_pengguna %>"><%= portofolio.nama_pengguna %></a></p>
       <p>Tanggal Dibuat: <%= portofolio.tanggal_dibuat.toLocaleDateString() %></p>
     </div>
   </div>
@@ -211,7 +368,6 @@
 
   </button>
 </form>
-
 
       </form>
       <button>🔗 Share</button>
@@ -256,6 +412,5 @@
     });
   });
 </script>
-
 
 <%- include('../partials/footer') %>
