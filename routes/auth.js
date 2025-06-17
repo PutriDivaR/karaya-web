@@ -137,27 +137,104 @@ router.get('/kelProfil', (req, res) => {
   });
 });
 
-router.get('/kalender', (req, res) => {
-  const query = 'SELECT id_portofolio, judul, tanggal_dibuat FROM portofolio ORDER BY tanggal_dibuat DESC';
+router.get('/get-papan', (req, res) => {
+    console.log("SESSION ISI:", req.session);
+  const userId = req.session.user?.id;
+  if (!userId) return res.status(401).send("Belum login");
 
-  db.query(query, (err, results) => {
+  const query = 'SELECT id_papan, nama_papan, gambar FROM papan WHERE id_pengguna = ? AND is_archived = 0';
+  db.query(query, [userId], (err, results) => {
     if (err) {
-      console.error(err);
-      return res.status(500).send("Gagal mengambil data");
+      console.error("Query error (get-papan):", err);
+      return res.status(500).send("Gagal ambil papan");
+    }
+    res.json(results);
+  });
+});
+
+router.post('/simpan-ke-papan', (req, res) => {
+  const { id_papan, id_portofolio } = req.body;
+  const userId = req.session.user?.id;
+
+  if (!userId) return res.status(401).json({ success: false, error: 'Unauthorized' });
+
+  const checkQuery = `SELECT * FROM detailPapan WHERE id_papan = ? AND id_portofolio = ?`;
+  db.query(checkQuery, [id_papan, id_portofolio], (err, results) => {
+    if (err) {
+      console.error('Gagal cek duplikat:', err);
+      return res.status(500).json({ success: false });
     }
 
-    // Format data untuk dikirim ke EJS
-    const formatted = results.map(item => ({
-      id_portofolio: item.id_portofolio,
-      judul: item.judul,
-      tanggal_dibuat: item.tanggal_dibuat,
-      tanggalFormatted: item.tanggal_dibuat.toISOString().split('T')[0]
-    }));
+    if (results.length > 0) {
+      return res.status(400).json({ success: false, message: 'Portofolio sudah ada di papan ini' });
+    }
 
-    res.render('pages/kalender', {
-      title: 'Kalender',
-      uploads: formatted
+    const insertQuery = `INSERT INTO detailPapan (id_papan, id_portofolio) VALUES (?, ?)`;
+    db.query(insertQuery, [id_papan, id_portofolio], (err2, result) => {
+      if (err2) {
+        console.error('Gagal menyimpan:', err2);
+        return res.status(500).json({ success: false });
+      }
+
+      res.json({ success: true });
     });
+  });
+});
+
+
+
+router.get('/portofolio_papan/:id_papan', (req, res) => {
+  const idPapan = req.params.id_papan;
+
+  const sqlPapan = 'SELECT * FROM papan WHERE id_papan = ?';
+  db.query(sqlPapan, [idPapan], (err, papanResult) => {
+    if (err) {
+      console.error('Gagal mengambil data papan:', err);
+      return res.status(500).send('Gagal mengambil data papan');
+    }
+
+    const sqlPortofolio = `
+      SELECT p.*
+      FROM portofolio p
+      JOIN detailPapan d ON p.id_portofolio = d.id_portofolio
+      WHERE d.id_papan = ?
+    `;
+
+    db.query(sqlPortofolio, [idPapan], (err, portofolioResult) => {
+      if (err) {
+        console.error('Gagal mengambil data portofolio:', err);
+        return res.status(500).send('Gagal mengambil data portofolio');
+      }
+
+      res.render('pages/portofolio_papan', {
+        title: 'Portofolio di Papan',
+        papan: papanResult[0],
+        portofolios: portofolioResult,
+        msg: req.query.msg
+      });
+    });
+  });
+});
+
+router.post('/hapus-dari-papan', (req, res) => {
+  const { id_papan, id_portofolio } = req.body;
+
+  const userId = req.session.user?.id;
+  if (!userId) return res.status(401).send('Unauthorized');
+
+  const query = `
+    DELETE FROM detailPapan
+    WHERE id_papan = ? AND id_portofolio = ?
+  `;
+
+  db.query(query, [id_papan, id_portofolio], (err, result) => {
+    if (err) {
+      console.error('Gagal menghapus dari papan:', err);
+      return res.status(500).send('Gagal menghapus dari papan');
+    }
+
+    // Redirect ke halaman papan lagi setelah hapus
+    res.redirect(`/portofolio_papan/${id_papan}?msg=hapus`);
   });
 });
 
@@ -189,6 +266,38 @@ router.get('/home', (req, res) => {
     });
   });
 });
+
+
+router.get('/kalender', (req, res) => {
+  const userId = req.session.user.id; // langsung ambil karena pasti sudah login
+
+  const query = `
+    SELECT id_portofolio, judul, tanggal_dibuat 
+    FROM portofolio 
+    WHERE id_pengguna = ? 
+    ORDER BY tanggal_dibuat DESC
+  `;
+
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).send("Gagal mengambil data");
+    }
+
+    const formatted = results.map(item => ({
+      id_portofolio: item.id_portofolio,
+      judul: item.judul,
+      tanggal_dibuat: item.tanggal_dibuat,
+      tanggalFormatted: item.tanggal_dibuat.toISOString().split('T')[0]
+    }));
+
+    res.render('pages/kalender', {
+      title: 'Kalender',
+      uploads: formatted
+    });
+  });
+});
+
 
 
 module.exports = router;
