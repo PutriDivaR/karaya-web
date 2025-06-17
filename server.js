@@ -19,6 +19,7 @@ app.use(session({
 app.use((req, res, next) => {
   res.locals.loggedIn = !!req.session.user;
   res.locals.user = req.session.user || null;
+  res.locals.isAdmin = req.session.user?.role === 'admin';
   next();
 });
 
@@ -46,11 +47,14 @@ const checkLogin = (req, res, next) => {
 const authRoutes = require('./routes/auth');
 const mainRoutes = require('./routes/main');
 const portofolioRoutes = require('./routes/portofolio'); 
-
+const papanRouter = require('./routes/papan');
+const adminRoutes = require('./routes/admin');
 
 app.use('/', authRoutes);
 app.use('/', portofolioRoutes);
 app.use('/', mainRoutes);
+app.use('/', papanRouter);
+app.use('/', adminRoutes);
 
 app.get('/', (req, res) => {
   res.redirect('/home');
@@ -59,10 +63,6 @@ app.get('/', (req, res) => {
 app.get('/home',  (req, res) => {
   res.render('pages/home', { title: 'Home', msg: req.query.msg, user: req.session.user });
 });
-
-const papanRouter = require('./routes/papan');
-app.use('/', papanRouter);
-
 
 app.listen(3000, () => {
   console.log('Server running at http://localhost:3000');

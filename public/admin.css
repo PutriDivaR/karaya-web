@@ -1,0 +1,176 @@
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #896E4A;
+  color: #333;
+  line-height: 1.9;
+}
+
+
+h1 {
+  text-align: center;
+  color: #F7ECD9;
+  margin: 30px;
+  margin-top: 80px;
+}
+
+
+h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #F7ECD9;
+  text-align: left; 
+  padding-left: 100px; 
+}
+
+
+.search-bar {
+  background: #F7ECD9;
+  border-radius: 30px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 10px;
+  left: 80px; 
+  width: calc(100% - 80px); 
+  padding-left: 15px;
+  padding-right: 15px;
+  z-index: 10;
+  margin-top: 15px;
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  padding: 5px 10px;
+}
+
+
+.dashboard-container {
+  display: flex;
+  padding-top: 70px;
+  padding-left: 200px; /* Memberikan ruang antara sidebar dan konten utama */
+  width: calc(100% - 200px); /* Mengatur lebar konten utama agar tidak tertutup oleh sidebar */
+}
+
+.dashboard-container .main-content {
+  width: 100%; /* Agar lebar konten utama memanfaatkan seluruh ruang yang ada */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.sidebar {
+  width: 200px; /* Menentukan lebar sidebar */
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  background-color: #2b2828;
+  padding-top: 30px;
+  box-sizing: border-box;
+}
+
+ul li {
+  background-color: #F7ECD9;
+  color: #2b2828;
+  padding: 12px;
+  margin: 10px;
+  border-radius: 80px;
+  text-align: center;
+  transition: background-color 0.3s ease;
+  display: inline-block; 
+}
+
+ul li:hover {
+  background-color: #d4b897;
+}
+
+ul li a {
+  color: #363030;
+  text-decoration: none;
+  display: block;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  text-align: center; 
+}
+
+ul li a:hover {
+  color: #ecf0f1;
+}
+
+
+form {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px auto;
+  max-width: 600px;
+}
+
+
+form button {
+  background-color: #2ecc71;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+form button:hover {
+  background-color: #27ae60;
+}
+
+
+table {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+table th,
+table td {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+}
+
+table th {
+  background-color: #3498db;
+  color: #fff;
+}
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+table tr:hover {
+  background-color: #ecf0f1;
+}
+
+
+a {
+  color: #3498db;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  color: #2980b9;
+}

@@ -1,0 +1,137 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<style>
+ /* Container utama untuk halaman share portofolio */
+.share-container {
+  background-color: #896E4A; /* Coklat cream */
+  padding: 20px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between; /* Menjaga konten di sebelah kiri dan kanan */
+  max-width: 1000px;
+  margin: 50px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Bagian Portofolio di sebelah kiri */
+.portfolio-preview {
+  max-width: 60%;  /* Menampilkan gambar portofolio di 60% lebar container */
+  padding-right: 20px;  /* Memberikan jarak antara gambar dan tombol */
+}
+
+.portfolio-preview img {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.portfolio-preview h1 {
+  font-size: 32px;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 20px;
+}
+
+.portfolio-preview p {
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+/* Bagian Tombol Share di sebelah kanan */
+.share-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  max-width: 35%;  /* Tombol share akan mengambil 35% dari ruang */
+  background-color: #896E4A;  /* Warna coklat cream muda */
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.share-options button {
+  padding: 12px 25px;
+  font-size: 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;  /* Membuat tombol mengambil lebar penuh */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+}
+
+.share-options button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+/* Tombol Share WhatsApp */
+.whatsapp {
+  background-color: #25D366;
+  border: 2px solid #25D366;
+}
+
+.whatsapp img {
+  width: 24px;
+  height: 24px;
+}
+
+/* Tombol Salin Tautan */
+.copy-link {
+  background-color: #4CAF50;
+  border: 2px solid #4CAF50;
+}
+
+.copy-link img {
+  width: 24px;
+  height: 24px;
+}
+
+
+</style>
+
+<div class="share-container">
+  <!-- Bagian Portofolio yang ingin dibagikan -->
+  <div class="portfolio-preview">
+    <h1><%= portofolio.judul %></h1>
+    <img src="/uploads/<%= portofolio.gambar %>" alt="<%= portofolio.judul %>">
+    <p><%= portofolio.deskripsi %></p>
+  </div>
+
+  <!-- Bagian Tombol Share -->
+  <div class="share-options">
+    <button id="copyLinkButton" class="copy-link">
+        <img src="/images/link-icon.png" alt="Tautan"> Salin Tautan
+    </button>
+    
+    <button id="whatsappShareButton" class="whatsapp">
+        <img src="/images/whatsapp-icon.png" alt="WhatsApp"> Share ke WhatsApp
+    </button>
+  </div>
+</div>
+
+<script>
+  // Salin tautan ke clipboard
+  document.getElementById("copyLinkButton").addEventListener("click", function() {
+    const portfolioUrl = window.location.href;
+    navigator.clipboard.writeText(portfolioUrl).then(function() {
+      alert("Tautan telah disalin!");
+    }).catch(function(error) {
+      alert("Gagal menyalin tautan: " + error);
+    });
+  });
+
+  // Berbagi ke WhatsApp
+  document.getElementById("whatsappShareButton").addEventListener("click", function() {
+    const portfolioUrl = window.location.href;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent("Lihat portofolio saya: " + portfolioUrl)}`;
+    window.open(whatsappUrl, '_blank');
+  });
+</script>
+
+<%- include('../partials/footer') %>

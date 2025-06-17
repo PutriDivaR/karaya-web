@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Kategori Baru</title>
+    <link rel="stylesheet" href="/css/editKategori.css">
+</head>
+<body>
+
+  <%- include('../partials/sidebar', { user: user, isAdmin: isAdmin, loggedIn: true }) %>
+
+  <div class="main-content">
+    <h2>Tambah Kategori Baru</h2>
+
+    <form action="/admin/tambahKategori" method="POST">
+      <label for="categoryName">Nama Kategori:</label>
+      <input type="text" id="categoryName" name="categoryName" required>
+
+      <label for="categoryDescription">Deskripsi:</label>
+      <textarea id="categoryDescription" name="categoryDescription" required></textarea>
+
+      <button type="submit">Tambah Kategori</button>
+    </form>
+  </div>
+
+</body>
+</html>

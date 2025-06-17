@@ -53,7 +53,11 @@ req.session.user = {
 req.session.userId = user.id_pengguna;
 
     // Login sukses → redirect
-    res.redirect('/home');
+   if (user.peran === 'admin') {
+      return res.redirect('/admin');
+    } else {
+      return res.redirect('/home');
+    }
   });
 });
 

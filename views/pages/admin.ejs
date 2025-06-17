@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="/sidebar.css">
+    <title>Dashboard Admin</title>
+</head>
+<body>
+    <%- include('../partials/sidebar', { user: user, isAdmin: isAdmin, loggedIn: true }) %>
+
+    <!-- Search Bar -->
+    <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search...">
+    </div>
+
+    <h1>Selamat Datang, Admin Karaya!</h1>
+
+    <h2>Admin Dashboard</h2>
+    <ul>
+        <li><a href="/admin/editKategori" class="btn btn-primary">Edit Kategori</a></li>
+        <li><a href="/admin/editInfo" class="btn btn-primary">Edit Informasi</a></li>
+    </ul>
+
+</body>
+</html>
