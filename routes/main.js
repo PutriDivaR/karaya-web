@@ -116,6 +116,7 @@ router.get('/portofolio/:id', (req, res) => {
     SELECT p.*, u.nama_pengguna 
     FROM portofolio p
     JOIN pengguna u ON p.id_pengguna = u.id_pengguna
+    JOIN suka
     WHERE p.id_portofolio = ?
   `;
 
@@ -124,10 +125,12 @@ router.get('/portofolio/:id', (req, res) => {
     if (results.length === 0) return res.status(404).send('Portofolio tidak ditemukan');
 
     const portofolio = results[0];
+    console.log('isi portofolio '+ portofolio.userLiked)
     res.render('pages/detail_portofolio', { title: 'Detail Portofolio', portofolio });
   });
 });
 
+// ==================== LIKE / UNLIKE ====================
 // ==================== LIKE / UNLIKE ====================
 router.post('/like/:id', (req, res) => {
   const portofolioId = req.params.id;
@@ -269,20 +272,14 @@ router.post('/komentar/tambah', (req, res) => {
     return res.status(201).json({
       success: true,
       message: 'Komentar berhasil ditambahkan!',
-      komentar: {
-        id_komentar: result.insertId, // Dapatkan ID komentar yang baru ditambahkan
-        id_pengguna,
-        id_portofolio,
-        isi_komentar,
-        tanggal_dibuat: new Date()
-      }
+      
     });
   });
 });
 
-// Rute untuk melihat komentar berdasarkan ID portofolio
 router.get('/komentar/lihat/:id_portofolio', (req, res) => {
   const id_portofolio = req.params.id_portofolio;
+
 
   // Validasi ID portofolio
   if (!id_portofolio) {
@@ -291,7 +288,7 @@ router.get('/komentar/lihat/:id_portofolio', (req, res) => {
 
   // Query untuk mengambil komentar berdasarkan ID portofolio
   const query = `
-    SELECT c.id_komentar, c.isi_komentar, c.tanggal_dibuat, u.nama 
+    SELECT c.id_komentar, c.isi_komentar, c.tanggal_dibuat, u.nama_pengguna
     FROM komentar c
     JOIN pengguna u ON c.id_pengguna = u.id_pengguna
     WHERE c.id_portofolio = ?
@@ -303,24 +300,29 @@ router.get('/komentar/lihat/:id_portofolio', (req, res) => {
       console.error('Error saat mengambil komentar:', err);
       return res.status(500).json({ error: 'Terjadi kesalahan saat mengambil komentar.' });
     }
-
+    console.log('panjang komen'+ results.length )
     // Jika tidak ada komentar
     if (results.length === 0) {
       return res.render('komentar_lihat', {
-        komentar: [],
+        komentar: [],  // Kirim array kosong jika tidak ada komentar
         id_portofolio,
-        msg: 'Belum ada komentar untuk portofolio ini.'
+        msg: 'Belum ada komentar untuk portofolio ini.',
+        title: "komentar" 
       });
     }
 
+    console.log(`komentar : ${results}, id porrtofolio ${id_portofolio}`)
     // Jika ada komentar
-    return res.render('komentar_lihat', {
-      komentar: results,
-      id_portofolio,
-      msg: null
+    return res.render('pages/komentar_lihat', {
+      komentar: results,  // Kirim hasil query komentar
+      id_portofolio,      // Kirim ID portofolio untuk navigasi jika diperlukan
+      msg: null,
+      title: "komentar"           // Tidak ada pesan jika komentar ditemukan
     });
   });
 });
+
+
 
 
 

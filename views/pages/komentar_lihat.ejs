@@ -1,39 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Komentar pada Portofolio</title>
-  <link rel="stylesheet" href="/komentar_lihat.css"> <!-- Link ke file CSS -->
+  <title>Detail Komentar</title>
 </head>
 <body>
-  <div class="container">
-    <!-- Kolom kiri untuk detail portofolio -->
-    <div class="left-column">
-      <h3>Detail Portofolio</h3>
-      <a href="/portofolio/detail/<%= id_portofolio %>">Kembali ke Detail Portofolio</a>
-    </div>
+  <h1>Komentar untuk Portofolio ID: <%= id_portofolio %></h1>
 
-    <!-- Kolom kanan untuk menampilkan komentar -->
-    <div class="right-column">
-      <h3>Komentar pada Portofolio</h3>
-
-      <!-- Pesan jika belum ada komentar -->
-      <% if (msg) { %>
-        <p><%= msg %></p>
-      <% } %>
-
-      <!-- Daftar komentar -->
-      <ul>
-        <% komentar.forEach(function(komen) { %>
-          <li class="comment-item">
-            <strong><%= komen.nama %>:</strong> <%= komen.isi_komentar %>
-            <br>
-            <small><%= komen.tanggal_dibuat %></small>
-          </li>
-        <% }) %>
-      </ul>
-    </div>
-  </div>
+  <% if (komentar.length === 0) { %>
+    <p><%= msg %></p>
+  <% } else { %>
+    <ul>
+      <% komentar.forEach(function(item) { %>
+        <li>
+          <strong><%= item.nama_pengguna %>:</strong> <%= item.isi_komentar %><br>
+          <small>Ditambahkan pada: <%= item.tanggal_dibuat %></small>
+        </li>
+      <% }) %>
+    </ul>
+  <% } %>
 </body>
 </html>
