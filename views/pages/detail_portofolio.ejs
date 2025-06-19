@@ -225,13 +225,25 @@
       </div>
     </div>
 
-    <div class="comment-section">
-      <input type="text" placeholder="Tambahkan Komentar ...." />
-      <button>Kirim</button>
-      <button>Lihat Komentar</button>
-    </div>
-  </div>
-</div>
+   <!-- Bagian Komentar -->
+<form action="/komentar/tambah" method="POST" class="comment-section">
+  <!-- Input untuk menambahkan komentar -->
+  <input type="text" name="isi_komentar" placeholder="Tambahkan Komentar ...." required />
+  
+  <!-- Input untuk mengirim ID portofolio yang terkait -->
+  <input type="hidden" name="id_portofolio" value="<%= portofolio.id_portofolio %>" />
+  
+  <!-- Tombol Kirim untuk mengirim komentar -->
+  <button type="submit">Kirim</button>
+</form>
+
+<!-- Tombol untuk melihat komentar -->
+<a href="/komentar/lihat/<%= portofolio.id_portofolio %>">
+  <button>Lihat Komentar</button>
+</a>
+
+
+
 
 <script>
   document.querySelectorAll('.like-form').forEach(form => {

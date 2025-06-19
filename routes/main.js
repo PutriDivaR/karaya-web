@@ -233,6 +233,83 @@ router.get('/share-portofolio/:id', (req, res) => {
   });
 });
 
+// Rute untuk menambah komentar
+router.post('/komentar/tambah', (req, res) => {
+  const { isi_komentar, id_portofolio } = req.body;
+
+  // Pastikan pengguna sudah login
+  if (!req.user || !req.user.id) {
+    return res.status(401).send('Pengguna belum terautentikasi. Silakan login terlebih dahulu.');
+  }
+
+  // Ambil ID pengguna yang login
+  const id_pengguna = req.user.id;
+
+  // Validasi input
+  if (!isi_komentar || !id_portofolio) {
+    return res.status(400).send('Komentar dan ID portofolio harus diisi.');
+  }
+
+  // Query untuk menambah komentar ke database
+  const query = `
+    INSERT INTO komentar (id_pengguna, id_portofolio, isi_komentar, tanggal_dibuat)
+    VALUES (?, ?, ?, NOW())
+  `;
+  
+  db.query(query, [id_pengguna, id_portofolio, isi_komentar], (err, result) => {
+    if (err) {
+      console.log(err);
+      return res.status(500).send('Terjadi kesalahan saat menambahkan komentar.');
+    }
+
+    // Setelah komentar berhasil ditambahkan, redirect ke halaman detail portofolio
+    res.redirect(`/portofolio/detail/${id_portofolio}`); 
+  });
+});
+
+// Rute untuk melihat komentar berdasarkan ID portofolio
+router.get('/komentar/lihat/:id_portofolio', (req, res) => {
+  // Mengambil id_portofolio dari parameter URL
+  const id_portofolio = req.params.id_portofolio;
+
+  // Query untuk mengambil komentar berdasarkan ID portofolio
+  const query = `
+    SELECT c.id_komentar, c.isi_komentar, c.tanggal_dibuat, u.nama 
+    FROM komentar c
+    JOIN pengguna u ON c.id_pengguna = u.id_pengguna
+    WHERE c.id_portofolio = ?
+    ORDER BY c.tanggal_dibuat DESC
+  `;
+  
+  // Eksekusi query untuk mengambil komentar
+  db.query(query, [id_portofolio], (err, results) => {
+    if (err) {
+      // Jika terjadi error saat query, log error dan kirimkan respons 500
+      console.error('Error saat mengambil komentar:', err);
+      return res.status(500).send('Terjadi kesalahan saat mengambil komentar');
+    }
+
+    // Jika tidak ada komentar
+    if (results.length === 0) {
+      return res.render('komentar_lihat', {
+        komentar: [],   // Kirimkan array kosong untuk komentar
+        id_portofolio: id_portofolio,  // Tetap kirimkan ID portofolio
+        msg: 'Belum ada komentar untuk portofolio ini.'  // Pesan jika tidak ada komentar
+      });
+    }
+
+    // Jika ada komentar, render halaman komentar
+    res.render('komentar_lihat', {
+      komentar: results,  // Kirimkan hasil komentar ke tampilan
+      id_portofolio: id_portofolio,  // Kirimkan ID portofolio
+      msg: null  // Kosongkan pesan karena komentar ada
+    });
+  });
+});
+
+
+
+
 
 
 

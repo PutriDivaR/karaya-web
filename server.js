@@ -11,9 +11,10 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
-  secret: 'karayaSecret',
+  secret: 'karayaSecret', // Ubah dengan secret yang lebih aman
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  cookie: { secure: false } // Set secure ke true jika menggunakan HTTPS
 }));
 
 app.use((req, res, next) => {

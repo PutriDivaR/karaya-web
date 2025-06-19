@@ -3,7 +3,109 @@
 <head>
   <meta charset="UTF-8">
   <title><%= title %></title>
-  <link rel="stylesheet" href="/css/portofolio_suka.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #896E4A;
+      color: #fff;
+    }
+
+    .container-suka {
+      display: flex;
+      flex-direction: row;
+      max-width: 1000px;
+      margin: 40px auto;
+      background-color: #5E412F;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .image-preview {
+      flex: 1;
+      background-color: #FFF8E1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .image-preview img {
+      width: 100%;
+      max-width: 400px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .likers-list {
+      flex: 1;
+      padding: 30px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      background-color: #6B4C34;
+    }
+
+    .likers-list h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+      color: #FFEEC9;
+    }
+
+    .liker-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      background-color: #FFEEC9;
+      color: #333;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .liker-avatar img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .liker-name {
+      font-size: 16px;
+      font-weight: 500;
+    }
+
+    .back-link {
+      margin-top: auto;
+      display: inline-block;
+      color: #FFEBB2;
+      text-decoration: none;
+      font-size: 14px;
+      padding-top: 10px;
+      transition: color 0.3s;
+    }
+
+    .back-link:hover {
+      color: #FFD580;
+    }
+
+    @media (max-width: 768px) {
+      .container-suka {
+        flex-direction: column;
+      }
+
+      .image-preview,
+      .likers-list {
+        flex: none;
+        width: 100%;
+      }
+
+      .likers-list {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container-suka">

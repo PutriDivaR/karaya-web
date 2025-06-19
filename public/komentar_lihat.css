@@ -1,0 +1,81 @@
+/* Mengatur layout secara umum */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f4f4f4;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+}
+
+/* Kolom kiri untuk portofolio */
+.left-column {
+  width: 30%;
+  background-color: #fff;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.left-column h3 {
+  font-size: 1.5em;
+}
+
+.left-column a {
+  display: block;
+  margin-top: 10px;
+  color: #5D3F6B;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.left-column a:hover {
+  text-decoration: underline;
+}
+
+/* Kolom kanan untuk komentar */
+.right-column {
+  width: 65%;
+  background-color: #896E4A; /* Warna latar belakang yang diinginkan */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  color: #fff;
+}
+
+.right-column h3 {
+  font-size: 1.8em;
+  margin-bottom: 20px;
+}
+
+.right-column ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.comment-item {
+  background-color: #fff;
+  color: #333;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.comment-item strong {
+  font-weight: bold;
+}
+
+.comment-item small {
+  font-size: 0.8em;
+  color: #999;
+}
+
+.right-column p {
+  color: #fff;
+  font-size: 1.2em;
+  text-align: center;
+}
