@@ -233,21 +233,23 @@ router.get('/share-portofolio/:id', (req, res) => {
   });
 });
 
+
+// ==================== kOMENTAR ====================
 // Rute untuk menambah komentar
 router.post('/komentar/tambah', (req, res) => {
   const { isi_komentar, id_portofolio } = req.body;
 
   // Pastikan pengguna sudah login
-  if (!req.user || !req.user.id) {
-    return res.status(401).send('Pengguna belum terautentikasi. Silakan login terlebih dahulu.');
+  if (!req.session.user) { // Memastikan session user tersedia
+    return res.status(401).json({ error: 'Pengguna belum terautentikasi. Silakan login terlebih dahulu.' });
   }
 
   // Ambil ID pengguna yang login
-  const id_pengguna = req.user.id;
+  const id_pengguna = req.session.user.id;
 
   // Validasi input
   if (!isi_komentar || !id_portofolio) {
-    return res.status(400).send('Komentar dan ID portofolio harus diisi.');
+    return res.status(400).json({ error: 'Komentar dan ID portofolio harus diisi.' });
   }
 
   // Query untuk menambah komentar ke database
@@ -255,22 +257,37 @@ router.post('/komentar/tambah', (req, res) => {
     INSERT INTO komentar (id_pengguna, id_portofolio, isi_komentar, tanggal_dibuat)
     VALUES (?, ?, ?, NOW())
   `;
-  
+
+  // Eksekusi query untuk menambahkan komentar ke database
   db.query(query, [id_pengguna, id_portofolio, isi_komentar], (err, result) => {
     if (err) {
-      console.log(err);
-      return res.status(500).send('Terjadi kesalahan saat menambahkan komentar.');
+      console.error('Error saat menambahkan komentar:', err);
+      return res.status(500).json({ error: 'Terjadi kesalahan saat menambahkan komentar.' });
     }
 
-    // Setelah komentar berhasil ditambahkan, redirect ke halaman detail portofolio
-    res.redirect(`/portofolio/detail/${id_portofolio}`); 
+    // Kembalikan response sukses dengan data komentar baru
+    return res.status(201).json({
+      success: true,
+      message: 'Komentar berhasil ditambahkan!',
+      komentar: {
+        id_komentar: result.insertId, // Dapatkan ID komentar yang baru ditambahkan
+        id_pengguna,
+        id_portofolio,
+        isi_komentar,
+        tanggal_dibuat: new Date()
+      }
+    });
   });
 });
 
 // Rute untuk melihat komentar berdasarkan ID portofolio
 router.get('/komentar/lihat/:id_portofolio', (req, res) => {
-  // Mengambil id_portofolio dari parameter URL
   const id_portofolio = req.params.id_portofolio;
+
+  // Validasi ID portofolio
+  if (!id_portofolio) {
+    return res.status(400).json({ error: 'ID portofolio tidak ditemukan.' });
+  }
 
   // Query untuk mengambil komentar berdasarkan ID portofolio
   const query = `
@@ -281,31 +298,31 @@ router.get('/komentar/lihat/:id_portofolio', (req, res) => {
     ORDER BY c.tanggal_dibuat DESC
   `;
   
-  // Eksekusi query untuk mengambil komentar
   db.query(query, [id_portofolio], (err, results) => {
     if (err) {
-      // Jika terjadi error saat query, log error dan kirimkan respons 500
       console.error('Error saat mengambil komentar:', err);
-      return res.status(500).send('Terjadi kesalahan saat mengambil komentar');
+      return res.status(500).json({ error: 'Terjadi kesalahan saat mengambil komentar.' });
     }
 
     // Jika tidak ada komentar
     if (results.length === 0) {
       return res.render('komentar_lihat', {
-        komentar: [],   // Kirimkan array kosong untuk komentar
-        id_portofolio: id_portofolio,  // Tetap kirimkan ID portofolio
-        msg: 'Belum ada komentar untuk portofolio ini.'  // Pesan jika tidak ada komentar
+        komentar: [],
+        id_portofolio,
+        msg: 'Belum ada komentar untuk portofolio ini.'
       });
     }
 
-    // Jika ada komentar, render halaman komentar
-    res.render('komentar_lihat', {
-      komentar: results,  // Kirimkan hasil komentar ke tampilan
-      id_portofolio: id_portofolio,  // Kirimkan ID portofolio
-      msg: null  // Kosongkan pesan karena komentar ada
+    // Jika ada komentar
+    return res.render('komentar_lihat', {
+      komentar: results,
+      id_portofolio,
+      msg: null
     });
   });
 });
+
+
 
 
 
