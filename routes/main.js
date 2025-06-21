@@ -125,12 +125,10 @@ router.get('/portofolio/:id', (req, res) => {
     if (results.length === 0) return res.status(404).send('Portofolio tidak ditemukan');
 
     const portofolio = results[0];
-    console.log('isi portofolio '+ portofolio.userLiked)
     res.render('pages/detail_portofolio', { title: 'Detail Portofolio', portofolio });
   });
 });
 
-// ==================== LIKE / UNLIKE ====================
 // ==================== LIKE / UNLIKE ====================
 router.post('/like/:id', (req, res) => {
   const portofolioId = req.params.id;
@@ -237,8 +235,7 @@ router.get('/share-portofolio/:id', (req, res) => {
 });
 
 
-// ==================== kOMENTAR ====================
-// Rute untuk menambah komentar
+// ==================== KOMENTAR ====================
 router.post('/komentar/tambah', (req, res) => {
   const { isi_komentar, id_portofolio } = req.body;
 
@@ -300,7 +297,7 @@ router.get('/komentar/lihat/:id_portofolio', (req, res) => {
       console.error('Error saat mengambil komentar:', err);
       return res.status(500).json({ error: 'Terjadi kesalahan saat mengambil komentar.' });
     }
-    console.log('panjang komen'+ results.length )
+    
     // Jika tidak ada komentar
     if (results.length === 0) {
       return res.render('komentar_lihat', {
@@ -311,7 +308,7 @@ router.get('/komentar/lihat/:id_portofolio', (req, res) => {
       });
     }
 
-    console.log(`komentar : ${results}, id porrtofolio ${id_portofolio}`)
+   
     // Jika ada komentar
     return res.render('pages/komentar_lihat', {
       komentar: results,  // Kirim hasil query komentar
