@@ -176,6 +176,63 @@
   #shareMenu button:hover {
     background-color: #0056b3;
   }
+
+  /* Notification Styles */
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    font-weight: 500;
+    z-index: 1000;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .notification.show {
+    transform: translateX(0);
+  }
+
+  .notification.success {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  }
+
+  .notification.error {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  }
+
+  /* Loading state for comment form */
+  .comment-section.loading {
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  .comment-section.loading button {
+    position: relative;
+  }
+
+  .comment-section.loading button::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    margin: -6px 0 0 -6px;
+    border: 2px solid #fff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
 </style>
 
 <div class="container">
@@ -197,7 +254,7 @@
 
   <div class="action-bar">
     <div class="action-buttons">
-      <form action="/like/<%= portofolio.id_portofolio %>" method="POST" class="like-form">
+      <form action="/like/<%= portofolio.id_portofolio %>" method="POST" class="like-form" data-logged-in="<%= !!locals.user %>">
         <button type="submit" class="like-btn <%= portofolio.userLiked ? 'liked' : '' %>" data-id="<%= portofolio.id_portofolio %>">
            <svg width="20" height="20" 
                 fill="<%= portofolio.userLiked ? 'red' : 'none' %>" 
@@ -227,7 +284,7 @@
     </div>
 
    <!-- Bagian Komentar -->
-<form action="/komentar/tambah" method="POST" class="comment-section">
+<form action="/komentar/tambah" method="POST" class="comment-section" id="commentForm">
   <!-- Input untuk menambahkan komentar -->
   <input type="text" name="isi_komentar" placeholder="Tambahkan Komentar ...." required />
   
@@ -243,13 +300,22 @@
   <button>Lihat Komentar</button>
 </a>
 
-
-
+<!-- Notification Element -->
+<div class="notification" id="notification"></div>
 
 <script>
   document.querySelectorAll('.like-form').forEach(form => {
     form.addEventListener('submit', function(e) {
       e.preventDefault();
+      
+      // Check if user is logged in using data attribute
+      const isLoggedIn = form.dataset.loggedIn === 'true';
+      
+      if (!isLoggedIn) {
+        showNotification('Silakan login terlebih dahulu untuk memberikan like!', 'error');
+        return;
+      }
+      
       const button = this.querySelector('.like-btn');
       const portofolioId = button.dataset.id;
 
@@ -263,22 +329,116 @@
 
           const svg = button.querySelector('svg');
           const countSpan = button.querySelector('.like-count');
-          let count = parseInt(countSpan.textContent);
+          let countText = countSpan.textContent.trim();
+          let count = parseInt(countText.split(' ')[0]); // Extract number from "X suka"
 
           if (data.liked) {
             button.classList.add('liked');
             svg.setAttribute('fill', 'red');
-            countSpan.textContent = count + 1;
+            countSpan.textContent = (count + 1) + ' suka';
           } else {
             button.classList.remove('liked');
             svg.setAttribute('fill', 'none');
-            countSpan.textContent = count - 1;
+            countSpan.textContent = (count - 1) + ' suka';
           }
+        })
+        .catch(error => {
+          console.error('Like error:', error);
+          showNotification('Terjadi kesalahan saat memberikan like.', 'error');
         });
     });
   });
 
-  
+  // Comment form submission handler
+  document.getElementById('commentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Check if user is logged in
+    const isLoggedIn = document.querySelector('.like-form').dataset.loggedIn === 'true';
+    
+    if (!isLoggedIn) {
+      showNotification('Silakan login terlebih dahulu untuk menambahkan komentar!', 'error');
+      return;
+    }
+    
+    const form = this;
+    const commentInput = form.querySelector('input[name="isi_komentar"]');
+    const portfolioInput = form.querySelector('input[name="id_portofolio"]');
+    const submitButton = form.querySelector('button[type="submit"]');
+    
+    const commentData = {
+      isi_komentar: commentInput.value,
+      id_portofolio: portfolioInput.value
+    };
+    
+    console.log('Form submitted');
+    console.log('Comment data:', commentData);
+    
+    // Add loading state
+    form.classList.add('loading');
+    submitButton.textContent = 'Mengirim...';
+    
+    fetch('/komentar/tambah', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(commentData),
+      credentials: 'same-origin'
+    })
+    .then(response => {
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+      return response.json();
+    })
+    .then(data => {
+      console.log('Response data:', data);
+      
+      // Remove loading state
+      form.classList.remove('loading');
+      submitButton.textContent = 'Kirim';
+      
+      if (data.success) {
+        // Show success notification
+        showNotification('Komentar berhasil ditambahkan!', 'success');
+        
+        // Clear the input
+        commentInput.value = '';
+        
+        // Focus back to input for next comment
+        commentInput.focus();
+      } else {
+        // Show error notification
+        showNotification(data.error || 'Terjadi kesalahan saat menambahkan komentar.', 'error');
+      }
+    })
+    .catch(error => {
+      console.error('Fetch error:', error);
+      
+      // Remove loading state
+      form.classList.remove('loading');
+      submitButton.textContent = 'Kirim';
+      
+      showNotification('Terjadi kesalahan saat menambahkan komentar.', 'error');
+    });
+  });
+
+  // Function to show notification
+  function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    
+    // Set message and type
+    notification.textContent = message;
+    notification.className = `notification ${type}`;
+    
+    // Show notification
+    notification.classList.add('show');
+    
+    // Hide notification after 3 seconds
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 3000);
+  }
 </script>
 
 <%- include('../partials/footer') %>

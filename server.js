@@ -7,8 +7,8 @@ const app = express();
 
 
 // Middleware
-app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({
   secret: 'karayaSecret', // Ubah dengan secret yang lebih aman
@@ -52,8 +52,8 @@ const papanRouter = require('./routes/papan');
 const adminRoutes = require('./routes/admin');
 
 app.use('/', authRoutes);
-app.use('/', portofolioRoutes);
 app.use('/', mainRoutes);
+app.use('/', portofolioRoutes);
 app.use('/', papanRouter);
 app.use('/', adminRoutes);
 
