@@ -1,277 +1,467 @@
- * body {
-        margin: 0;
-        font-family: 'Arial', sans-serif;
-      }
+/* Modern Profile CSS */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  color: #333;
+}
 
 .dashboard-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
 }
 
+.main-profile {
+  margin-left: 80px;
+  padding: 2rem;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  overflow-y: auto;
+}
 
-      .main-profile {
-        margin-left: 80px;
-        padding: 2rem;
-        flex: 1;
-        background-color: #896E4A;
-        overflow-y: auto;
-      }
+/* Success Message */
+.success-message {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+  padding: 1rem 2rem;
+  border-radius: 15px;
+  margin-bottom: 2rem;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+  animation: slideInDown 0.5s ease-out;
+}
 
-      .profile-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-      }
+@keyframes slideInDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
-      .left-section {
-        display: flex;
-        align-items: center;
-        gap: 3rem;
-        margin-left: 3rem;
-      }
-
-      .left-section img {
-        width: 140px;
-        height: 140px;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 0px solid white;
-      }
-
-
-      .profile-photo {
-       display: flex;
-       flex-direction: column;
-       align-items: center;
-       gap: 0.5rem;
-       }
-
-      .profile-info {
-        display: flex;
-        flex-direction: column;
-      }
-
-      .profile-info h2 {
-        margin: 0;
-        color: white;
-        font-style: italic;
-      }
-
-      .profile-info p {
-        background-color: #d4b897;
-        padding: 0.8rem;
-        border-radius: 15px;
-        margin-top: 0.5rem;
-        color: black;
-      }
-
-
-
-      .contact-section {
-        background-color: #896E4A;
-        padding: 1rem;
-        border-radius: 15px;
-        min-width: 200px;
-      }
-
-      .contact-section h3 {
-        margin: 0 0 0.5rem 0;
-        font-style: italic;
-      }
-
-      .contact-icons a {
-        display: flex;
-        align-items: center;
-        background-color: #f3e1c0;
-        border-radius: 20px;
-        padding: 0.4rem 0.8rem;
-        margin-bottom: 0.5rem;
-        text-decoration: none;
-        color: black;
-        width: fit-content;
-      }
-
-      .contact-icons a i {
-        margin-right: 0.5rem;
-      }
-
-      .tabs {
-        margin-top: 1.5rem;
-        display: flex;
-        justify-content: center; 
-        gap: 1rem;
-      }
-
-      .tabs button {
-        background-color: #f3e1c0;
-        border: none;
-        border-radius: 20px;
-        padding: 0.5rem 1.5rem;
-        cursor: pointer;
-        font-weight: bold;
-      }
-
-      .gallery {
-        margin-top: 1.5rem;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-        gap: 1rem;
-      }
-
-      .card {
-        background-color: #896E4A;
-        border-radius: 15px;
-        padding: 1rem;
-        text-align: center;
-      }
-
-      .thumbnail {
-        background-color: #d2b48c;
-        height: 100px;
-        border-radius: 10px;
-        margin-bottom: 0.5rem;
-      }
-
-  .portfolio-list {
-    
+/* Profile Header */
+.profile-header {
   display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: linear-gradient(135deg, #896E4A, #A67C52);
+  border-radius: 20px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 30px rgba(137, 110, 74, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.profile-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="rgba(255,255,255,0.1)"/><circle cx="75" cy="75" r="1" fill="rgba(255,255,255,0.1)"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+  opacity: 0.3;
+}
+
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.profile-photo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.profile-photo img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.profile-photo img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+}
+
+.profile-buttons {
+  display: flex;
+  gap: 1rem;
   flex-wrap: wrap;
-  gap: 20px;
-  margin-top: 20px;
+  justify-content: center;
 }
 
-.tab-content {
-  display: none;
-  padding: 1rem 0;
-  
+.edit-button, .download-button {
+  background: linear-gradient(135deg, #4CAF50, #45a049);
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
 }
 
-.tab-content.active {
-  display: block;
+.download-button {
+  background: linear-gradient(135deg, #2196F3, #1976D2);
+  box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+}
+
+.edit-button:hover, .download-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.profile-info h2 {
+  color: white;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  margin: 0;
+}
+
+.profile-info p {
+  background: rgba(255, 255, 255, 0.9);
+  padding: 1rem 1.5rem;
+  border-radius: 15px;
+  color: #333;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 400px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Contact Section */
+.contact-section {
+  background: rgba(255, 255, 255, 0.95);
+  padding: 1.5rem;
+  border-radius: 20px;
+  min-width: 250px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+}
+
+.contact-section h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+}
+
+.contact-icons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.contact-icons a {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 15px;
+  padding: 0.8rem 1rem;
+  text-decoration: none;
+  color: #333;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.contact-icons a:hover {
+  transform: translateX(5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, #e3f2fd, #bbdefb);
+}
+
+.contact-icons a i {
+  margin-right: 0.8rem;
+  font-size: 1.2rem;
+}
+
+.contact-icons a[href*="linkedin"] i {
+  color: #0077b5;
+}
+
+.contact-icons a[href*="whatsapp"] i {
+  color: #25d366;
+}
+
+.contact-icons a[href*="twitter"] i {
+  color: #1da1f2;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+}
+
+.tab-btn {
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border: none;
+  border-radius: 25px;
+  padding: 1rem 2rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.tab-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
 }
 
 .tab-btn.active {
-  background-color: #ddd;
+  background: linear-gradient(135deg, #896E4A, #A67C52);
+  color: white;
+  box-shadow: 0 6px 20px rgba(137, 110, 74, 0.3);
 }
 
-.hidden {
-  display: none;
+/* Portfolio List */
+.portfolio-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.portfolio-item-container {
+  position: relative;
+  background: white;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.portfolio-item-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
 }
 
 .portfolio-item {
-  border: 1px solid #ddd;
-  padding: 15px;
-  width: 260px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
-  border-radius: 15px;
-  background-color: #fff;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  padding: 1.5rem;
 }
 
 .portfolio-item img {
   width: 100%;
-  height: auto;
-  border-radius: 6px;
+  height: 200px;
   object-fit: cover;
-  margin-bottom: 10px;
-}
-
-.portfolio-item h3 {
-  font-size: 1.2rem;
-  margin-bottom: 8px;
-  color: #333;
-}
-
-.portfolio-item p {
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 6px;
-}
-
-.portfolio-item {
-  display: inline-block;
-  margin: 10px;
-  text-align: center;
-}
-
-.portfolio-item img {
-  border-radius: 10px;
-  transition: transform 0.2s;
+  border-radius: 15px;
+  margin-bottom: 1rem;
+  transition: transform 0.3s ease;
 }
 
 .portfolio-item:hover img {
   transform: scale(1.05);
 }
 
-.portfolio-item-container {
-  position: relative;
-  display: inline-block;
-  margin: 10px;
+.portfolio-item h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #333;
 }
 
+.portfolio-item p {
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Portfolio Actions */
 .portfolio-actions {
   position: absolute;
-  top: 20px;               /* Menempatkan tombol di atas gambar */
-  left: 10px;             /* Menempatkan tombol di sebelah kanan */
-  opacity: 0;              /* Mulai dengan tombol tersembunyi */
+  top: 1rem;
+  left: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  opacity: 0;
   transition: opacity 0.3s ease;
-  display: flex;           /* Menata tombol secara horizontal */
-  justify-content: left; /* Menempatkan tombol di tengah secara horizontal */
-  gap: 10px;               /* Memberikan jarak antara tombol sedikit */
 }
-
 
 .portfolio-item-container:hover .portfolio-actions {
   opacity: 1;
 }
 
-.edit-button, .delete-button {
-  background-color: rgba(0, 0, 0, 0.5);
-  font-size: large;
+.edit-button, .delete-button, .archive-button {
+  background: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 10px 10px;
-  text-decoration: none;
-  border-radius: 15px;
-  margin-left: 5px;
-  
+  padding: 0.6rem 1rem;
+  border: none;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
-.delete-button:hover, .edit-button:hover, .pin-button:hover {
-  background-color: rgb(255, 166, 0);
+.edit-button:hover {
+  background: #4CAF50;
+  transform: scale(1.05);
 }
 
-.edit-button a {
-  font-size: large;
-  color: white;
+.delete-button:hover {
+  background: #f44336;
+  transform: scale(1.05);
 }
 
-/* ===== PIN BUTTON (KHUSUS) ===== */
+.archive-button:hover {
+  background: #ff9800;
+  transform: scale(1.05);
+}
+
+/* Pin Button */
 .pin-button {
   position: absolute;
-  top: 20px;
-  right: 15px;
-  opacity: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  font-size: large;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.8);
   color: white;
-  padding: 10px;
-  border-radius: 15px;
+  padding: 0.6rem;
+  border: none;
+  border-radius: 50%;
   cursor: pointer;
-  transition: opacity 0.3s ease;
-  z-index: 6;
-  
+  transition: all 0.3s ease;
+  opacity: 0;
+  backdrop-filter: blur(10px);
+  font-size: 1.2rem;
 }
 
-
-/* Selalu tampil kalau pinned */
 .pin-button.pinned {
-  background-color: rgb(157, 255, 0);
-  color: red;
-  opacity: 1 !important;
+  background: #4CAF50;
+  opacity: 1;
+  transform: scale(1.1);
 }
 
-/* Saat hover, tampilkan pin button */
 .portfolio-item-container:hover .pin-button {
   opacity: 1;
+}
+
+.pin-icon {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  color: #4CAF50;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  padding: 0.3rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Tab Content */
+.tab-content {
+  display: none;
+  animation: fadeIn 0.5s ease-out;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-profile {
+    margin-left: 0;
+    padding: 1rem;
+  }
+  
+  .profile-header {
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+  }
+  
+  .left-section {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .profile-info h2 {
+    font-size: 2rem;
+  }
+  
+  .tabs {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .portfolio-list {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-section {
+    min-width: auto;
+    width: 100%;
+  }
+}
+
+/* Empty State */
+.portfolio-list p {
+  text-align: center;
+  color: #666;
+  font-size: 1.1rem;
+  padding: 3rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
+  margin: 2rem 0;
 }
 

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Profil - KARAYA</title>
+  <link rel="stylesheet" href="/editProfile.css"/>
+</head>
+<body>
+  <%- include('../partials/header') %>
+
+  <div class="dashboard-container">
+    <%- include('../partials/sidebar') %>
+
+    <div class="main-content">
+      <div class="edit-profile-container">
+        <h1>Edit Profil</h1>
+        
+        <% if (msg) { %>
+          <div class="alert <%= msg.type %>">
+            <%= msg.text %>
+          </div>
+        <% } %>
+
+        <form action="/edit-profile" method="POST" enctype="multipart/form-data" class="edit-form">
+          <div class="form-section">
+            <h3>Informasi Dasar</h3>
+            
+            <div class="form-group">
+              <label for="nama_pengguna">Nama Pengguna</label>
+              <input type="text" id="nama_pengguna" name="nama_pengguna" value="<%= user.nama_pengguna %>" required>
+              <% if (errors && errors.nama_pengguna) { %>
+                <span class="error"><%= errors.nama_pengguna %></span>
+              <% } %>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" value="<%= user.email %>" readonly>
+              <small>Email tidak dapat diubah</small>
+            </div>
+
+            <div class="form-group">
+              <label for="bio">Bio</label>
+              <textarea id="bio" name="bio" rows="4" placeholder="Ceritakan tentang diri Anda..."><%= user.bio || '' %></textarea>
+              <% if (errors && errors.bio) { %>
+                <span class="error"><%= errors.bio %></span>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Foto Profil</h3>
+            
+            <div class="current-photo">
+              <img src="<%= user.foto_profil ? '/uploads/' + user.foto_profil : '/images/profile.jpg' %>" alt="Foto Profil Saat Ini" id="current-photo">
+            </div>
+
+            <div class="form-group">
+              <label for="foto_profil">Upload Foto Baru</label>
+              <input type="file" id="foto_profil" name="foto_profil" accept="image/*">
+              <small>Format: JPG, PNG, GIF. Maksimal 5MB</small>
+              <% if (errors && errors.foto_profil) { %>
+                <span class="error"><%= errors.foto_profil %></span>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Ganti Kata Sandi</h3>
+            <small>Kosongkan jika tidak ingin mengubah kata sandi</small>
+            
+            <div class="form-group">
+              <label for="current_password">Kata Sandi Saat Ini</label>
+              <input type="password" id="current_password" name="current_password">
+              <% if (errors && errors.current_password) { %>
+                <span class="error"><%= errors.current_password %></span>
+              <% } %>
+            </div>
+
+            <div class="form-group">
+              <label for="new_password">Kata Sandi Baru</label>
+              <input type="password" id="new_password" name="new_password">
+              <% if (errors && errors.new_password) { %>
+                <span class="error"><%= errors.new_password %></span>
+              <% } %>
+            </div>
+
+            <div class="form-group">
+              <label for="confirm_password">Konfirmasi Kata Sandi Baru</label>
+              <input type="password" id="confirm_password" name="confirm_password">
+              <% if (errors && errors.confirm_password) { %>
+                <span class="error"><%= errors.confirm_password %></span>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="form-section">
+            <h3>Informasi Kontak</h3>
+            
+            <div class="form-group">
+              <label for="linkedin">LinkedIn</label>
+              <input type="url" id="linkedin" name="linkedin" value="<%= user.linkedin || '' %>" placeholder="https://linkedin.com/in/username">
+              <% if (errors && errors.linkedin) { %>
+                <span class="error"><%= errors.linkedin %></span>
+              <% } %>
+            </div>
+
+            <div class="form-group">
+              <label for="whatsapp">WhatsApp</label>
+              <input type="text" id="whatsapp" name="whatsapp" value="<%= user.whatsapp || '' %>" placeholder="+6281234567890">
+              <% if (errors && errors.whatsapp) { %>
+                <span class="error"><%= errors.whatsapp %></span>
+              <% } %>
+            </div>
+
+            <div class="form-group">
+              <label for="twitter">Twitter</label>
+              <input type="url" id="twitter" name="twitter" value="<%= user.twitter || '' %>" placeholder="https://twitter.com/username">
+              <% if (errors && errors.twitter) { %>
+                <span class="error"><%= errors.twitter %></span>
+              <% } %>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="btn-save">Simpan Perubahan</button>
+            <a href="/profile" class="btn-cancel">Batal</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Preview foto profil yang dipilih
+    document.getElementById('foto_profil').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById('current-photo').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Validasi konfirmasi password
+    document.getElementById('confirm_password').addEventListener('input', function() {
+      const newPassword = document.getElementById('new_password').value;
+      const confirmPassword = this.value;
+      
+      if (newPassword && confirmPassword && newPassword !== confirmPassword) {
+        this.setCustomValidity('Kata sandi tidak cocok');
+      } else {
+        this.setCustomValidity('');
+      }
+    });
+  </script>
+</body>
+</html> 

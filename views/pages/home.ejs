@@ -7,20 +7,39 @@
 
   <!-- Konten Utama -->
   <div class="main-content">
-    <!-- Search Bar -->
-    <div class="search-bar">
+
+<form class="search-bar" method="GET" action="/home">
       <i class="fas fa-search"></i>
-      <input type="text" placeholder="Search...">
+      <input 
+        type="text" 
+        name="search" 
+        placeholder="Cari berdasarkan judul..." 
+        value="<%= typeof search !== 'undefined' ? search : '' %>">
+    </form>
+
+<!-- Sorting Dropdown -->
+    <div class="sorting-options">
+      <label for="sortOrder">Sort By:</label>
+      <select id="sortOrder" onchange="sortPortfolios()">
+        <option value="latest" <%= sort === 'latest' ? 'selected' : '' %>>Latest Upload</option>
+        <option value="oldest" <%= sort === 'oldest' ? 'selected' : '' %>>Oldest Upload</option>
+      </select>
     </div>
 
+ <script>
+      function sortPortfolios() {
+        const sortOrder = document.getElementById('sortOrder').value;
+        window.location.href = `/home?sort=${sortOrder}`;  // Mengirimkan query sort ke backend
+      }
+    </script>
 
-<h2>Portofolio Terbaru</h2>
+<h2>KARAYA</h2>
 <div class="portfolio-list">
   <% if (!portofolios || portofolios.length === 0) { %>
     <p>Belum ada portofolio yang diunggah.</p>
   <% } else { %>
     <% portofolios.forEach(p => { %>
-      <% if (p.is_draft === 0) { %> <!-- Menampilkan hanya yang sudah dipublikasikan -->
+      <% if (p.is_draft === 0 && p.is_archived === 0) { %> <!-- Menampilkan hanya yang sudah dipublikasikan -->
         <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
           <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
           <h3><%= p.judul %></h3>

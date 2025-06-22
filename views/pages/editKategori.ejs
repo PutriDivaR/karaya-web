@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Kategori</title>
+  <link rel="stylesheet" href="/admin.css">
+  <link rel="stylesheet" href="/sidebar.css">
+</head>
+<body>
+  <%- include('../partials/sidebar', { user: user, isAdmin: isAdmin, loggedIn: true }) %>
+
+  <div class="main-content">
+    <h2>Kelola Kategori</h2>
+
+    <div class="admin-card">
+      <div class="toolbar">
+        <a href="/admin/tambahKategori" class="btn btn-success">Tambah Kategori</a>
+        <a href="/admin/downloadKategoriPdf" class="btn btn-secondary">Unduh Daftar Kategori</a>
+      </div>
+
+      <div class="category-grid">
+        <% if (categories && categories.length > 0) { %>
+          <% categories.forEach(function(category) { %>
+            <div class="category-card">
+              <h3><%= category.nama %></h3>
+              <p><%= category.deskripsi %></p>
+              <div class="action-buttons">
+                <a href="/admin/editKategori/<%= category.id_kategori %>" class="btn btn-secondary btn-sm">Edit</a>
+                <a href="/admin/lihatKategori/<%= category.id_kategori %>" class="btn btn-secondary btn-sm">Lihat</a>
+                <a href="/admin/deleteCategory/<%= category.id_kategori %>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus kategori ini?');">Hapus</a>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <p>Belum ada kategori yang ditambahkan.</p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

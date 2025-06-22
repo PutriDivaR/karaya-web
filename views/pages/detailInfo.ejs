@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title><%= info.judul %></title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="/home.css">
+  <link rel="stylesheet" href="/detailInfo.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <%- include('../partials/header') %>
+
+  <!-- Sidebar + Konten -->
+  <div class="dashboard-container">
+
+    <!-- Sidebar -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- Konten Utama -->
+    <div class="main">
+      <a href="/bantuan/<%= info.id_informasi %>/download" class="download-btn">
+        <i class="fa fa-download"></i> Download
+      </a>
+      
+      <div class="info-container">
+        <h1><%= info.judul %></h1>
+        <div class="info-content">
+          <%- info.isi.replace(/\\n/g, '<br>') %>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

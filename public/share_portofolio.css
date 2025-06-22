@@ -1,0 +1,221 @@
+/* Container utama untuk halaman share portofolio */
+.share-container {
+  background-color: #896E4A; /* Coklat cream */
+  padding: 20px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between; /* Menjaga konten di sebelah kiri dan kanan */
+  max-width: 1000px;
+  margin: 50px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  min-height: 400px;
+}
+
+/* Bagian Portofolio di sebelah kiri */
+.portfolio-preview {
+  max-width: 60%;  /* Menampilkan gambar portofolio di 60% lebar container */
+  padding-right: 20px;  /* Memberikan jarak antara gambar dan tombol */
+  display: flex;
+  flex-direction: column;
+}
+
+.portfolio-preview img {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 15px;
+}
+
+.portfolio-preview h1 {
+  font-size: 32px;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 20px;
+  color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.portfolio-preview p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #fff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  flex-grow: 1;
+}
+
+/* Bagian Tombol Share di sebelah kanan */
+.share-options {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  justify-content: center;
+  align-items: center;
+  max-width: 35%;  /* Tombol share akan mengambil 35% dari ruang */
+  background-color: rgba(137, 110, 74, 0.9);  /* Warna coklat cream muda dengan transparansi */
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.share-options button {
+  padding: 15px 25px;
+  font-size: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  width: 100%;  /* Membuat tombol mengambil lebar penuh */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: none;
+  color: white;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.share-options button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.share-options button:active {
+  transform: translateY(-1px);
+}
+
+/* Tombol Share WhatsApp */
+.whatsapp {
+  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  border: 2px solid #25D366;
+}
+
+.whatsapp:hover {
+  background: linear-gradient(135deg, #128C7E 0%, #075E54 100%);
+  border-color: #128C7E;
+}
+
+.whatsapp img {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1);
+}
+
+/* Tombol Salin Tautan */
+.copy-link {
+  background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+  border: 2px solid #4CAF50;
+}
+
+.copy-link:hover {
+  background: linear-gradient(135deg, #45a049 0%, #388E3C 100%);
+  border-color: #45a049;
+}
+
+.copy-link img {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .share-container {
+    flex-direction: column;
+    margin: 20px auto;
+    padding: 15px;
+    min-height: auto;
+  }
+  
+  .portfolio-preview {
+    max-width: 100%;
+    padding-right: 0;
+    margin-bottom: 20px;
+  }
+  
+  .share-options {
+    max-width: 100%;
+  }
+  
+  .portfolio-preview h1 {
+    font-size: 24px;
+  }
+  
+  .share-options button {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .share-container {
+    margin: 10px;
+    padding: 10px;
+  }
+  
+  .portfolio-preview h1 {
+    font-size: 20px;
+  }
+  
+  .portfolio-preview p {
+    font-size: 14px;
+  }
+  
+  .share-options button {
+    padding: 10px 15px;
+    font-size: 12px;
+  }
+  
+  .whatsapp img,
+  .copy-link img {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Notification styles */
+.share-notification {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 12px 20px;
+  border-radius: 8px;
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1000;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  max-width: 300px;
+  word-wrap: break-word;
+}
+
+.share-notification.success {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+}
+
+.share-notification.error {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+}
+
+/* Animation for notification */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}

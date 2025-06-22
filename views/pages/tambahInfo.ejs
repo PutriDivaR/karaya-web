@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tambah Informasi Baru</title>
+    <link rel="stylesheet" href="/admin.css">
+    <link rel="stylesheet" href="/sidebar.css">
+</head>
+<body>
+
+  <%- include('../partials/sidebar', { user: user, isAdmin: isAdmin, loggedIn: true }) %>
+
+  <div class="search-bar">
+      <i class="fas fa-search"></i>
+      <input type="text" placeholder="Search...">
+  </div>
+
+  <div class="main-content">
+    <h2>Tambah Informasi Baru</h2>
+
+    <div class="admin-card">
+        <form class="admin-form" action="/admin/tambahInfo" method="POST">
+            <label for="infoTitle">Judul Informasi</label>
+            <input type="text" id="infoTitle" name="infoTitle" class="form-input" placeholder="Masukkan judul informasi" required>
+
+            <label for="infoContent">Isi Informasi</label>
+            <textarea id="infoContent" name="infoContent" class="form-input" placeholder="Tambahkan isi informasi" required></textarea>
+
+            <div class="button-group">
+                <a href="/admin/editInfo" class="btn btn-secondary">Batal</a>
+                <button type="submit" class="btn btn-success">Tambah Informasi</button>
+            </div>
+        </form>
+    </div>
+  </div>
+
+</body>
+</html>

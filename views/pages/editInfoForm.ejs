@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Informasi</title>
+    <link rel="stylesheet" href="/admin.css">
+    <link rel="stylesheet" href="/sidebar.css">
+</head>
+<body>
+
+  <%- include('../partials/sidebar', { user: user, isAdmin: isAdmin, loggedIn: true }) %>
+
+  <div class="main-content">
+    <h2>Edit Informasi</h2>
+
+    <div class="admin-card">
+      <form class="admin-form" action="/admin/editInfo/<%= info.id_informasi %>" method="POST">
+        
+        <label for="infoTitle">Judul Informasi</label>
+        <input type="text" id="infoTitle" name="infoTitle" class="form-input" value="<%= info.judul %>" required>
+
+        <label for="infoContent">Isi Informasi</label>
+        <textarea id="infoContent" name="infoContent" class="form-input" required><%= info.isi %></textarea>
+
+        <div class="button-group">
+          <a href="/admin/editInfo" class="btn btn-secondary">Batal</a>
+          <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/admin.css">
+    <link rel="stylesheet" href="/sidebar.css">
+    <title>Dashboard Admin</title>
+</head>
+<body>
+    <%- include('../partials/sidebar', { user: user, isAdmin: isAdmin, loggedIn: true }) %>
+
+    <div class="main-content">
+        <h1>Selamat Datang, Admin Karaya!</h1>
+        
+        <div class="admin-card">
+            <h2>Admin Dashboard</h2>
+            <p>Gunakan panel ini untuk mengelola konten website, termasuk kategori dan informasi penting lainnya.</p>
+            
+            <nav class="admin-nav">
+                <a href="/admin/editKategori" class="btn btn-primary">Kelola Kategori</a>
+                <a href="/admin/editInfo" class="btn btn-primary">Kelola Informasi</a>
+            </nav>
+        </div>
+    </div>
+
+</body>
+</html>

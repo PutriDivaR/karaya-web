@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Komentar</title>
+  <link rel="stylesheet" href="/komentar_lihat.css">
+</head>
+<body>
+  
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <h1>
+        💬 Komentar
+      </h1>
+    </div>
+
+    <!-- Comments Section -->
+    <div class="comments-section">
+      
+      <% if (komentar.length === 0) { %>
+        <div class="empty-state">
+          <div class="empty-state-icon">💭</div>
+          <p class="empty-state-message"><%= msg %></p>
+        </div>
+      <% } else { %>
+        <div class="comments-list">
+          <% komentar.forEach(function(item, index) { %>
+            <div class="comment-item" data-comment-id="<%= item.id_komentar %>">
+              
+              <!-- Decorative corner -->
+              <div class="decorative-corner"></div>
+              
+              <!-- Three-dot menu for comment owner -->
+              <% if (item.isOwner) { %>
+                <div class="comment-actions">
+                  <button class="three-dot-menu" data-index="<%= index %>">
+                    ⋯
+                  </button>
+                  <div class="action-dropdown" id="dropdown-<%= index %>">
+                    <button class="edit-button" data-index="<%= index %>" data-comment-id="<%= item.id_komentar %>">
+                      ✏ Edit
+                    </button>
+                    <button class="delete-button" data-index="<%= index %>" data-comment-id="<%= item.id_komentar %>">
+                      🗑 Hapus
+                    </button>
+                  </div>
+                </div>
+              <% } %>
+              
+              <!-- User Avatar & Name -->
+              <div class="user-info">
+                <div class="user-avatar">
+                  <%= item.nama_pengguna.charAt(0).toUpperCase() %>
+                </div>
+                <div class="user-details">
+                  <div class="user-name">
+                    <%= item.nama_pengguna %>
+                  </div>
+                  <div class="comment-date">
+                    📅 <%= item.tanggal_dibuat %>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Comment Content -->
+              <div class="comment-content">
+                <p class="comment-text" id="comment-text-<%= index %>">
+                  <%= item.isi_komentar %>
+                </p>
+              </div>
+              
+              <!-- Edit Form (hidden by default) -->
+              <div class="edit-form" id="edit-form-<%= index %>">
+                <textarea id="edit-textarea-<%= index %>" placeholder="Edit komentar Anda..."><%= item.isi_komentar %></textarea>
+                <div class="edit-form-buttons">
+                  <button class="cancel-button" data-index="<%= index %>">Batal</button>
+                  <button class="save-button" data-index="<%= index %>" data-comment-id="<%= item.id_komentar %>">Simpan</button>
+                </div>
+              </div>
+            </div>
+          <% }) %>
+        </div>
+      <% } %>
+      
+      <!-- Back Button -->
+      <div class="back-button-container">
+        <button 
+          onclick="window.location.href='/portofolio/<%= id_portofolio %>'" 
+          class="back-button">
+          ← Kembali ke Detail Portofolio
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Success Message -->
+  <div class="success-message" id="success-message"></div>
+  
+  <!-- Floating decorative elements -->
+  <div class="floating-decoration-1"></div>
+  <div class="floating-decoration-2"></div>
+
+  <script>
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', function(event) {
+      const dropdowns = document.querySelectorAll('.action-dropdown');
+      dropdowns.forEach(dropdown => {
+        if (!dropdown.contains(event.target) && !event.target.classList.contains('three-dot-menu')) {
+          dropdown.classList.remove('show');
+        }
+      });
+    });
+
+    // Three-dot menu click handler
+    document.addEventListener('click', function(event) {
+      if (event.target.classList.contains('three-dot-menu')) {
+        const index = event.target.dataset.index;
+        toggleDropdown(index);
+      }
+    });
+
+    // Edit button click handler
+    document.addEventListener('click', function(event) {
+      if (event.target.classList.contains('edit-button')) {
+        const index = event.target.dataset.index;
+        const commentId = event.target.dataset.commentId;
+        editComment(index, commentId);
+      }
+    });
+
+    // Delete button click handler
+    document.addEventListener('click', function(event) {
+      if (event.target.classList.contains('delete-button')) {
+        const index = event.target.dataset.index;
+        const commentId = event.target.dataset.commentId;
+        deleteComment(index, commentId);
+      }
+    });
+
+    // Cancel button click handler
+    document.addEventListener('click', function(event) {
+      if (event.target.classList.contains('cancel-button')) {
+        const index = event.target.dataset.index;
+        cancelEdit(index);
+      }
+    });
+
+    // Save button click handler
+    document.addEventListener('click', function(event) {
+      if (event.target.classList.contains('save-button')) {
+        const index = event.target.dataset.index;
+        const commentId = event.target.dataset.commentId;
+        saveEdit(index, commentId);
+      }
+    });
+
+    function toggleDropdown(index) {
+      const dropdown = document.getElementById(`dropdown-${index}`);
+      const allDropdowns = document.querySelectorAll('.action-dropdown');
+      
+      // Close all other dropdowns
+      allDropdowns.forEach(d => {
+        if (d !== dropdown) {
+          d.classList.remove('show');
+        }
+      });
+      
+      // Toggle current dropdown
+      dropdown.classList.toggle('show');
+    }
+
+    function editComment(index, commentId) {
+      // Hide dropdown
+      document.getElementById(`dropdown-${index}`).classList.remove('show');
+      
+      // Show edit form
+      document.getElementById(`edit-form-${index}`).classList.add('show');
+      
+      // Focus on textarea
+      const textarea = document.getElementById(`edit-textarea-${index}`);
+      textarea.focus();
+      textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+    }
+
+    function cancelEdit(index) {
+      // Hide edit form
+      document.getElementById(`edit-form-${index}`).classList.remove('show');
+      
+      // Reset textarea to original value
+      const textarea = document.getElementById(`edit-textarea-${index}`);
+      const originalText = document.getElementById(`comment-text-${index}`).textContent;
+      textarea.value = originalText;
+    }
+
+    function saveEdit(index, commentId) {
+      const textarea = document.getElementById(`edit-textarea-${index}`);
+      const newText = textarea.value.trim();
+      
+      if (!newText) {
+        alert('Komentar tidak boleh kosong!');
+        return;
+      }
+      
+      const commentItem = document.querySelector(`[data-comment-id="${commentId}"]`);
+      commentItem.classList.add('loading');
+      
+      fetch(`/komentar/edit/${commentId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ isi_komentar: newText })
+      })
+      .then(response => response.json())
+      .then(data => {
+        commentItem.classList.remove('loading');
+        
+        if (data.success) {
+          // Update the comment text
+          document.getElementById(`comment-text-${index}`).textContent = newText;
+          
+          // Hide edit form
+          document.getElementById(`edit-form-${index}`).classList.remove('show');
+          
+          // Show success message
+          showSuccessMessage(data.message);
+        } else {
+          alert(data.error || 'Terjadi kesalahan saat mengedit komentar.');
+        }
+      })
+      .catch(error => {
+        commentItem.classList.remove('loading');
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat mengedit komentar.');
+      });
+    }
+
+    function deleteComment(index, commentId) {
+      if (!confirm('Apakah Anda yakin ingin menghapus komentar ini?')) {
+        return;
+      }
+      
+      // Hide dropdown
+      document.getElementById(`dropdown-${index}`).classList.remove('show');
+      
+      const commentItem = document.querySelector(`[data-comment-id="${commentId}"]`);
+      commentItem.classList.add('loading');
+      
+      fetch(`/komentar/hapus/${commentId}`, {
+        method: 'DELETE'
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Remove the comment from DOM
+          commentItem.remove();
+          
+          // Show success message
+          showSuccessMessage(data.message);
+          
+          // Check if no comments left
+          const remainingComments = document.querySelectorAll('.comment-item');
+          if (remainingComments.length === 0) {
+            location.reload(); // Reload to show empty state
+          }
+        } else {
+          commentItem.classList.remove('loading');
+          alert(data.error || 'Terjadi kesalahan saat menghapus komentar.');
+        }
+      })
+      .catch(error => {
+        commentItem.classList.remove('loading');
+        console.error('Error:', error);
+        alert('Terjadi kesalahan saat menghapus komentar.');
+      });
+    }
+
+    function showSuccessMessage(message) {
+      const successMessage = document.getElementById('success-message');
+      successMessage.textContent = message;
+      successMessage.classList.add('show');
+      
+      setTimeout(() => {
+        successMessage.classList.remove('show');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>

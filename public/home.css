@@ -1,15 +1,37 @@
-*
+/* Modern Home Page Styles */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@700&display=swap');
+
+/* Re-using the established color palette with a darker background */
+:root {
+    --primary-color: #8B4513;
+    --secondary-color: #D2691E;
+    --accent-color: #FFD700;
+    --sidebar-bg: #FFFBF2;
+    --background-main: #EAE0C8; /* Darker background color */
+    --card-bg: #FFFFFF;
+    --text-primary: #2C1810;
+    --text-secondary: #6B4423;
+    --text-muted: #8B7355;
+    --border-color: #EFE5D8;
+    --shadow-light: 0 4px 20px rgba(139, 69, 19, 0.08);
+    --shadow-medium: 0 8px 32px rgba(139, 69, 19, 0.12);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--background-main);
 }
 
 .dashboard-container {
-  display: flex;
-  height: 100vh;
+    display: flex;
+    min-height: 100vh;
 }
-
-
 
 .main-profile {
   margin-left: 80px; 
@@ -17,105 +39,179 @@ body {
   flex: 1;
 }
 
-
 .main-content {
-  flex: 1;
-  background-color: #896E4A;
-  padding: 1rem;
-  overflow-y: auto;
-  margin-left: 80px;
+    flex: 1;
+    background-color: var(--background-main);
+    padding: 2.5rem;
+    overflow-y: auto;
+    margin-left: 80px;
+}
+
+.main-content h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: var(--text-primary);
+    margin-bottom: 2rem;
+}
+
+/* Search and Sort Controls */
+.controls-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
 }
 
 .search-bar {
-  background: #F7ECD9;
-  border-radius: 20px;
-  padding: 10px;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--card-bg);
+    border-radius: 25px;
+    padding: 0.5rem 1rem;
+    box-shadow: var(--shadow-light);
+    flex: 1;
+    min-width: 250px;
 }
 
-
+.search-bar i {
+    color: var(--text-muted);
+}
 
 .search-bar input {
-  border: none;
-  outline: none;
-  background: transparent;
-  width: 100%;
-  padding: 5px 10px;
+    border: none;
+    outline: none;
+    background: transparent;
+    width: 100%;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: var(--text-primary);
 }
 
-.gallery {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 15px;
+.search-bar input::placeholder {
+    color: var(--text-muted);
 }
 
-.card {
-  background-color: #896E4A;
-  padding: 10px;
-  border-radius: 15px;
-  height: 160px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.sorting-options {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 20px;
 }
 
-.thumbnail {
-  background-color: #D2B48C;
-  height: 100px;
-  border-radius: 10px;
+.sorting-options label {
+    font-weight: 500;
+    color: var(--text-secondary);
 }
 
+.sorting-options select {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    background-color: var(--card-bg);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-light);
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%236B4423' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    padding-right: 2.5rem;
+}
 
-/* BAGIAN Portofolio */
+/* Portfolio Grid */
 .portfolio-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-  margin-top: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 2rem;
 }
 
 .portfolio-item {
-  border: 1px solid #ddd;
-  padding: 15px;
-  width: 260px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
-  border-radius: 8px;
-  background-color: #fff;
+    background-color: var(--card-bg);
+    border-radius: 16px;
+    box-shadow: var(--shadow-medium);
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--text-primary);
+    display: flex;
+    flex-direction: column;
+    transition: var(--transition);
+    position: relative;
+}
+
+.portfolio-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 40px rgba(139, 69, 19, 0.16);
+}
+
+.portfolio-item .image-container {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    position: relative;
+    background-color: var(--text-primary); /* Dark background for letterboxing */
 }
 
 .portfolio-item img {
-  width: 100%;
-  height: auto;
-  border-radius: 6px;
-  object-fit: cover;
-  margin-bottom: 10px;
-}
-
-.portfolio-item h3 {
-  font-size: 1.2rem;
-  margin-bottom: 8px;
-  color: #333;
-}
-
-.portfolio-item p {
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 6px;
-}
-
-.portfolio-item {
-  display: inline-block;
-  margin: 10px;
-  text-align: center;
-}
-
-.portfolio-item img {
-  border-radius: 10px;
-  transition: transform 0.2s;
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Changed from 'cover' to 'contain' to show full image */
+    transition: transform 0.4s ease;
 }
 
 .portfolio-item:hover img {
-  transform: scale(1.05);
+    transform: scale(1.05);
+}
+
+.portfolio-item .image-container::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0) 40%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.portfolio-item:hover .image-container::after {
+    opacity: 1;
+}
+
+.portfolio-item h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 1rem 1.25rem;
+    margin: 0;
+    text-align: left;
+    background-color: var(--card-bg);
+    z-index: 1;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .main-content {
+        padding: 1.5rem;
+        margin-left: 0; /* Adjust for collapsed sidebar if any */
+    }
+
+    .controls-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .main-content h2 {
+        font-size: 2rem;
+    }
+
+    .portfolio-list {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.5rem;
+    }
 }

@@ -3,9 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title><%= title %></title>
-  <link rel="stylesheet" href="/css/portofolio_suka.css">
+  <link rel="stylesheet" href="/portofolio_suka.css">
 </head>
 <body>
+  <%- include('../partials/header') %>
+  <%- include('../partials/sidebar') %>
+
   <div class="container-suka">
     <!-- Kiri: Gambar -->
     <div class="image-preview">
@@ -32,5 +35,7 @@
       <a href="/portofolio/<%= portofolioId %>" class="back-link">← Kembali ke Portofolio</a>
     </div>
   </div>
+
+  <%- include('../partials/footer') %>
 </body>
 </html>

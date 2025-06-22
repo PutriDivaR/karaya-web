@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portofolio Kategori - <%= category.nama %></title>
+  <link rel="stylesheet" href="/kategori.css">
+  <link rel="stylesheet" href="/sidebar.css">
+</head>
+<body>
+
+  <%- include('../partials/sidebar', { user: user, isAdmin: isAdmin, loggedIn: true }) %>
+
+  <div class="main-content">
+    <div class="content-card">
+      <h2>Portofolio di Kategori: <%= category.nama %></h2>
+      
+      <div class="action-buttons">
+        <a href="/admin/downloadPortofolioPdf/<%= category.id_kategori %>" class="btn btn-download">
+          Unduh Daftar Portofolio
+        </a>
+      </div>
+
+      <div class="portfolio-grid-container">
+        <% if (portfolios && portfolios.length > 0) { %>
+          <div class="portfolio-grid">
+            <% portfolios.forEach(function(portfolio) { %>
+              <div class="portfolio-item">
+                <a href="/portofolio/<%= portfolio.id_portofolio %>">
+                  <img src="/uploads/<%= portfolio.gambar %>" alt="<%= portfolio.judul %>">
+                  <div class="portfolio-info">
+                    <p><%= portfolio.judul %></p>
+                    <small>oleh <%= portfolio.nama_pengguna %></small>
+                  </div>
+                </a>
+              </div>
+            <% }); %>
+          </div>
+        <% } else { %>
+          <div class="no-data-message">
+            <p>Belum ada portofolio dalam kategori ini.</p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

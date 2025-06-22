@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola Informasi</title>
+  <link rel="stylesheet" href="/admin.css">
+  <link rel="stylesheet" href="/sidebar.css">
+</head>
+<body>
+  <%- include('../partials/sidebar', { user: user, isAdmin: isAdmin, loggedIn: true }) %>
+
+  <div class="main-content">
+    <h2>Kelola Informasi</h2>
+
+    <div class="admin-card">
+      <div class="toolbar">
+        <a href="/admin/tambahInfo" class="btn btn-success">Tambah Informasi</a>
+        <a href="/admin/downloadInfoPdf" class="btn btn-secondary">Unduh Daftar Informasi</a>
+      </div>
+
+      <div class="info-grid">
+        <% if (information && information.length > 0) { %>
+          <% information.forEach(function(info) { %>
+            <div class="info-card">
+              <h3><%= info.judul %></h3>
+              <p><%= info.isi %></p>
+              <div class="action-buttons">
+                <a href="/admin/editInfo/<%= info.id_informasi %>" class="btn btn-secondary btn-sm">Edit</a>
+                <a href="/admin/deleteInfo/<%= info.id_informasi %>" class="btn btn-danger btn-sm" onclick="return confirm('Apakah Anda yakin ingin menghapus informasi ini?');">Hapus</a>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <p>Belum ada informasi yang ditambahkan.</p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

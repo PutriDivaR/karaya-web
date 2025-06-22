@@ -10,10 +10,21 @@
 <body>
     <div class="container">
         <div class="content">
-            <div class="header">
+             <div class="header">
                 <div class="search-and-add">
-                    <input type="text" placeholder="Search..." class="search-bar">
                     <a href="/tambah_papan" class="add-board">Tambah Papan</a>
+                    <!-- Tombol Unduh PDF -->
+<button class="save-button" id="downloadPDFButton">
+    <span>Unduh PDF</span>
+  </button>
+  
+  <script>
+    // JavaScript untuk mengunduh PDF
+    document.getElementById('downloadPDFButton').addEventListener('click', function () {
+      // Mengambil ID papan favorit atau data lain yang perlu dimasukkan dalam PDF
+      window.location.href = `/generate-pdf-favorit`;  // Arahkan ke route untuk generate PDF favorit
+    });
+  </script>
                 </div>
             </div>
 

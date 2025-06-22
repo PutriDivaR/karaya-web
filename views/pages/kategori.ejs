@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jelajahi Kategori</title>
+  <link rel="stylesheet" href="/kategori.css">
+  <link rel="stylesheet" href="/sidebar.css">
+</head>
+<body>
+  <%- include('../partials/sidebar') %>
+
+  <div class="main-content">
+    <h2>Jelajahi Berdasarkan Kategori</h2>
+
+    <div class="content-card">
+      <% if (kategoriWithPortfolios && kategoriWithPortfolios.length > 0) { %>
+        <div class="category-grid">
+          <% kategoriWithPortfolios.forEach(function(item) { %>
+            <a href="/kategori/<%= item.category.id_kategori %>" class="category-button">
+              <%= item.category.nama %>
+            </a>
+          <% }); %>
+        </div>
+      <% } else { %>
+        <p class="no-data-message">Belum ada kategori yang dapat dijelajahi saat ini.</p>
+      <% } %>
+    </div>
+  </div>
+
+</body>
+</html>

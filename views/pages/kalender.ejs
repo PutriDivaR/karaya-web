@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Kalender Riwayat Upload</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- FullCalendar -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="/kalender.css" />
+</head>
+<body>
+  <!-- Header -->
+  <%- include('../partials/header') %>
+
+  <!-- Sidebar + Konten -->
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <%- include('../partials/sidebar') %>
+
+    <h2>Kalender Riwayat Upload</h2>
+
+    <div class="container">
+      <div id="calendar"></div>
+      <div id="detail">
+        <h4>Detail Upload</h4>
+        <div id="uploadList">
+          <p>Klik tanggal di kalender.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kirim data upload ke client -->
+    <div id="uploadData"
+         data-uploads="<%= JSON.stringify(uploads.map(item => ({
+           title: item.judul,
+           start: new Date(item.tanggal_dibuat).toISOString().split('T')[0],
+           allDay: true,
+           url: '/portofolio/' + item.id_portofolio, // untuk link ke detail
+           id_portofolio: item.id_portofolio // kalau mau dipakai tambahan
+         }))) %>">
+    </div>
+
+    <script>
+      const uploads = JSON.parse(document.getElementById('uploadData').dataset.uploads);
+
+      document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+        const uploadList = document.getElementById('uploadList');
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',
+          locale: 'id',
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: ''
+          },
+          events: uploads,
+
+          // Arahkan ke detail portofolio saat klik judul event
+          eventClick: function(info) {
+            info.jsEvent.preventDefault(); // Hindari buka tab baru
+            if (info.event.url) {
+              window.location.href = info.event.url;
+            }
+          },
+
+          // Tetap tampilkan detail di samping saat klik tanggal
+          dateClick: function(info) {
+            const clickedDate = info.dateStr;
+            const filtered = uploads.filter(item => item.start === clickedDate);
+
+            if (filtered.length === 0) {
+              uploadList.innerHTML = "<p>Tidak ada upload pada tanggal ini.</p>";
+            } else {
+              uploadList.innerHTML = filtered.map(item => `
+                <div class="event-item">
+                  <strong><a href="/portofolio/${item.id_portofolio}">${item.title}</a></strong><br>
+                  <small>${item.start}</small>
+                </div>
+              `).join('');
+            }
+          }
+        });
+
+        calendar.render();
+      });
+    </script>
+
+  </div>
+</body>
+</html>

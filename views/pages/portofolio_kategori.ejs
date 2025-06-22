@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portofolio Kategori</title>
+  <link rel="stylesheet" href="/kategori.css">
+</head>
+<body>
+  <!-- Sidebar dan search bar tetap ada di sini -->
+  <%- include('../partials/sidebar') %>
+  <!-- Search Bar -->
+  <div class="search-bar">
+    <i class="fas fa-search"></i>
+    <input type="text" placeholder="Search...">
+  </div>
+
+
+  <div class="main-content">
+    <h2>Portofolio Kategori: <%= categoryId %></h2> <!-- Menampilkan nama kategori -->
+
+       <div class="sorting-options">
+  <label for="sortOrder">Sort By:</label>
+  <select id="sortOrder" onchange="sortPortfolios()">
+     <option value="latest" <%= sort === 'latest' ? 'selected' : '' %>>Latest Upload</option>
+    <option value="oldest" <%= sort === 'oldest' ? 'selected' : '' %>>Oldest Upload</option>
+  </select>
+</div>
+
+<script>
+  function sortPortfolios() {
+    const sortOrder = document.getElementById('sortOrder').value;
+    const categoryId = "<%= categoryId %>"; 
+    window.location.href = `/kategori/${categoryId}?sort=${sortOrder}`;
+  }
+   document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const sort = urlParams.get('sort');
+    if (sort) {
+      document.getElementById('sortOrder').value = sort;
+    }
+  });
+</script>
+
+    <div class="portfolio-list">
+      <% portfolios.forEach(function(portfolio) { %>
+        <div class="portfolio-item">
+          <a href="/portofolio/<%= portfolio.id_portofolio %>">
+            <h4><%= portfolio.judul %></h4>
+            <img src="/uploads/<%= portfolio.gambar %>" alt="<%= portfolio.judul %>" width="150" height="150">
+          </a>
+        </div>
+      <% }); %>
+    </div>
+  </div>
+</body>
+</html>

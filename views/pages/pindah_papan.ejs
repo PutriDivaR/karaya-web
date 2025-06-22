@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pindah Papan</title>
+  <%- include('../partials/sidebar') %>
+  <link rel="stylesheet" href="/pindah_papan.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="content">
+      <h1>Pindah Papan</h1>
+      <div class="pindah-container">
+        <div class="portfolio-preview">
+          <img src="/uploads/<%= portofolio.gambar %>" alt="<%= portofolio.judul %>" />
+        </div>
+        <div class="pindah-form">
+          <form action="/pindah-papan-action" method="POST">
+            <input type="hidden" name="id_portofolio" value="<%= portofolio.id_portofolio %>">
+            <input type="hidden" name="from_papan" value="<%= from_papan %>">
+            
+            <label for="to_papan">Daftar Papan</label>
+            <select name="to_papan" id="to_papan" required>
+              <% papanList.forEach(papan => { %>
+                <option value="<%= papan.id_papan %>"><%= papan.nama_papan %></option>
+              <% }) %>
+            </select>
+            
+            <button type="submit" class="btn-simpan">Simpan</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html> 

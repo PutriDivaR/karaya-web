@@ -1,0 +1,87 @@
+/* Reset dasar */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Styling body */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #896E4A;
+  color: #333;
+  padding: 20px;
+}
+
+/* Konten utama */
+.main-content {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 30px;
+  background-color: #F7ECD9;
+  border-radius: 10px;
+  margin-left: 80px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+/* Judul */
+.main-content h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #5a3e1b;
+}
+
+/* Label */
+form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  color: #444;
+}
+
+/* Input & Textarea */
+form input[type="text"],
+form textarea {
+  width: 100%;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 16px;
+  background-color: #fafafa;
+  transition: border-color 0.2s ease-in-out;
+}
+
+form input:focus,
+form textarea:focus {
+  border-color: #a9744f;
+  outline: none;
+}
+
+/* Tombol Submit */
+form button[type="submit"] {
+  background-color: #5a3e1b;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+form button[type="submit"]:hover {
+  background-color: #744f2a;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  body {
+    margin-left: 0;
+    padding: 10px;
+  }
+
+  .main-content {
+    padding: 20px;
+  }
+} 

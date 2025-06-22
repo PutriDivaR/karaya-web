@@ -5,72 +5,82 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Portofolio</title>
     <link rel="stylesheet" href="/upload_portofolio.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="dashboard-container">
         <%- include('../partials/sidebar') %>
     </div>
-
-    <div>
-        <h2>Edit Portofolio Yang Telah diupload</h2><hr>
-        <div class="content">
+    
+    <div class="main-content">
+        <h2>Edit Portofolio Yang Telah diupload</h2>
+        <div class="upload-container">
             <form class="form" method="POST" action="/edit_portofolio" enctype="multipart/form-data">
-                <!-- Hidden input untuk id portofolio -->
                 <input type="hidden" name="id_portofolio" value="<%= portofolio.id_portofolio %>">
                 
-                <!-- Input untuk gambar dan lainnya -->
                 <div class="form-row">
-                    <!-- Kolom File -->
                     <div class="form-column image-column">
-                        <div class="image-preview" id="imagePreview">
-                            <input type="file" name="gambar" id="imageUpload" accept="image/*" class="file-input">
-                            <!-- Menampilkan gambar yang ada -->
-                            <img src="/uploads/<%= portofolio.gambar %>" alt="<%= portofolio.judul %>" width="250">
-                        </div>
+                        <label for="imageUpload" class="image-upload-label">
+                            <div class="image-preview" id="imagePreview">
+                                <!-- Existing image is shown by default -->
+                                <img id="imageDisplay" src="/uploads/<%= portofolio.gambar %>" alt="Portofolio Image" />
+                            </div>
+                        </label>
+                        <input class="file-input" type="file" name="gambar" id="imageUpload" accept="image/*" />
                     </div>
 
-                    <!-- Kolom Input -->
                     <div class="form-column input-column">
-                        <label>Judul</label>
-                        <input type="text" name="judul" class="form-input" placeholder="Judul" value="<%= portofolio.judul %>" required>
+                        <label for="judul">Judul</label>
+                        <input type="text" id="judul" name="judul" class="form-input" placeholder="Masukkan judul portofolio" value="<%= portofolio.judul %>" required>
 
-                        <label>Deskripsi</label>
-                        <input type="text" name="deskripsi" class="form-input" placeholder="Deskripsi" value="<%= portofolio.deskripsi %>" required>
+                        <label for="deskripsi">Deskripsi</label>
+                        <textarea id="deskripsi" name="deskripsi" class="form-input" placeholder="Tambahkan deskripsi singkat" required><%= portofolio.deskripsi %></textarea>
 
-                        <label>Kategori</label>
-                        <select name="id_kategori" class="form-input">
+                        <label for="kategori">Kategori</label>
+                        <select id="kategori" name="id_kategori" class="form-input" required>
                             <option value="">-- Pilih Kategori --</option>
-                            <option value="1" <%= portofolio.id_kategori == 1 ? 'selected' : '' %>>Kategori 1</option>
-                            <option value="2" <%= portofolio.id_kategori == 2 ? 'selected' : '' %>>Kategori 2</option>
-                            <option value="3" <%= portofolio.id_kategori == 3 ? 'selected' : '' %>>Kategori 3</option>
+                            <% categories.forEach(function(category) { %>
+                                <!-- Set selected if category matches -->
+                                <option value="<%= category.id_kategori %>" <%= (portofolio && portofolio.id_kategori == category.id_kategori) ? 'selected' : '' %>>
+                                    <%= category.nama %>
+                                </option>
+                            <% }); %>
                         </select>
 
-                        <button type="submit" class="upload-button">Simpan Perubahan</button>
+                        <div class="button-group">
+                             <a href="/portofolio/hapus/<%= portofolio.id_portofolio %>" class="upload-button secondary" onclick="return confirm('Apakah Anda yakin ingin menghapus portofolio ini?');">Hapus</a>
+                            <button type="submit" class="upload-button primary">Simpan Perubahan</button>
+                        </div>
                     </div>
                 </div>
             </form>
         </div>
     </div>
 
-    <script>
-        // Preview image after selecting a file
-        const fileInput = document.getElementById('imageUpload');
-        const imagePreview = document.getElementById('imagePreview');
-
-        fileInput.addEventListener('change', function () {
-            const file = fileInput.files[0];
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const fileInput = document.getElementById('imageUpload');
+    const imagePreview = document.getElementById('imagePreview');
+    
+    fileInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
             const reader = new FileReader();
-
-            reader.onloadend = function () {
-                imagePreview.style.backgroundImage = `url(${reader.result})`;
+            reader.onload = function (e) {
+                let imageDisplay = document.getElementById('imageDisplay');
+                // If the img element doesn't exist, create it
+                if (!imageDisplay) {
+                    imageDisplay = document.createElement('img');
+                    imageDisplay.id = 'imageDisplay';
+                    imagePreview.innerHTML = ''; // Clear any placeholder text/icons
+                    imagePreview.appendChild(imageDisplay);
+                }
+                imageDisplay.src = e.target.result;
             }
-
-            if (file) {
-                reader.readAsDataURL(file);
-            } else {
-                imagePreview.style.backgroundImage = '';
-            }
-        });
-    </script>
+            reader.readAsDataURL(file);
+        }
+    });
+});
+</script>
 </body>
 </html>

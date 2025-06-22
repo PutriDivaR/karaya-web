@@ -2,174 +2,124 @@
 <%- include('../partials/header') %>
 <%- include('../partials/sidebar') %>
 
-
-<style>
-  body {
-    background-color: #fbeec1;
-    font-family: 'Poppins', sans-serif;
-      flex: 1;
-  padding: 1rem;
-  overflow-y: auto;
-  margin-left: 80px;
-  }
-
-  .container {
-    background-color: #5e412f;
-    border-radius: 20px;
-    max-width: 700px;
-    margin: 40px auto;
-    padding: 20px;
-    color: white;
-
-      position: static;
-  overflow: visible;
-  z-index: auto;
-  }
-
-  .save-button {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: none;
-    border: none;
-    font-size: 20px;
-    color: white;
-    cursor: pointer;
-  }
-
-  .portfolio-preview {
-    background-color: #fff8e1;
-    border-radius: 20px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    color: #1a1a1a;
-  }
-
-  .portfolio-preview img {
-    width: 100%;
-    max-width: 400px;
-    height: auto;
-    border-radius: 12px;
-    margin-bottom: 20px;
-    object-fit: cover;
-  }
-
-  .portfolio-preview h2 {
-    font-family: 'Playfair Display', serif;
-    font-size: 24px;
-    margin-bottom: 10px;
-  }
-
-  .portfolio-preview p.description {
-    font-size: 14px;
-    padding: 0 10px;
-    margin-bottom: 10px;
-  }
-
-  .portfolio-meta {
-    font-size: 12px;
-    color: #555;
-  }
-
-  .action-bar {
-    margin-top: 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #5e412f;
-    padding: 10px;
-    border-radius: 10px;
-    gap: 10px;
-    flex-wrap: wrap;
-  }
-
-  .action-buttons {
-    display: flex;
-    align-items: center;
-    gap: 30px;
-  }
-
-  .like-count {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    color: #fff;
-  }
-
-  .like-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-
-  .like-btn .icon {
-    width: 20px;
-    height: 20px;
-    transition: fill 0.3s ease;
-  }
-
-  .like-btn.liked .icon {
-    fill: #e63946;
-  }
-
-  .like-count span {
-    margin-left: 10px;
-    gap: 10px;
-  }
-
-  .action-buttons button {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 14px;
-    cursor: pointer;
-  }
-
-  .comment-section {
-    display: flex;
-    flex: 1;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .comment-section input[type="text"] {
-    border: none;
-    padding: 6px 10px;
-    border-radius: 8px;
-    font-size: 12px;
-    flex: 1;
-  }
-
-  .comment-section button {
-    background-color: #fbb034;
-    border: none;
-    color: #000;
-    padding: 6px 12px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 12px;
-  }
-  .main-content {
-  flex: 1;
-  background-color: #896E4A;
-  padding: 1rem;
-  overflow-y: auto;
-  margin-left: 80px;
-}
-</style>
+<!-- Link to external CSS -->
+<link rel="stylesheet" href="/detail_portofolio.css">
 
 <div class="container">
   
-  <button class="save-button" title="Simpan">
-    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <button class="save-papan-button" onclick="bukaPopupPapan()" title="Simpan">
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"></path>
     </svg>
   </button>
+
+<!-- === Popup Pilih Papan === -->
+<div id="popupPapan" class="popup-papan" style="display:none;">
+  <div class="popup-content">
+    <h3>Pilih Papan</h3>
+
+    <!-- Kontainer daftar papan, diisi lewat JavaScript -->
+    <div id="daftarPapan">
+      <p>Loading...</p>
+    </div>
+
+    <!-- Tombol buat papan -->
+<% if (!user) { %>
+<% } else { %>
+  <a href="/tambah_papan" class="item-papan tombol-tambah">
+    <div class="plus">+</div>
+    <span>Buat papan</span>
+  </a>
+<% } %>
+
+
+    <button onclick="tutupPopupPapan()">Tutup</button>
+  </div>
+</div>
+
+<!-- === Data tersembunyi untuk dikirim ke backend === -->
+<input type="hidden" id="idPortofolio" value="<%= portofolio.id_portofolio %>">
+
+<!-- === JavaScript === -->
+<script>
+function bukaPopupPapan() {
+  const container = document.getElementById('daftarPapan');
+  container.innerHTML = '<p>Loading...</p>';
+
+  // Tampilkan pop-up dulu
+  document.getElementById('popupPapan').style.display = 'flex';
+
+  // Ambil data papan dari server
+  fetch('/get-papan', { credentials: 'include' })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Belum login atau akses ditolak.');
+      }
+      return res.json();
+    })
+    .then(data => {
+      container.innerHTML = ''; // Kosongkan kontainer
+
+      // Cek apakah daftar kosong
+      if (data.length === 0) {
+        container.innerHTML = '<p>Tidak ada papan tersedia.</p>';
+      } else {
+        // Tampilkan semua papan
+        data.forEach(p => {
+          const item = document.createElement('div');
+          item.className = 'item-papan';
+          item.onclick = () => simpanKePapan(p.id_papan);
+          item.innerHTML = `
+            <img src="/uploads/${p.gambar || 'default.jpg'}" class="gambar-papan" />
+            <span>${p.nama_papan}</span>
+          `;
+          container.appendChild(item);
+        });
+      }
+    })
+    .catch(err => {
+      console.error('Fetch error:', err);
+      container.innerHTML = `
+        <div style="text-align: center; padding: 20px;">
+          <p style="color: #e74c3c; font-weight: bold; margin-bottom: 15px;">⚠ Anda harus login terlebih dahulu!</p>
+          <p style="margin-bottom: 20px;">Untuk menyimpan portofolio ke papan favorit, silakan login atau daftar akun.</p>
+          <div style="display: flex; gap: 10px; justify-content: center;">
+            <a href="/login" style="background-color: #3498db; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Login</a>
+            <a href="/register" style="background-color: #2ecc71; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Daftar</a>
+          </div>
+        </div>
+      `;
+    });
+}
+
+function tutupPopupPapan() {
+  document.getElementById('popupPapan').style.display = 'none';
+}
+
+function simpanKePapan(idPapan) {
+  const idPortofolio = document.getElementById('idPortofolio').value;
+
+  fetch('/simpan-ke-papan', {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id_papan: idPapan, id_portofolio: idPortofolio })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('✅ Berhasil disimpan ke papan!');
+      tutupPopupPapan();
+    } else {
+      alert('❌ Portofolio sudah pernah disimpan.');
+    }
+  })
+  .catch(err => {
+    console.error('POST error:', err);
+    alert('Terjadi kesalahan saat menyimpan.');
+  });
+}
+</script>
 
   <div class="portfolio-preview">
     <h2><%= portofolio.judul %></h2>
@@ -182,44 +132,71 @@
   </div>
 
   <div class="action-bar">
-    <div class="action-buttons">
-      <form action="/like/<%= portofolio.id_portofolio %>" method="POST" class="like-form">
-        <button type="submit" class="like-btn <%= portofolio.userLiked ? 'liked' : '' %>" data-id="<%= portofolio.id_portofolio %>">
-           <svg width="20" height="20" 
-                fill="<%= portofolio.userLiked ? 'red' : 'none' %>" 
-                 stroke="white" stroke-width="2" viewBox="0 0 24 24">
-             <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
-                      2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09 
-                      C13.09 3.81 14.76 3 16.5 3 
-                      19.58 3 22 5.42 22 8.5 
-                      c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-    </svg>
-    <a href="/portofolio/<%= portofolio.id_portofolio %>/suka" class="like-count" style="color: inherit; text-decoration: none;">
-  <%= portofolio.jumlah_suka %> suka
-</a>
+    <div class="top-actions">
+        <form action="/like/<%= portofolio.id_portofolio %>" method="POST" class="like-form" data-logged-in="<%= !!user %>">
+            <button type="submit" class="like-btn <%= portofolio.userLiked ? 'liked' : '' %>" data-id="<%= portofolio.id_portofolio %>">
+            <svg width="20" height="20" 
+                    fill="<%= portofolio.userLiked ? 'red' : 'none' %>" 
+                    stroke="white" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 
+                        2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09 
+                        C13.09 3.81 14.76 3 16.5 3 
+                        19.58 3 22 5.42 22 8.5 
+                        c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            <span class="like-count">
+                <a href="/portofolio/<%= portofolio.id_portofolio %>/suka" style="color: white; text-decoration: none; cursor: pointer;">
+                <%= portofolio.jumlah_suka %> suka
+                </a>
+            </span>
+            </button>
+        </form>
 
-  </button>
-</form>
-
-      </form>
-      <button>🔗 Share</button>
+        <button id="shareButton" class="action-btn" onclick="window.location.href='/share-portofolio/<%= portofolio.id_portofolio %>'">🔗 Share</button>
+        
+        <a href="/komentar/lihat/<%= portofolio.id_portofolio %>" class="action-btn">Lihat Komentar</a>
+        
+        <button class="action-btn" id="downloadPDFButton">Unduh PDF</button>
     </div>
-    <div class="comment-section">
-      <input type="text" placeholder="Tambahkan Komentar ...." />
-      <button>Kirim</button>
-      <button>Lihat Komentar</button>
-    </div>
+    
+    <form action="/komentar/tambah" method="POST" class="comment-section" id="commentForm">
+      <input type="text" name="isi_komentar" placeholder="Tambahkan Komentar ...." required />
+      <input type="hidden" name="id_portofolio" value="<%= portofolio.id_portofolio %>" />
+      <button type="submit">Kirim</button>
+    </form>
   </div>
-</div>
+
+<!-- Notification Element -->
+<div class="notification" id="notification"></div>
+
+<script>
+  // JavaScript untuk mengunduh PDF
+  document.getElementById('downloadPDFButton').addEventListener('click', function () {
+    // Ambil ID portofolio dari EJS
+    const portofolioId = "<%= portofolio.id_portofolio %>";
+
+    // Arahkan ke endpoint backend yang akan menghasilkan PDF
+    window.location.href = "/generate-pdf/" + portofolioId;  // Route yang menggenerate PDF
+  });
+</script>
 
 <script>
   document.querySelectorAll('.like-form').forEach(form => {
     form.addEventListener('submit', function(e) {
       e.preventDefault();
+      
+      // Check if user is logged in using data attribute
+      const isLoggedIn = form.dataset.loggedIn === 'true';
+      
+      if (!isLoggedIn) {
+        showNotification('Silakan login terlebih dahulu untuk memberikan like!', 'error');
+        return;
+      }
+      
       const button = this.querySelector('.like-btn');
       const portofolioId = button.dataset.id;
 
-      fetch(`/like/${portofolioId}`, {
+      fetch("/like/" + portofolioId, {
         method: 'POST',
         credentials: 'same-origin'
       })
@@ -229,20 +206,116 @@
 
           const svg = button.querySelector('svg');
           const countSpan = button.querySelector('.like-count');
-          let count = parseInt(countSpan.textContent);
+          let countText = countSpan.textContent.trim();
+          let count = parseInt(countText.split(' ')[0]); // Extract number from "X suka"
 
           if (data.liked) {
             button.classList.add('liked');
             svg.setAttribute('fill', 'red');
-            countSpan.textContent = count + 1;
+            countSpan.innerHTML = '<a href="/portofolio/' + portofolioId + '/suka" style="color: white; text-decoration: none; cursor: pointer;">' + (count + 1) + ' suka</a>';
           } else {
             button.classList.remove('liked');
             svg.setAttribute('fill', 'none');
-            countSpan.textContent = count - 1;
+            countSpan.innerHTML = '<a href="/portofolio/' + portofolioId + '/suka" style="color: white; text-decoration: none; cursor: pointer;">' + (count - 1) + ' suka</a>';
           }
+        })
+        .catch(error => {
+          console.error('Like error:', error);
+          showNotification('Terjadi kesalahan saat memberikan like.', 'error');
         });
     });
   });
+
+  // Comment form submission handler
+  document.getElementById('commentForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Check if user is logged in
+    const isLoggedIn = document.querySelector('.like-form').dataset.loggedIn === 'true';
+    
+    if (!isLoggedIn) {
+      showNotification('Silakan login terlebih dahulu untuk menambahkan komentar!', 'error');
+      return;
+    }
+    
+    const form = this;
+    const commentInput = form.querySelector('input[name="isi_komentar"]');
+    const portfolioInput = form.querySelector('input[name="id_portofolio"]');
+    const submitButton = form.querySelector('button[type="submit"]');
+    
+    const commentData = {
+      isi_komentar: commentInput.value,
+      id_portofolio: portfolioInput.value
+    };
+    
+    console.log('Form submitted');
+    console.log('Comment data:', commentData);
+    
+    // Add loading state
+    form.classList.add('loading');
+    submitButton.textContent = 'Mengirim...';
+    
+    fetch('/komentar/tambah', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(commentData),
+      credentials: 'same-origin'
+    })
+    .then(response => {
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+      return response.json();
+    })
+    .then(data => {
+      console.log('Response data:', data);
+      
+      // Remove loading state
+      form.classList.remove('loading');
+      submitButton.textContent = 'Kirim';
+      
+      if (data.success) {
+        // Show success notification
+        showNotification('Komentar berhasil ditambahkan!', 'success');
+        
+        // Clear the input
+        commentInput.value = '';
+        
+        // Focus back to input for next comment
+        commentInput.focus();
+      } else {
+        // Show error notification
+        showNotification(data.error || 'Terjadi kesalahan saat menambahkan komentar.', 'error');
+      }
+    })
+    .catch(error => {
+      console.error('Fetch error:', error);
+      
+      // Remove loading state
+      form.classList.remove('loading');
+      submitButton.textContent = 'Kirim';
+      
+      showNotification('Terjadi kesalahan saat menambahkan komentar.', 'error');
+    });
+  });
+
+  // Function to show notification
+  function showNotification(message, type = 'success') {
+    const notification = document.getElementById('notification');
+    
+    // Set message and type
+    notification.textContent = message;
+    notification.className = 'notification ' + type;
+    
+    // Show notification
+    notification.classList.add('show');
+    
+    // Hide notification after 3 seconds
+    setTimeout(() => {
+      notification.classList.remove('show');
+    }, 3000);
+  }
 </script>
 
 <%- include('../partials/footer') %>

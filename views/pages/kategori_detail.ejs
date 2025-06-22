@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/kategori.css">
+  <link rel="stylesheet" href="/sidebar.css">
+</head>
+<body>
+  <%- include('../partials/sidebar') %>
+
+  <div class="main-content">
+    <div class="category-header-card">
+        <h1><%= category.nama %></h1>
+        <p><%= category.deskripsi || 'Tidak ada deskripsi untuk kategori ini.' %></p>
+    </div>
+
+    <div class="portfolio-grid-container">
+        <% if (portofolios && portofolios.length > 0) { %>
+            <div class="sort-controls">
+                <a href="/kategori/<%= categoryId %>?sort=latest" class="sort-btn <%= sort === 'latest' ? 'active' : '' %>">Terbaru</a>
+                <a href="/kategori/<%= categoryId %>?sort=oldest" class="sort-btn <%= sort === 'oldest' ? 'active' : '' %>">Terlama</a>
+            </div>
+            <div class="portfolio-grid">
+                <% portofolios.forEach(function(portfolio) { %>
+                    <a href="/portofolio/<%= portfolio.id_portofolio %>" class="portfolio-item">
+                        <img src="/uploads/<%= portfolio.gambar %>" alt="<%= portfolio.judul %>">
+                        <div class="portfolio-info">
+                            <p><%= portfolio.judul %></p>
+                            <small><%= portfolio.nama_pengguna %></small>
+                        </div>
+                    </a>
+                <% }); %>
+            </div>
+        <% } else { %>
+            <div class="content-card">
+                <p class="no-data-message">Belum ada portofolio di kategori ini.</p>
+            </div>
+        <% } %>
+    </div>
+  </div>
+
+</body>
+</html>

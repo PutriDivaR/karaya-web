@@ -5,227 +5,323 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>KARAYA</title>
   <link rel="stylesheet" href="/profile.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    .pin-icon {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 24px;
+      pointer-events: none; /* Make it non-interactive */
+    }
+  </style>
 </head>
-<body>
+<body data-is-owner="<%= isOwner || false %>">
   <%- include('../partials/header') %>
 
   <div class="dashboard-container">
     <%- include('../partials/sidebar') %>
 
     <div class="main-profile">
+      <% if (msg === 'profile_updated') { %>
+        <div class="success-message">
+          <p>Profil berhasil diperbarui!</p>
+        </div>
+      <% } %>
+      
       <div class="profile-header">
         <div class="left-section">
           <div class="profile-photo">
-            <img src="/images/profile.jpg" alt="Foto Profil">
-            <button class="edit-button">Edit Profil</button>
+            <img src="<%= user && user.foto_profil ? '/uploads/' + user.foto_profil : '/images/profile.jpg' %>" alt="Foto Profil">
+            <% if (isOwner) { %>
+              <div class="profile-buttons">
+                <a href="/edit-profile" class="edit-button">Edit Profil</a>
+                <a href="/download-profile" class="download-button">Unduh Profile</a>
+              </div>
+            <% } %>
           </div>
-     <div class="profile-info">
-        <h2><%= user ? user.nama_pengguna : 'Nama Pengguna' %></h2>
-        <p><%= user ? user.bio : 'Biodata diri (deskripsi)' %></p>
-      </div>
+          <div class="profile-info">
+            <h2><%= user ? user.nama_pengguna : 'Nama Pengguna' %></h2>
+            <p><%= user ? user.bio : 'Biodata diri (deskripsi)' %></p>
+          </div>
         </div>
 
         <div class="contact-section">
           <h3>Contact</h3>
           <div class="contact-icons">
-            <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
-            <a href="#"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-            <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+            <% if (user && user.platform_kontak && user.info_kontak) { %>
+              <% 
+                const platforms = user.platform_kontak.split(',');
+                const infos = user.info_kontak.split(',');
+                let linkedin = '', whatsapp = '', twitter = '';
+                
+                platforms.forEach((platform, index) => {
+                  const cleanPlatform = platform.trim().toLowerCase();
+                  const info = infos[index] ? infos[index].trim() : '';
+                  
+                  if (cleanPlatform === 'linkedin') {
+                    linkedin = info;
+                  } else if (cleanPlatform === 'whatsapp') {
+                    whatsapp = info;
+                  } else if (cleanPlatform === 'twitter') {
+                    twitter = info;
+                  }
+                });
+              %>
+              
+              <% if (linkedin) { %>
+                <a href="<%= linkedin %>" target="_blank"><i class="fab fa-linkedin"></i> LinkedIn</a>
+              <% } %>
+              <% if (whatsapp) { %>
+                <a href="https://wa.me/<%= whatsapp.replace('+', '') %>" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+              <% } %>
+              <% if (twitter) { %>
+                <a href="<%= twitter %>" target="_blank"><i class="fab fa-twitter"></i> Twitter</a>
+              <% } %>
+              
+              <% if (!linkedin && !whatsapp && !twitter) { %>
+                <p>Tidak ada informasi kontak</p>
+              <% } %>
+            <% } else { %>
+              <p>Tidak ada informasi kontak</p>
+            <% } %>
           </div>
         </div>
       </div>
 
       <!-- Tabs -->
       <div class="tabs">
-        <button class="tab-btn active" data-tab="arsip">Arsip</button>
-        <button class="tab-btn" data-tab="draft">Draft</button>
+        <% if (isOwner) { %>
+          <button class="tab-btn" data-tab="arsip">Arsip</button>
+          <button class="tab-btn" data-tab="draft">Draft</button>
+        <% } %>
         <button class="tab-btn" data-tab="portofolio">Portofolio</button>
-        <button class="tab-btn" data-tab="suka">Suka</button>
+        <% if (isOwner) { %>
+          <button class="tab-btn" data-tab="suka">Suka</button>
+        <% } %>
       </div>
-
-      <!-- Konten Tab -->
-      <div class="tab-content active" id="arsip">Ini adalah konten untuk tab Arsip.</div>
 
       <!-- Tab Draft -->
-      <div class="portfolio-list hidden" id="draft">
-        <% if (!userPortofolios || userPortofolios.length === 0) { %>
-          <p>Belum ada draft portofolio.</p>
+      <% if (isOwner) { %>
+        <div class="portfolio-list hidden" id="draft">
+          <% if (!userPortofolios || userPortofolios.filter(p => p.is_draft === 1).length === 0) { %>
+            <p>Belum ada draft portofolio.</p>
+          <% } else { %>
+            <% userPortofolios.forEach(p => { %>
+              <% if (p.is_draft === 1) { %>
+                <div class="portfolio-item-container">
+                  <a href="/upload_portofolio?id_portofolio=<%= p.id_portofolio %>" class="portfolio-item">
+                    <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
+                    <h3><%= p.judul %></h3>
+                    <p>Ini adalah draft, klik untuk melanjutkan pengeditan.</p>
+                  </a>
+                  <div class="portfolio-actions">
+                    <form action="/delete_portofolio/<%= p.id_portofolio %>" method="POST" class="delete-form">
+                      <button type="submit" class="delete-button">Hapus</button>
+                    </form>
+                  </div>
+                </div>
+              <% } %>
+            <% }) %>
+          <% } %>
+        </div>
+      <% } %>
+
+      <!-- Tab Portofolio -->
+      <div class="portfolio-list hidden" id="portofolio">
+        <% if (!userPortofolios || userPortofolios.filter(p => p.is_draft == 0).length === 0) { %>
+          <p>Belum ada portofolio yang diunggah.</p>
         <% } else { %>
-          <% userPortofolios.forEach(p => { %>
-            <% if (p.is_draft === 1) { %> <!-- Menampilkan yang masih draft -->
-              <div class="portfolio-item-container">
-              <a href="/upload_portofolio?id_portofolio=<%= p.id_portofolio %>" class="portfolio-item">
+          <% 
+            const pinnedPortfolios = userPortofolios.filter(p => p.is_pinned === 1 && p.is_draft == 0);
+            const unpinnedPortfolios = userPortofolios.filter(p => p.is_pinned != 1 && p.is_draft == 0);
+          %>
+          
+          <% pinnedPortfolios.forEach(p => { %>
+            <div class="portfolio-item-container">
+              <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
                 <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
                 <h3><%= p.judul %></h3>
-                <p>Ini adalah draft, klik untuk melanjutkan pengeditan.</p>
               </a>
-      
-         <div class="portfolio-actions">
-          <form action="/delete_portofolio/<%= p.id_portofolio %>" method="POST" class="delete-form">
-            <button type="submit" class="delete-button">Hapus</button>
-          </form>
-        </div>
-      </div>
-            <% } %>
+              <% if (isOwner) { %>
+                <div class="portfolio-actions">
+                  <button class="archive-button" data-id="<%= p.id_portofolio %>">Arsip</button>
+                  <button class="edit-button"><a href="/edit_portofolio?id_portofolio=<%= p.id_portofolio %>">Edit</a></button>
+                  <form action="/delete_portofolio/<%= p.id_portofolio %>" method="POST" class="delete-form">
+                    <button type="submit" class="delete-button">Hapus</button>
+                  </form>
+                </div>
+                <button class="pin-button pinned" data-id="<%= p.id_portofolio %>">📌</button>
+              <% } else if (p.is_pinned) { %>
+                <span class="pin-icon">📌</span>
+              <% } %>
+            </div>
+          <% }) %>
+
+          <% unpinnedPortfolios.forEach(p => { %>
+            <div class="portfolio-item-container">
+              <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
+                <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
+                <h3><%= p.judul %></h3>
+              </a>
+              <% if (isOwner) { %>
+                <div class="portfolio-actions">
+                  <button class="archive-button" data-id="<%= p.id_portofolio %>">Arsip</button>
+                  <button class="edit-button"><a href="/edit_portofolio?id_portofolio=<%= p.id_portofolio %>">Edit</a></button>
+                  <form action="/delete_portofolio/<%= p.id_portofolio %>" method="POST" class="delete-form">
+                    <button type="submit" class="delete-button">Hapus</button>
+                  </form>
+                </div>
+                <button class="pin-button" data-id="<%= p.id_portofolio %>">📌</button>
+              <% } %>
+            </div>
           <% }) %>
         <% } %>
       </div>
 
-
-      <!-- Tab Portofolio -->
-<div class="portfolio-list hidden" id="portofolio">
-  <% if (!userPortofolios || userPortofolios.length === 0) { %>
-    <p>Belum ada portofolio yang diunggah.</p>
-  <% } else { %>
-    <% 
-      // Separate pinned and unpinned portfolios
-      const pinnedPortfolios = userPortofolios.filter(p => p.is_pinned === 1);
-      const unpinnedPortfolios = userPortofolios.filter(p => p.is_pinned != 1 && p.is_draft == 0);
-    %>
-    
-    
-    <% // Render pinned portfolios first %>
-    <% pinnedPortfolios.forEach(p => { %>
-      
-      <div class="portfolio-item-container">
-        <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
-          <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
-          <h3><%= p.judul %></h3>
-        </a>
-        <div class="portfolio-actions">
-          <button class="delete-button">Arsip</button>
-          <button class="edit-button"><a href="/edit_portofolio?id_portofolio=<%= p.id_portofolio %>">Edit</a></button>
-          <form action="/delete_portofolio/<%= p.id_portofolio %>" method="POST" class="delete-form">
-            <button type="submit" class="delete-button">Hapus</button>
-          </form>
-          
+      <!-- Tab Arsip -->
+      <% if (isOwner) { %>
+        <div class="tab-content" id="arsip">
+          <% if (!archivedPortofolios || archivedPortofolios.length === 0) { %>
+            <p>Belum ada portofolio yang diarsipkan.</p>
+          <% } else { %>
+            <% archivedPortofolios.forEach(p => { %>
+              <div class="portfolio-item-container">
+                <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
+                  <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
+                  <h3><%= p.judul %></h3>
+                </a>
+                <form action="/unarchive_portofolio/<%= p.id_portofolio %>" method="POST" class="delete-form">
+                  <button type="submit" class="delete-button">Un-arsip</button>
+                </form>
+              </div>
+            <% }) %>
+          <% } %>
         </div>
-        <button class="pin-button pinned" data-id="<%= p.id_portofolio %>">📌</button>
-      </div>
-    <% }) %>
-
-    <% // Render unpinned portfolios next %>
-    <% unpinnedPortfolios.forEach(p => { %>
-            <% if (p.is_draft === 0) { %>
-      <div class="portfolio-item-container">
-        <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
-          <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
-          <h3><%= p.judul %></h3>
-        </a>
-        <div class="portfolio-actions">
-          <button class="delete-button">Arsip</button>
-          <button class="edit-button"><a href="/edit_portofolio?id_portofolio=<%= p.id_portofolio %>">Edit</a></button>
-          <form action="/delete_portofolio/<%= p.id_portofolio %>" method="POST" class="delete-form">
-            <button type="submit" class="delete-button">Hapus</button>
-          </form>
-          
-        </div>
-        <button class="pin-button" data-id="<%= p.id_portofolio %>">📌</button>
-      </div>
       <% } %>
-    <% }) %>
-  <% } %>
-</div>
 
-     <div class="tab-content hidden" id="suka">
-  <% if (!likedPortofolios || likedPortofolios.length === 0) { %>
-    <p>Kamu belum menyukai portofolio mana pun.</p>
-  <% } else { %>
-    <div class="portfolio-list">
-      <% likedPortofolios.forEach(p => { %>
-        <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
-          <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
-          <h3><%= p.judul %></h3>
-        </a>
-      <% }) %>
+      <!-- Tab Suka -->
+      <% if (isOwner) { %>
+        <div class="tab-content hidden" id="suka">
+          <% if (!likedPortofolios || likedPortofolios.length === 0) { %>
+            <p>Kamu belum menyukai portofolio mana pun.</p>
+          <% } else { %>
+            <div class="portfolio-list">
+              <% likedPortofolios.forEach(p => { %>
+                <% if (p.is_archived === 0) { %>
+                  <a href="/portofolio/<%= p.id_portofolio %>" class="portfolio-item">
+                    <img src="/uploads/<%= p.gambar %>" alt="<%= p.judul %>" width="250">
+                    <h3><%= p.judul %></h3>
+                  </a>
+                <% } %>
+              <% }) %>
+            </div> 
+          <% } %>
+        </div>
+      <% } %>
     </div>
-  <% } %>
-</div>
   </div>
 
   <script>
     const buttons = document.querySelectorAll(".tab-btn");
     const contents = document.querySelectorAll(".tab-content");
-    const portfolioList = document.getElementById('portofolio'); // Menyimpan referensi ke portfolio list
-    const draftList = document.getElementById('draft'); // Menyimpan referensi ke draft list
+    const portfolioList = document.getElementById('portofolio');
+    const draftList = document.getElementById('draft'); // Might be null
 
-    // Fungsi untuk menampilkan tab yang dipilih dan menyembunyikan yang lain
     function showTab(tabId) {
-      // Menyembunyikan semua konten
       contents.forEach(c => {
-        c.classList.add("hidden"); // Menyembunyikan semua tab
+        c.classList.add("hidden");
         c.classList.remove("active");
       });
 
-      // Menyembunyikan portfolio list jika bukan tab portofolio yang dipilih
       if (tabId === 'portofolio') {
         portfolioList.classList.remove("hidden");
       } else {
         portfolioList.classList.add("hidden");
       }
 
-      // Menyembunyikan draft list jika bukan tab draft yang dipilih
-      if (tabId === 'draft') {
+      if (tabId === 'draft' && draftList) {
         draftList.classList.remove("hidden");
-      } else {
+      } else if (draftList) {
         draftList.classList.add("hidden");
       }
 
-      // Menambahkan kelas aktif ke konten yang dipilih
-      document.getElementById(tabId).classList.remove("hidden");
-      document.getElementById(tabId).classList.add("active");
+      const activeTabContent = document.getElementById(tabId);
+      if (activeTabContent) {
+        activeTabContent.classList.remove("hidden");
+        activeTabContent.classList.add("active");
+      }
 
-      // Menghapus kelas aktif dari semua tombol
       buttons.forEach(b => b.classList.remove("active"));
-
-      // Menambahkan kelas aktif ke tombol yang dipilih
-      document.querySelector(`[data-tab="${tabId}"]`).classList.add("active");
+      const activeButton = document.querySelector(`[data-tab="${tabId}"]`);
+      if (activeButton) {
+        activeButton.classList.add("active");
+      }
     }
 
     buttons.forEach(button => {
       button.addEventListener("click", () => {
         const target = button.getAttribute("data-tab");
-        showTab(target); // Menampilkan konten tab yang dipilih
+        showTab(target);
       });
     });
 
-    // Tampilkan tab default (Arsip) saat pertama kali dimuat
     showTab('portofolio');
 
-        // Pin Portfolio function
+    const isOwner = document.body.dataset.isOwner === 'true';
 
-document.addEventListener('DOMContentLoaded', () => {
-  const pinButtons = document.querySelectorAll('.pin-button');
-  pinButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      const portfolioId = button.getAttribute('data-id');
-      const isPinned = button.classList.toggle('pinned'); // Toggle the pinned class
-      // Call the function to pin or unpin the portfolio
-      togglePinPortfolio(portfolioId, isPinned);
-    });
-  });
-});
-function togglePinPortfolio(id, isPinned) {
-  fetch(`/toggle_pin_portfolio/${id}`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ isPinned }),
-  })
-  .then(response => {
-    if (response.ok) {
-      alert(isPinned ? 'Portofolio berhasil disematkan!' : 'Portofolio berhasil dibatalkan sematannya!');
-      location.reload(); // Reload the page to see the changes
-   } else {
-      alert('Gagal mengubah status sematan portofolio.');
+    if (isOwner) {
+      document.addEventListener('DOMContentLoaded', () => {
+        const pinButtons = document.querySelectorAll('.pin-button');
+        pinButtons.forEach(button => {
+          button.addEventListener('click', () => {
+            const portfolioId = button.getAttribute('data-id');
+            const isPinned = button.classList.toggle('pinned');
+            togglePinPortfolio(portfolioId, isPinned);
+          });
+        });
+
+        document.querySelectorAll('.archive-button').forEach(button => {
+          button.addEventListener('click', function() {
+            const portfolioId = button.dataset.id;
+            fetch(`/archive_portofolio/${portfolioId}`, {
+              method: 'POST',
+              credentials: 'same-origin'
+            })
+            .then(response => {
+              if (response.ok) {
+                location.reload();
+              } else {
+                alert('Gagal mengarsipkan portofolio');
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+          });
+        });
+      });
+
+      function togglePinPortfolio(id, isPinned) {
+        fetch(`/toggle_pin_portfolio/${id}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ isPinned }),
+        })
+        .then(response => {
+          if (response.ok) {
+            alert(isPinned ? 'Portofolio berhasil disematkan!' : 'Portofolio berhasil dibatalkan sematannya!');
+            location.reload();
+          } else {
+            alert('Gagal mengubah status sematan portofolio.');
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Terjadi kesalahan saat mengubah status sematan portofolio.');
+        });
+      }
     }
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert('Terjadi kesalahan saat mengubah status sematan portofolio.');
-  });
-}
   </script>
 </body>
 </html>

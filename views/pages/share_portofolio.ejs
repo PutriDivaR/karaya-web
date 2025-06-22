@@ -1,0 +1,89 @@
+<%- include('../partials/header') %>
+<%- include('../partials/sidebar') %>
+
+<link rel="stylesheet" href="/share_portofolio.css">
+
+<div class="share-container">
+  <!-- Bagian Portofolio yang ingin dibagikan -->
+  <div class="portfolio-preview">
+    <h1><%= portofolio.judul %></h1>
+    <img src="/uploads/<%= portofolio.gambar %>" alt="<%= portofolio.judul %>">
+    <p><%= portofolio.deskripsi %></p>
+  </div>
+
+  <!-- Bagian Tombol Share -->
+  <div class="share-options">
+    <button id="copyLinkButton" class="copy-link">
+        <img src="/images/link-icon.png" alt="Tautan"> Salin Tautan
+    </button>
+    
+    <button id="whatsappShareButton" class="whatsapp">
+        <img src="/images/whatsapp-icon.png" alt="WhatsApp"> Share ke WhatsApp
+    </button>
+  </div>
+</div>
+
+<script>
+  // Salin tautan ke clipboard
+  document.getElementById("copyLinkButton").addEventListener("click", function() {
+    const portfolioUrl = window.location.href;
+    navigator.clipboard.writeText(portfolioUrl).then(function() {
+      // Tampilkan notifikasi sukses
+      showNotification("✅ Tautan telah berhasil disalin ke clipboard!", "success");
+    }).catch(function(error) {
+      // Fallback untuk browser yang tidak mendukung clipboard API
+      const textArea = document.createElement("textarea");
+      textArea.value = portfolioUrl;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        showNotification("✅ Tautan telah berhasil disalin ke clipboard!", "success");
+      } catch (err) {
+        showNotification("❌ Gagal menyalin tautan: " + error, "error");
+      }
+      document.body.removeChild(textArea);
+    });
+  });
+
+  // Berbagi ke WhatsApp
+  document.getElementById("whatsappShareButton").addEventListener("click", function() {
+    const portfolioUrl = window.location.href;
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent("Lihat portofolio saya: " + portfolioUrl)}`;
+    window.open(whatsappUrl, '_blank');
+  });
+
+  // Function untuk menampilkan notifikasi
+  function showNotification(message, type = 'success') {
+    // Hapus notifikasi yang sudah ada
+    const existingNotification = document.querySelector('.share-notification');
+    if (existingNotification) {
+      existingNotification.remove();
+    }
+
+    // Buat elemen notifikasi
+    const notification = document.createElement('div');
+    notification.className = `share-notification ${type}`;
+    notification.textContent = message;
+    
+    // Tambahkan ke body
+    document.body.appendChild(notification);
+    
+    // Tampilkan notifikasi dengan animasi
+    setTimeout(() => {
+      notification.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Sembunyikan notifikasi setelah 3 detik
+    setTimeout(() => {
+      notification.style.transform = 'translateX(100%)';
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+      }, 300);
+    }, 3000);
+  }
+</script>
+
+<%- include('../partials/footer') %>

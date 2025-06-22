@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>Pusat Bantuan</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="/home.css">
+  <link rel="stylesheet" href="/pusatBantuan.css">
+</head>
+<body>
+  <!-- Header -->
+  <%- include('../partials/header') %>
+
+  <!-- Sidebar + Konten -->
+  <div class="dashboard-container">
+    
+    <!-- Sidebar -->
+    <%- include('../partials/sidebar') %>
+
+    <!-- Konten Utama -->
+    <div class="main">
+      <h1>Pusat Bantuan</h1>
+      <h2>Apa yang bisa kami bantu?</h2>
+      
+      <div class="help-container">
+        <% if (informasiList && informasiList.length > 0) { %>
+          <% informasiList.forEach(item => { %>
+            <a class="link" href="/bantuan/<%= item.id_informasi %>"><%= item.judul %></a>
+          <% }) %>
+        <% } else { %>
+          <div class="no-help">
+            <p>Belum ada informasi bantuan yang tersedia.</p>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
